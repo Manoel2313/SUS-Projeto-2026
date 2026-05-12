@@ -200,6 +200,47 @@
             background-color: #388e3c;
         }
         
+        /* Tela de nome */
+        .tela-nome {
+            text-align: center;
+            display: none;
+        }
+        
+        .tela-nome.active {
+            display: block;
+        }
+        
+        .tela-nome input {
+            width: 100%;
+            padding: 1rem;
+            font-size: 1.2rem;
+            border-radius: 10px;
+            border: 2px solid #005a9c;
+            margin: 1rem 0;
+            text-align: center;
+        }
+        
+        .tela-nome button {
+            background-color: #005a9c;
+            color: white;
+            border: none;
+            padding: 1rem 3rem;
+            border-radius: 10px;
+            font-size: 1.2rem;
+            cursor: pointer;
+        }
+        
+        .tela-nome button:hover {
+            background-color: #003d6b;
+        }
+        
+        .tela-nome .pular {
+            background: none;
+            color: #666;
+            margin-top: 1rem;
+            font-size: 0.9rem;
+        }
+        
         @media (max-width: 600px) {
             .container {
                 padding: 1.5rem;
@@ -228,11 +269,26 @@
             <div class="progresso-barra" id="barraProgresso"></div>
         </div>
         
-        <div id="quiz" class="quiz-container"></div>
+        <div id="telaNome" class="tela-nome active">
+            <h2>📝 Seu nome (opcional)</h2>
+            <input type="text" id="nomeJogador" placeholder="Digite seu nome..." maxlength="50">
+            <br>
+            <button onclick="comecarQuiz()">Começar Quiz 🚀</button>
+            <br>
+            <button class="pular" onclick="comecarQuiz()">Pular e começar</button>
+        </div>
+        
+        <div id="quiz" class="quiz-container" style="display:none;"></div>
         <div id="resultado" class="resultado"></div>
     </div>
 
     <script>
+        const FORM_ID = "1FAIpQLSdoxok3p1C0ggaNrXsXzkO8rVwAjrvskBs4jFaugq7-3hd90g";
+        const FORM_URL = `https://docs.google.com/forms/d/e/${FORM_ID}/formResponse`;
+        
+        let nomeJogador = "";
+        let respostasJogador = [];
+        
         const perguntas = [
             {
                 pergunta: "Um hospital público inaugura um novo andar, mas não há intérprete de Libras disponível. Qual tipo de barreira de acessibilidade está sendo imposta?",
@@ -300,11 +356,22 @@
         let pontuacao = 0;
         let respondida = false;
         
+        function comecarQuiz() {
+            nomeJogador = document.getElementById('nomeJogador').value.trim();
+            if (nomeJogador === "") nomeJogador = "Anônimo";
+            respostasJogador = [];
+            document.getElementById('telaNome').classList.remove('active');
+            document.getElementById('quiz').style.display = 'block';
+            iniciarQuiz();
+        }
+        
         function iniciarQuiz() {
             perguntaAtual = 0;
             pontuacao = 0;
             respondida = false;
+            respostasJogador = [];
             document.getElementById('resultado').classList.remove('active');
+            document.getElementById('quiz').style.display = 'block';
             mostrarPergunta();
             atualizarProgresso();
         }
@@ -347,6 +414,13 @@
             const feedback = document.getElementById('feedback');
             const btnProximo = document.getElementById('btnProximo');
             
+            const letra = String.fromCharCode(65 + index);
+            respostasJogador.push({
+                pergunta: perguntaAtual + 1,
+                resposta: letra,
+                correta: index === questao.correta
+            });
+            
             opcoes.forEach(opcao => opcao.classList.add('bloqueada'));
             
             if (index === questao.correta) {
@@ -371,11 +445,12 @@
                 mostrarPergunta();
             } else {
                 mostrarResultado();
+                enviarParaGoogleForms();
             }
         }
         
         function mostrarResultado() {
-            document.getElementById('quiz').innerHTML = '';
+            document.getElementById('quiz').style.display = 'none';
             const resultado = document.getElementById('resultado');
             resultado.classList.add('active');
             
@@ -392,15 +467,47 @@
                 <div class="pontuacao">${porcentagem}%</div>
                 <p class="mensagem-resultado">${mensagem}</p>
                 <p>Você acertou <strong>${pontuacao}</strong> de <strong>${perguntas.length}</strong> perguntas.</p>
-                <button class="btn-reiniciar" onclick="iniciarQuiz()">🔄 Tentar Novamente</button>
+                <p style="font-size:0.8rem;color:#999;margin-top:1rem;">✅ Respostas enviadas com sucesso!</p>
+                <button class="btn-reiniciar" onclick="reiniciarTudo()">🔄 Tentar Novamente</button>
             `;
             
             document.getElementById('barraProgresso').style.width = '100%';
         }
         
+        function reiniciarTudo() {
+            document.getElementById('resultado').classList.remove('active');
+            document.getElementById('telaNome').classList.add('active');
+            document.getElementById('nomeJogador').value = '';
+            document.getElementById('barraProgresso').style.width = '0%';
+        }
+        
         function atualizarProgresso() {
             const progresso = ((perguntaAtual) / perguntas.length) * 100;
             document.getElementById('barraProgresso').style.width = progresso + '%';
+        }
+        
+        function enviarParaGoogleForms() {
+            const formData = new FormData();
+            formData.append('entry.2005620554', nomeJogador);
+            
+            const entries = [
+                'entry.1065046570', 'entry.1166974658', 'entry.839337160',
+                'entry.1231914193', 'entry.486157985', 'entry.535107613',
+                'entry.2070651009', 'entry.125580085', 'entry.1653014039',
+                'entry.458985615'
+            ];
+            
+            respostasJogador.forEach((resp, index) => {
+                if (index < entries.length) {
+                    formData.append(entries[index], resp.resposta);
+                }
+            });
+            
+            fetch(FORM_URL, {
+                method: 'POST',
+                mode: 'no-cors',
+                body: formData
+            }).catch(() => {});
         }
         
         iniciarQuiz();
