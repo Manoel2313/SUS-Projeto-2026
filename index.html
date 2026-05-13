@@ -200,47 +200,6 @@
             background-color: #388e3c;
         }
         
-        /* Tela de nome */
-        .tela-nome {
-            text-align: center;
-            display: none;
-        }
-        
-        .tela-nome.active {
-            display: block;
-        }
-        
-        .tela-nome input {
-            width: 100%;
-            padding: 1rem;
-            font-size: 1.2rem;
-            border-radius: 10px;
-            border: 2px solid #005a9c;
-            margin: 1rem 0;
-            text-align: center;
-        }
-        
-        .tela-nome button {
-            background-color: #005a9c;
-            color: white;
-            border: none;
-            padding: 1rem 3rem;
-            border-radius: 10px;
-            font-size: 1.2rem;
-            cursor: pointer;
-        }
-        
-        .tela-nome button:hover {
-            background-color: #003d6b;
-        }
-        
-        .tela-nome .pular {
-            background: none;
-            color: #666;
-            margin-top: 1rem;
-            font-size: 0.9rem;
-        }
-        
         @media (max-width: 600px) {
             .container {
                 padding: 1.5rem;
@@ -269,25 +228,15 @@
             <div class="progresso-barra" id="barraProgresso"></div>
         </div>
         
-        <div id="telaNome" class="tela-nome active">
-            <h2>📝 Seu nome (opcional)</h2>
-            <input type="text" id="nomeJogador" placeholder="Digite seu nome..." maxlength="50">
-            <br>
-            <button onclick="comecarQuiz()">Começar Quiz 🚀</button>
-            <br>
-            <button class="pular" onclick="comecarQuiz()">Pular e começar</button>
-        </div>
-        
-        <div id="quiz" class="quiz-container" style="display:none;"></div>
+        <div id="quiz" class="quiz-container"></div>
         <div id="resultado" class="resultado"></div>
     </div>
 
     <script>
-        const FORM_ID = "1FAIpQLSdoxok3p1C0ggaNrXsXzkO8rVwAjrvskBs4jFaugq7-3hd90g";
-        const FORM_URL = `https://docs.google.com/forms/d/e/${FORM_ID}/formResponse`;
-        
-        let nomeJogador = "";
-        let respostasJogador = [];
+        const GITHUB_TOKEN = "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";
+        const GITHUB_USER = "manoel2313";
+        const REPO = "quiz-acessibilidade";
+        const ARQUIVO = "respostas.json";
         
         const perguntas = [
             {
@@ -355,15 +304,7 @@
         let perguntaAtual = 0;
         let pontuacao = 0;
         let respondida = false;
-        
-        function comecarQuiz() {
-            nomeJogador = document.getElementById('nomeJogador').value.trim();
-            if (nomeJogador === "") nomeJogador = "Anônimo";
-            respostasJogador = [];
-            document.getElementById('telaNome').classList.remove('active');
-            document.getElementById('quiz').style.display = 'block';
-            iniciarQuiz();
-        }
+        let respostasJogador = [];
         
         function iniciarQuiz() {
             perguntaAtual = 0;
@@ -445,7 +386,7 @@
                 mostrarPergunta();
             } else {
                 mostrarResultado();
-                enviarParaGoogleForms();
+                salvarNoGitHub();
             }
         }
         
@@ -467,18 +408,11 @@
                 <div class="pontuacao">${porcentagem}%</div>
                 <p class="mensagem-resultado">${mensagem}</p>
                 <p>Você acertou <strong>${pontuacao}</strong> de <strong>${perguntas.length}</strong> perguntas.</p>
-                <p style="font-size:0.8rem;color:#999;margin-top:1rem;">✅ Respostas enviadas com sucesso!</p>
-                <button class="btn-reiniciar" onclick="reiniciarTudo()">🔄 Tentar Novamente</button>
+                <p style="font-size:0.8rem;color:#999;margin-top:1rem;" id="statusEnvio">📤 Salvando respostas...</p>
+                <button class="btn-reiniciar" onclick="iniciarQuiz()">🔄 Tentar Novamente</button>
             `;
             
             document.getElementById('barraProgresso').style.width = '100%';
-        }
-        
-        function reiniciarTudo() {
-            document.getElementById('resultado').classList.remove('active');
-            document.getElementById('telaNome').classList.add('active');
-            document.getElementById('nomeJogador').value = '';
-            document.getElementById('barraProgresso').style.width = '0%';
         }
         
         function atualizarProgresso() {
@@ -486,28 +420,66 @@
             document.getElementById('barraProgresso').style.width = progresso + '%';
         }
         
-        function enviarParaGoogleForms() {
-            const formData = new FormData();
-            formData.append('entry.2005620554', nomeJogador);
+        async function salvarNoGitHub() {
+            const status = document.getElementById('statusEnvio');
             
-            const entries = [
-                'entry.1065046570', 'entry.1166974658', 'entry.839337160',
-                'entry.1231914193', 'entry.486157985', 'entry.535107613',
-                'entry.2070651009', 'entry.125580085', 'entry.1653014039',
-                'entry.458985615'
-            ];
-            
-            respostasJogador.forEach((resp, index) => {
-                if (index < entries.length) {
-                    formData.append(entries[index], resp.resposta);
+            try {
+                const url = `https://api.github.com/repos/${GITHUB_USER}/${REPO}/contents/${ARQUIVO}`;
+                const resposta = await fetch(url, {
+                    headers: {
+                        'Authorization': `token ${GITHUB_TOKEN}`
+                    }
+                });
+                
+                let dadosExistentes = [];
+                let sha = null;
+                
+                if (resposta.ok) {
+                    const data = await resposta.json();
+                    sha = data.sha;
+                    const conteudo = atob(data.content);
+                    dadosExistentes = JSON.parse(conteudo);
                 }
-            });
-            
-            fetch(FORM_URL, {
-                method: 'POST',
-                mode: 'no-cors',
-                body: formData
-            }).catch(() => {});
+                
+                const novaResposta = {
+                    data: new Date().toLocaleString('pt-BR'),
+                    acertos: pontuacao,
+                    total: perguntas.length,
+                    respostas: respostasJogador
+                };
+                dadosExistentes.push(novaResposta);
+                
+                const conteudoCodificado = btoa(unescape(encodeURIComponent(JSON.stringify(dadosExistentes, null, 2))));
+                
+                const body = {
+                    message: `Nova resposta - ${new Date().toLocaleString('pt-BR')}`,
+                    content: conteudoCodificado
+                };
+                
+                if (sha) {
+                    body.sha = sha;
+                }
+                
+                const respostaSalvar = await fetch(url, {
+                    method: 'PUT',
+                    headers: {
+                        'Authorization': `token ${GITHUB_TOKEN}`,
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(body)
+                });
+                
+                if (respostaSalvar.ok) {
+                    status.innerHTML = '✅ Respostas salvas com sucesso!';
+                    status.style.color = '#4caf50';
+                } else {
+                    throw new Error('Erro ao salvar');
+                }
+            } catch (erro) {
+                console.error('Erro:', erro);
+                status.innerHTML = '⚠️ Respostas não salvas (erro de conexão)';
+                status.style.color = '#e74c3c';
+            }
         }
         
         iniciarQuiz();
