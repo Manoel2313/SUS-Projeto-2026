@@ -200,12 +200,56 @@
             background-color: #388e3c;
         }
         
+        /* TELA INICIAL */
+        .tela-inicial {
+            text-align: center;
+            display: block;
+        }
+        
+        .tela-inicial h1 {
+            color: #005a9c;
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+        
+        .tela-inicial h2 {
+            color: #333;
+            font-size: 1.5rem;
+            margin-bottom: 2rem;
+            font-weight: normal;
+        }
+        
+        .btn-comecar {
+            background-color: #005a9c;
+            color: white;
+            border: none;
+            padding: 1.2rem 3rem;
+            border-radius: 15px;
+            font-size: 1.3rem;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+        }
+        
+        .btn-comecar:hover {
+            background-color: #003d6b;
+            transform: scale(1.05);
+        }
+        
+        .creditos {
+            margin-top: 2rem;
+            color: #999;
+            font-size: 0.9rem;
+        }
+        
         @media (max-width: 600px) {
             .container {
                 padding: 1.5rem;
             }
-            .header h1 {
+            .header h1, .tela-inicial h1 {
                 font-size: 2rem;
+            }
+            .tela-inicial h2 {
+                font-size: 1.2rem;
             }
             .texto-pergunta {
                 font-size: 1.1rem;
@@ -219,25 +263,34 @@
 </head>
 <body>
     <div class="container">
-        <div class="header">
+        
+        <!-- TELA INICIAL -->
+        <div id="telaInicial" class="tela-inicial">
             <h1>🎯 Quiz de Acessibilidade</h1>
-            <p>Teste seus conhecimentos sobre acessibilidade em lugares públicos</p>
+            <h2>Pedro Carlin</h2>
+            <button class="btn-comecar" onclick="comecarQuiz()">Começar 🚀</button>
+            <p class="creditos">Feito por Manoel Eduardo (2-A)</p>
         </div>
         
-        <div class="progresso-container">
-            <div class="progresso-barra" id="barraProgresso"></div>
+        <!-- QUIZ -->
+        <div id="quiz" class="quiz-container" style="display:none;">
+            <div class="header">
+                <h1>🎯 Quiz de Acessibilidade</h1>
+                <p>Teste seus conhecimentos sobre acessibilidade em lugares públicos</p>
+            </div>
+            
+            <div class="progresso-container">
+                <div class="progresso-barra" id="barraProgresso"></div>
+            </div>
+            
+            <div id="perguntasContainer"></div>
         </div>
         
-        <div id="quiz" class="quiz-container"></div>
+        <!-- RESULTADO -->
         <div id="resultado" class="resultado"></div>
     </div>
 
     <script>
-        const GITHUB_TOKEN = "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";
-        const GITHUB_USER = "manoel2313";
-        const REPO = "quiz-acessibilidade";
-        const ARQUIVO = "respostas.json";
-        
         const perguntas = [
             {
                 pergunta: "Um hospital público inaugura um novo andar, mas não há intérprete de Libras disponível. Qual tipo de barreira de acessibilidade está sendo imposta?",
@@ -304,15 +357,20 @@
         let perguntaAtual = 0;
         let pontuacao = 0;
         let respondida = false;
-        let respostasJogador = [];
+        
+        function comecarQuiz() {
+            document.getElementById('telaInicial').style.display = 'none';
+            document.getElementById('quiz').style.display = 'block';
+            iniciarQuiz();
+        }
         
         function iniciarQuiz() {
             perguntaAtual = 0;
             pontuacao = 0;
             respondida = false;
-            respostasJogador = [];
             document.getElementById('resultado').classList.remove('active');
             document.getElementById('quiz').style.display = 'block';
+            document.getElementById('telaInicial').style.display = 'none';
             mostrarPergunta();
             atualizarProgresso();
         }
@@ -342,7 +400,7 @@
                 </button>
             `;
             
-            document.getElementById('quiz').innerHTML = html;
+            document.getElementById('perguntasContainer').innerHTML = html;
             atualizarProgresso();
         }
         
@@ -354,13 +412,6 @@
             const opcoes = document.querySelectorAll('.opcao');
             const feedback = document.getElementById('feedback');
             const btnProximo = document.getElementById('btnProximo');
-            
-            const letra = String.fromCharCode(65 + index);
-            respostasJogador.push({
-                pergunta: perguntaAtual + 1,
-                resposta: letra,
-                correta: index === questao.correta
-            });
             
             opcoes.forEach(opcao => opcao.classList.add('bloqueada'));
             
@@ -386,7 +437,6 @@
                 mostrarPergunta();
             } else {
                 mostrarResultado();
-                salvarNoGitHub();
             }
         }
         
@@ -408,7 +458,6 @@
                 <div class="pontuacao">${porcentagem}%</div>
                 <p class="mensagem-resultado">${mensagem}</p>
                 <p>Você acertou <strong>${pontuacao}</strong> de <strong>${perguntas.length}</strong> perguntas.</p>
-                <p style="font-size:0.8rem;color:#999;margin-top:1rem;" id="statusEnvio">📤 Salvando respostas...</p>
                 <button class="btn-reiniciar" onclick="iniciarQuiz()">🔄 Tentar Novamente</button>
             `;
             
@@ -419,70 +468,6 @@
             const progresso = ((perguntaAtual) / perguntas.length) * 100;
             document.getElementById('barraProgresso').style.width = progresso + '%';
         }
-        
-        async function salvarNoGitHub() {
-            const status = document.getElementById('statusEnvio');
-            
-            try {
-                const url = `https://api.github.com/repos/${GITHUB_USER}/${REPO}/contents/${ARQUIVO}`;
-                const resposta = await fetch(url, {
-                    headers: {
-                        'Authorization': `token ${GITHUB_TOKEN}`
-                    }
-                });
-                
-                let dadosExistentes = [];
-                let sha = null;
-                
-                if (resposta.ok) {
-                    const data = await resposta.json();
-                    sha = data.sha;
-                    const conteudo = atob(data.content);
-                    dadosExistentes = JSON.parse(conteudo);
-                }
-                
-                const novaResposta = {
-                    data: new Date().toLocaleString('pt-BR'),
-                    acertos: pontuacao,
-                    total: perguntas.length,
-                    respostas: respostasJogador
-                };
-                dadosExistentes.push(novaResposta);
-                
-                const conteudoCodificado = btoa(unescape(encodeURIComponent(JSON.stringify(dadosExistentes, null, 2))));
-                
-                const body = {
-                    message: `Nova resposta - ${new Date().toLocaleString('pt-BR')}`,
-                    content: conteudoCodificado
-                };
-                
-                if (sha) {
-                    body.sha = sha;
-                }
-                
-                const respostaSalvar = await fetch(url, {
-                    method: 'PUT',
-                    headers: {
-                        'Authorization': `token ${GITHUB_TOKEN}`,
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify(body)
-                });
-                
-                if (respostaSalvar.ok) {
-                    status.innerHTML = '✅ Respostas salvas com sucesso!';
-                    status.style.color = '#4caf50';
-                } else {
-                    throw new Error('Erro ao salvar');
-                }
-            } catch (erro) {
-                console.error('Erro:', erro);
-                status.innerHTML = '⚠️ Respostas não salvas (erro de conexão)';
-                status.style.color = '#e74c3c';
-            }
-        }
-        
-        iniciarQuiz();
     </script>
 </body>
 </html>
