@@ -3,471 +3,773 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Quiz de Acessibilidade</title>
+    <title>SUS + Organizado — Classificação de Risco por Cores</title>
     <style>
-        :root {
-            --cor-primaria: #005a9c;
-            --cor-secundaria: #4caf50;
-            --cor-erro: #e74c3c;
-        }
-        
-        * {
+        /* ===== RESET & BASE ===== */
+        *,
+        *::before,
+        *::after {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
-        
+
+        :root {
+            --primary-dark: #0a2e4a;
+            --primary-mid: #1a5276;
+            --primary-blue: #2e86c1;
+            --primary-light: #85c1e9;
+            --primary-bg: #eaf2f8;
+            --white: #ffffff;
+            --gray-100: #f8f9fa;
+            --gray-200: #e9ecef;
+            --gray-300: #dee2e6;
+            --gray-500: #adb5bd;
+            --gray-700: #495057;
+            --gray-900: #212529;
+            --shadow-sm: 0 2px 8px rgba(10, 46, 74, 0.08);
+            --shadow-md: 0 8px 24px rgba(10, 46, 74, 0.12);
+            --shadow-lg: 0 16px 48px rgba(10, 46, 74, 0.18);
+            --radius: 16px;
+            --radius-sm: 10px;
+            --transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            --font: 'Segoe UI', system-ui, -apple-system, sans-serif;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            font-family: var(--font);
+            background: var(--primary-bg);
+            color: var(--gray-900);
+            line-height: 1.6;
             min-height: 100vh;
             display: flex;
-            justify-content: center;
-            align-items: center;
-            padding: 20px;
-            color: #2c3e50;
+            flex-direction: column;
         }
-        
-        .container {
-            background-color: white;
-            border-radius: 20px;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
-            max-width: 800px;
-            width: 100%;
-            padding: 2rem;
+
+        /* ===== SCROLLBAR ===== */
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
         }
-        
+        ::-webkit-scrollbar-track {
+            background: var(--gray-200);
+        }
+        ::-webkit-scrollbar-thumb {
+            background: var(--primary-blue);
+            border-radius: 8px;
+        }
+
+        /* ===== HEADER ===== */
         .header {
-            text-align: center;
-            margin-bottom: 2rem;
+            background: var(--primary-dark);
+            color: var(--white);
+            padding: 0 24px;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25);
+            backdrop-filter: blur(2px);
         }
-        
-        .header h1 {
-            color: #005a9c;
-            font-size: 2.5rem;
-            margin-bottom: 0.5rem;
+
+        .header-inner {
+            max-width: 1280px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            height: 70px;
         }
-        
-        .header p {
-            color: #666;
-            font-size: 1.1rem;
-        }
-        
-        .progresso-container {
-            background: #e0e0e0;
-            border-radius: 10px;
-            height: 10px;
-            margin-bottom: 2rem;
-        }
-        
-        .progresso-barra {
-            background: linear-gradient(90deg, #005a9c, #4caf50);
-            height: 100%;
-            width: 0%;
-            transition: width 0.3s ease;
-            border-radius: 10px;
-        }
-        
-        .numero-pergunta {
-            color: #005a9c;
-            font-weight: bold;
-            margin-bottom: 0.5rem;
-        }
-        
-        .texto-pergunta {
-            font-size: 1.3rem;
-            font-weight: 600;
-            margin-bottom: 1.5rem;
-        }
-        
-        .opcoes {
-            list-style: none;
-        }
-        
-        .opcao {
-            background-color: #f8f9fa;
-            border: 2px solid #e0e0e0;
-            border-radius: 10px;
-            padding: 1rem 1.5rem;
-            margin-bottom: 1rem;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            font-size: 1.1rem;
-        }
-        
-        .opcao:hover:not(.bloqueada) {
-            background-color: #e3f2fd;
-            border-color: #005a9c;
-            transform: translateX(5px);
-        }
-        
-        .opcao.correta {
-            background-color: #d4edda;
-            border-color: #4caf50;
-            color: #155724;
-        }
-        
-        .opcao.incorreta {
-            background-color: #f8d7da;
-            border-color: #e74c3c;
-            color: #721c24;
-        }
-        
-        .opcao.bloqueada {
-            pointer-events: none;
-        }
-        
-        .feedback {
-            margin-top: 1.5rem;
-            padding: 1rem;
-            border-radius: 10px;
-            display: none;
-        }
-        
-        .feedback.mostrar {
-            display: block;
-        }
-        
-        .feedback.correto {
-            background-color: #d4edda;
-            border: 1px solid #4caf50;
-        }
-        
-        .feedback.errado {
-            background-color: #f8d7da;
-            border: 1px solid #e74c3c;
-        }
-        
-        .btn-proximo {
-            background-color: #005a9c;
-            color: white;
-            border: none;
-            padding: 1rem 2rem;
-            border-radius: 10px;
-            font-size: 1.1rem;
-            cursor: pointer;
-            margin-top: 1.5rem;
-            width: 100%;
-            display: none;
-        }
-        
-        .btn-proximo:hover {
-            background-color: #003d6b;
-        }
-        
-        .btn-proximo.mostrar {
-            display: block;
-        }
-        
-        .resultado {
-            display: none;
-            text-align: center;
-        }
-        
-        .resultado.active {
-            display: block;
-        }
-        
-        .resultado h2 {
-            color: #005a9c;
-            font-size: 2rem;
-            margin-bottom: 1rem;
-        }
-        
-        .pontuacao {
-            font-size: 4rem;
-            font-weight: bold;
-            color: #4caf50;
-        }
-        
-        .mensagem-resultado {
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-weight: 700;
             font-size: 1.2rem;
-            margin: 1rem 0;
+            letter-spacing: -0.3px;
+            flex-shrink: 0;
         }
-        
-        .btn-reiniciar {
-            background-color: #4caf50;
-            color: white;
+
+        .logo-icon {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            background: var(--primary-blue);
+            border-radius: 12px;
+            font-size: 1.4rem;
+        }
+
+        .logo span {
+            color: var(--primary-light);
+            font-weight: 300;
+        }
+
+        /* ===== NAV ===== */
+        .nav {
+            display: flex;
+            gap: 4px;
+            flex-wrap: wrap;
+            justify-content: flex-end;
+        }
+
+        .nav-btn {
+            background: transparent;
             border: none;
-            padding: 1rem 2rem;
-            border-radius: 10px;
-            font-size: 1.1rem;
+            color: rgba(255, 255, 255, 0.7);
+            padding: 8px 16px;
+            border-radius: 40px;
+            font-size: 0.85rem;
+            font-weight: 500;
             cursor: pointer;
-            margin-top: 1rem;
+            transition: var(--transition);
+            font-family: var(--font);
+            white-space: nowrap;
+            position: relative;
         }
-        
-        .btn-reiniciar:hover {
-            background-color: #388e3c;
+
+        .nav-btn:hover {
+            color: var(--white);
+            background: rgba(255, 255, 255, 0.08);
         }
-        
-        /* TELA INICIAL */
-        .tela-inicial {
-            text-align: center;
+
+        .nav-btn.active {
+            color: var(--white);
+            background: rgba(46, 134, 193, 0.35);
+            box-shadow: 0 0 0 1px rgba(46, 134, 193, 0.3);
+        }
+
+        .nav-btn .badge {
+            display: none;
+        }
+
+        /* ===== MOBILE MENU TOGGLE ===== */
+        .menu-toggle {
+            display: none;
+            flex-direction: column;
+            gap: 5px;
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            padding: 6px;
+        }
+        .menu-toggle span {
+            display: block;
+            width: 26px;
+            height: 2.5px;
+            background: var(--white);
+            border-radius: 4px;
+            transition: var(--transition);
+        }
+        .menu-toggle.open span:nth-child(1) {
+            transform: rotate(45deg) translate(5px, 5px);
+        }
+        .menu-toggle.open span:nth-child(2) {
+            opacity: 0;
+        }
+        .menu-toggle.open span:nth-child(3) {
+            transform: rotate(-45deg) translate(5px, -5px);
+        }
+
+        /* ===== MAIN ===== */
+        .main {
+            flex: 1;
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 32px 24px 60px;
+            width: 100%;
+        }
+
+        /* ===== PAGES ===== */
+        .page {
+            display: none;
+            animation: fadeUp 0.5s ease forwards;
+        }
+
+        .page.active {
             display: block;
         }
-        
-        .tela-inicial h1 {
-            color: #005a9c;
-            font-size: 2.5rem;
-            margin-bottom: 1rem;
+
+        @keyframes fadeUp {
+            0% {
+                opacity: 0;
+                transform: translateY(28px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
-        
-        .tela-inicial h2 {
-            color: #333;
-            font-size: 1.5rem;
-            margin-bottom: 2rem;
-            font-weight: normal;
+
+        /* ===== TYPOGRAPHY ===== */
+        .page-title {
+            font-size: 2.2rem;
+            font-weight: 700;
+            color: var(--primary-dark);
+            margin-bottom: 8px;
+            letter-spacing: -0.5px;
         }
-        
-        .btn-comecar {
-            background-color: #005a9c;
-            color: white;
-            border: none;
-            padding: 1.2rem 3rem;
-            border-radius: 15px;
-            font-size: 1.3rem;
-            cursor: pointer;
-            transition: background-color 0.3s ease, transform 0.2s ease;
+
+        .page-subtitle {
+            font-size: 1.1rem;
+            color: var(--gray-700);
+            margin-bottom: 32px;
+            font-weight: 400;
         }
-        
-        .btn-comecar:hover {
-            background-color: #003d6b;
-            transform: scale(1.05);
+
+        .section-title {
+            font-size: 1.6rem;
+            font-weight: 600;
+            color: var(--primary-dark);
+            margin: 40px 0 16px;
         }
-        
-        .creditos {
-            margin-top: 2rem;
-            color: #999;
+
+        .section-title:first-of-type {
+            margin-top: 0;
+        }
+
+        .highlight-box {
+            background: var(--white);
+            border-left: 5px solid var(--primary-blue);
+            padding: 20px 24px;
+            border-radius: var(--radius-sm);
+            box-shadow: var(--shadow-sm);
+            margin: 24px 0;
+            font-weight: 500;
+            font-size: 1.1rem;
+            color: var(--primary-dark);
+        }
+
+        .highlight-box strong {
+            color: var(--primary-blue);
+        }
+
+        /* ===== CARDS ===== */
+        .card-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 24px;
+            margin: 24px 0;
+        }
+
+        .card {
+            background: var(--white);
+            border-radius: var(--radius);
+            padding: 24px;
+            box-shadow: var(--shadow-sm);
+            transition: var(--transition);
+            border: 1px solid var(--gray-200);
+        }
+
+        .card:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-md);
+            border-color: var(--primary-light);
+        }
+
+        .card-icon {
+            font-size: 2rem;
+            margin-bottom: 12px;
+            display: block;
+        }
+
+        .card h3 {
+            font-size: 1.1rem;
+            color: var(--primary-dark);
+            margin-bottom: 8px;
+        }
+
+        .card p {
+            color: var(--gray-700);
+            font-size: 0.95rem;
+        }
+
+        /* ===== RISK CARDS ===== */
+        .risk-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 28px;
+            margin: 32px 0;
+        }
+
+        .risk-card {
+            background: var(--white);
+            border-radius: var(--radius);
+            padding: 24px;
+            box-shadow: var(--shadow-sm);
+            border-top: 6px solid var(--gray-500);
+            transition: var(--transition);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .risk-card:hover {
+            transform: translateY(-6px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .risk-card.black {
+            border-top-color: #1a1a1a;
+        }
+        .risk-card.red {
+            border-top-color: #e74c3c;
+        }
+        .risk-card.yellow {
+            border-top-color: #f1c40f;
+        }
+        .risk-card.green {
+            border-top-color: #27ae60;
+        }
+
+        .risk-header {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            margin-bottom: 12px;
+        }
+
+        .risk-dot {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            flex-shrink: 0;
+            border: 2px solid rgba(0, 0, 0, 0.08);
+        }
+        .risk-dot.black {
+            background: #1a1a1a;
+        }
+        .risk-dot.red {
+            background: #e74c3c;
+        }
+        .risk-dot.yellow {
+            background: #f1c40f;
+        }
+        .risk-dot.green {
+            background: #27ae60;
+        }
+
+        .risk-name {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: var(--primary-dark);
+        }
+
+        .risk-priority {
+            margin-left: auto;
+            font-weight: 700;
             font-size: 0.9rem;
+            color: var(--gray-700);
+            background: var(--gray-200);
+            padding: 2px 12px;
+            border-radius: 40px;
         }
-        
-        @media (max-width: 600px) {
-            .container {
-                padding: 1.5rem;
+
+        .risk-desc {
+            color: var(--gray-700);
+            font-size: 0.95rem;
+            margin-bottom: 14px;
+        }
+
+        .risk-bar-wrap {
+            width: 100%;
+            height: 8px;
+            background: var(--gray-200);
+            border-radius: 40px;
+            overflow: hidden;
+            margin: 8px 0 14px;
+        }
+
+        .risk-bar-fill {
+            height: 100%;
+            border-radius: 40px;
+            width: 0%;
+            transition: width 1.2s ease;
+        }
+
+        .risk-bar-fill.black {
+            background: #1a1a1a;
+        }
+        .risk-bar-fill.red {
+            background: #e74c3c;
+        }
+        .risk-bar-fill.yellow {
+            background: #f1c40f;
+        }
+        .risk-bar-fill.green {
+            background: #27ae60;
+        }
+
+        .risk-examples {
+            list-style: none;
+            padding: 0;
+            margin: 12px 0 0;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+        }
+
+        .risk-examples li {
+            background: var(--gray-100);
+            padding: 4px 14px;
+            border-radius: 40px;
+            font-size: 0.82rem;
+            color: var(--gray-700);
+            border: 1px solid var(--gray-200);
+        }
+
+        /* ===== IMPROVEMENT GRID ===== */
+        .improve-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 20px;
+            margin: 24px 0;
+        }
+
+        .improve-card {
+            background: var(--white);
+            border-radius: var(--radius-sm);
+            padding: 20px;
+            box-shadow: var(--shadow-sm);
+            border: 1px solid var(--gray-200);
+            transition: var(--transition);
+        }
+
+        .improve-card:hover {
+            border-color: var(--primary-blue);
+            box-shadow: var(--shadow-md);
+            transform: translateY(-3px);
+        }
+
+        .improve-card h4 {
+            color: var(--primary-dark);
+            font-size: 1rem;
+            margin-bottom: 6px;
+        }
+
+        .improve-card .benefit {
+            display: inline-block;
+            margin-top: 10px;
+            font-size: 0.8rem;
+            background: var(--primary-bg);
+            color: var(--primary-mid);
+            padding: 2px 14px;
+            border-radius: 40px;
+            font-weight: 500;
+        }
+
+        /* ===== COMPARISON ===== */
+        .compare-wrap {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 32px;
+            margin: 28px 0;
+            background: var(--white);
+            border-radius: var(--radius);
+            padding: 28px;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .compare-col h4 {
+            font-size: 1.1rem;
+            margin-bottom: 16px;
+            color: var(--primary-dark);
+            text-align: center;
+            border-bottom: 2px solid var(--gray-200);
+            padding-bottom: 10px;
+        }
+
+        .compare-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 10px 12px;
+            margin-bottom: 8px;
+            border-radius: var(--radius-sm);
+            background: var(--gray-100);
+            border-left: 4px solid var(--gray-300);
+            font-size: 0.95rem;
+        }
+
+        .compare-item .emoji {
+            font-size: 1.3rem;
+        }
+
+        .compare-col.with .compare-item:nth-child(1) {
+            border-left-color: #1a1a1a;
+            background: #f2f2f2;
+        }
+        .compare-col.with .compare-item:nth-child(2) {
+            border-left-color: #e74c3c;
+            background: #fdedec;
+        }
+        .compare-col.with .compare-item:nth-child(3) {
+            border-left-color: #f1c40f;
+            background: #fef9e7;
+        }
+        .compare-col.with .compare-item:nth-child(4) {
+            border-left-color: #27ae60;
+            background: #eafaf1;
+        }
+
+        .compare-col.without .compare-item {
+            border-left-color: var(--gray-500);
+            background: var(--gray-100);
+        }
+
+        /* ===== REFLECTION ===== */
+        .reflection-box {
+            background: var(--white);
+            border-radius: var(--radius);
+            padding: 28px 32px;
+            box-shadow: var(--shadow-sm);
+            margin: 28px 0;
+            border: 1px solid var(--gray-200);
+        }
+
+        .reflection-box h3 {
+            font-size: 1.3rem;
+            color: var(--primary-dark);
+            margin-bottom: 8px;
+        }
+
+        .reflection-box .question {
+            font-size: 1.2rem;
+            font-weight: 500;
+            color: var(--primary-mid);
+            margin: 16px 0 8px;
+            padding: 16px 20px;
+            background: var(--primary-bg);
+            border-radius: var(--radius-sm);
+            border-left: 4px solid var(--primary-blue);
+        }
+
+        .reflection-box .final-text {
+            margin-top: 16px;
+            color: var(--gray-700);
+            font-size: 1rem;
+            padding: 16px 20px;
+            background: var(--gray-100);
+            border-radius: var(--radius-sm);
+        }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 900px) {
+            .header-inner {
+                flex-wrap: wrap;
+                height: auto;
+                padding: 12px 0;
             }
-            .header h1, .tela-inicial h1 {
-                font-size: 2rem;
-            }
-            .tela-inicial h2 {
-                font-size: 1.2rem;
-            }
-            .texto-pergunta {
-                font-size: 1.1rem;
-            }
-            .opcao {
+
+            .logo {
                 font-size: 1rem;
-                padding: 0.8rem 1rem;
             }
+
+            .menu-toggle {
+                display: flex;
+            }
+
+            .nav {
+                display: none;
+                width: 100%;
+                flex-direction: column;
+                align-items: stretch;
+                gap: 4px;
+                padding: 12px 0 6px;
+                border-top: 1px solid rgba(255, 255, 255, 0.08);
+            }
+
+            .nav.open {
+                display: flex;
+            }
+
+            .nav-btn {
+                padding: 10px 16px;
+                width: 100%;
+                text-align: left;
+                border-radius: var(--radius-sm);
+                font-size: 0.95rem;
+            }
+
+            .nav-btn.active {
+                background: rgba(46, 134, 193, 0.25);
+            }
+
+            .page-title {
+                font-size: 1.8rem;
+            }
+
+            .compare-wrap {
+                grid-template-columns: 1fr;
+                gap: 24px;
+                padding: 20px;
+            }
+
+            .risk-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .card-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .improve-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        @media (max-width: 500px) {
+            .main {
+                padding: 20px 16px 40px;
+            }
+
+            .page-title {
+                font-size: 1.5rem;
+            }
+
+            .risk-header {
+                flex-wrap: wrap;
+            }
+
+            .risk-priority {
+                margin-left: 0;
+            }
+
+            .improve-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .reflection-box {
+                padding: 20px;
+            }
+
+            .highlight-box {
+                padding: 16px;
+                font-size: 1rem;
+            }
+        }
+
+        /* ===== MISC ===== */
+        .text-center {
+            text-align: center;
+        }
+
+        .mt-16 {
+            margin-top: 16px;
+        }
+        .mt-24 {
+            margin-top: 24px;
+        }
+        .mb-8 {
+            margin-bottom: 8px;
+        }
+
+        .badge-urgent {
+            display: inline-block;
+            background: #e74c3c;
+            color: white;
+            font-size: 0.7rem;
+            font-weight: 700;
+            padding: 2px 12px;
+            border-radius: 40px;
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+        }
+
+        .badge-stable {
+            display: inline-block;
+            background: #27ae60;
+            color: white;
+            font-size: 0.7rem;
+            font-weight: 700;
+            padding: 2px 12px;
+            border-radius: 40px;
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+        }
+
+        .footer-note {
+            text-align: center;
+            margin-top: 48px;
+            padding-top: 24px;
+            border-top: 1px solid var(--gray-300);
+            color: var(--gray-500);
+            font-size: 0.85rem;
+        }
+
+        .risk-bar-fill.animated {
+            transition: width 1.4s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+
+        /* Animações de entrada para os cards */
+        .risk-card,
+        .card,
+        .improve-card,
+        .compare-wrap,
+        .reflection-box {
+            opacity: 0;
+            animation: fadeUp 0.6s ease forwards;
+        }
+
+        .risk-card:nth-child(1) {
+            animation-delay: 0.05s;
+        }
+        .risk-card:nth-child(2) {
+            animation-delay: 0.12s;
+        }
+        .risk-card:nth-child(3) {
+            animation-delay: 0.19s;
+        }
+        .risk-card:nth-child(4) {
+            animation-delay: 0.26s;
+        }
+
+        .card:nth-child(1) {
+            animation-delay: 0.05s;
+        }
+        .card:nth-child(2) {
+            animation-delay: 0.12s;
+        }
+        .card:nth-child(3) {
+            animation-delay: 0.19s;
+        }
+
+        .improve-card:nth-child(1) {
+            animation-delay: 0.05s;
+        }
+        .improve-card:nth-child(2) {
+            animation-delay: 0.10s;
+        }
+        .improve-card:nth-child(3) {
+            animation-delay: 0.15s;
+        }
+        .improve-card:nth-child(4) {
+            animation-delay: 0.20s;
+        }
+        .improve-card:nth-child(5) {
+            animation-delay: 0.25s;
+        }
+        .improve-card:nth-child(6) {
+            animation-delay: 0.30s;
+        }
+        .improve-card:nth-child(7) {
+            animation-delay: 0.35s;
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        
-        <!-- TELA INICIAL -->
-        <div id="telaInicial" class="tela-inicial">
-            <h1>🎯 Quiz de Acessibilidade</h1>
-            <h2>Pedro Carlin</h2>
-            <button class="btn-comecar" onclick="comecarQuiz()">Começar 🚀</button>
-            <p class="creditos">Feito por Manoel Eduardo (2-A)</p>
-        </div>
-        
-        <!-- QUIZ -->
-        <div id="quiz" class="quiz-container" style="display:none;">
-            <div class="header">
-                <h1>🎯 Quiz de Acessibilidade</h1>
-                <p>Teste seus conhecimentos sobre acessibilidade em lugares públicos</p>
-            </div>
-            
-            <div class="progresso-container">
-                <div class="progresso-barra" id="barraProgresso"></div>
-            </div>
-            
-            <div id="perguntasContainer"></div>
-        </div>
-        
-        <!-- RESULTADO -->
-        <div id="resultado" class="resultado"></div>
-    </div>
 
-    <script>
-        const perguntas = [
-            {
-                pergunta: "Um hospital público inaugura um novo andar, mas não há intérprete de Libras disponível. Qual tipo de barreira de acessibilidade está sendo imposta?",
-                opcoes: ["Barreira arquitetônica", "Barreira comunicacional", "Barreira urbanística", "Barreira tecnológica"],
-                correta: 1,
-                explicacao: "Barreiras comunicacionais são entraves na troca de mensagens. A falta de intérprete impede a comunicação com pessoas surdas."
-            },
-            {
-                pergunta: "Ao projetar a calçada em frente a uma escola, qual recurso é essencial para garantir a segurança na travessia de alunos com deficiência visual?",
-                opcoes: ["Piso tátil direcional e de alerta", "Placas de sinalização com cores vibrantes", "Rampas exclusivas para cadeirantes", "Faixa de pedestres elevada"],
-                correta: 0,
-                explicacao: "O piso tátil (podotátil) é um recurso de sinalização tátil previsto na NBR 9050 para orientar e alertar pessoas com deficiência visual."
-            },
-            {
-                pergunta: "Em uma prefeitura, os totens de autoatendimento têm apenas tela sensível ao toque. Uma pessoa cega deseja emitir um documento sozinha. Qual medida resolve essa barreira?",
-                opcoes: ["Colocar um funcionário para emitir o documento.", "Instalar um software leitor de tela e teclado adaptado.", "Oferecer um fone de ouvido descartável.", "Abaixar a altura do totem."],
-                correta: 1,
-                explicacao: "Softwares leitores de tela (como NVDA ou DOSVOX) transformam texto em fala, permitindo autonomia no uso digital."
-            },
-            {
-                pergunta: "Uma praça pública tem rampas, mas a lixeira está no meio do rebaixamento da calçada e o banheiro adaptado está trancado. Que princípio da NBR 9050 está sendo desrespeitado?",
-                opcoes: ["Segurança", "Autonomia", "Conforto", "Estética"],
-                correta: 1,
-                explicacao: "Autonomia é um dos três pilares da NBR 9050 e garante o uso independente do espaço."
-            },
-            {
-                pergunta: "Segundo a LBI, qual atitude caracteriza uma 'barreira atitudinal' enraizada no capacitismo?",
-                opcoes: ["Site sem conformidade com WCAG.", "Motorista recusar operar o elevador para cadeirante.", "Rampa com inclinação superior a 8,33%.", "Semáforo sem sinal sonoro."],
-                correta: 1,
-                explicacao: "Barreiras atitudinais são atitudes ou comportamentos preconceituosos que discriminam."
-            },
-            {
-                pergunta: "Em um teatro público, qual recurso permite que uma pessoa cega compreenda cenas de um filme sem diálogos?",
-                opcoes: ["Legenda descritiva (Closed Caption)", "Janela de Libras", "Audiodescrição", "Língua de sinais tátil"],
-                correta: 2,
-                explicacao: "A audiodescrição é a faixa de áudio que descreve elementos visuais importantes para pessoas cegas ou com baixa visão."
-            },
-            {
-                pergunta: "Em uma clínica, uma pessoa com deficiência intelectual tem dificuldade com termos complexos na ficha. Qual a abordagem correta?",
-                opcoes: ["Preencher tudo sem perguntar.", "Usar linguagem simples e pictogramas.", "Pedir que um familiar vá buscá-la.", "Entregar um formulário digital."],
-                correta: 1,
-                explicacao: "A acessibilidade para deficiência intelectual envolve adaptação comunicacional com linguagem clara."
-            },
-            {
-                pergunta: "Qual o objetivo principal de exigir raio de giro de 360° em boxes de banheiros acessíveis?",
-                opcoes: ["Duas cadeiras de rodas usarem juntas.", "Conforto térmico.", "Manobra e uso seguro com autonomia.", "Instalar barras em todas as paredes."],
-                correta: 2,
-                explicacao: "O espaço para giro de 360° assegura que a pessoa possa manobrar a cadeira com autonomia e segurança."
-            },
-            {
-                pergunta: "O elevador do metrô está quebrado há meses. Além da barreira arquitetônica, qual outra barreira grave isso caracteriza?",
-                opcoes: ["Barreira comunicacional.", "Barreira nos transportes.", "Falha de segurança.", "Problema temporário sem implicações."],
-                correta: 1,
-                explicacao: "A LBI define barreiras nos transportes como entraves nos sistemas de mobilidade."
-            },
-            {
-                pergunta: "Para promover autonomia de um aluno cadeirante, qual adaptação é indispensável na entrada e interior de uma escola?",
-                opcoes: ["Portas com maçanetas de alavanca e rampas.", "Bebedouros de jato inclinado.", "Piso tátil e mapas em braille.", "Cartazes com fontes ampliadas."],
-                correta: 0,
-                explicacao: "Rampas e maçanetas de alavanca são itens previstos na NBR 9050 para facilitar o manuseio."
-            }
-        ];
-        
-        let perguntaAtual = 0;
-        let pontuacao = 0;
-        let respondida = false;
-        
-        function comecarQuiz() {
-            document.getElementById('telaInicial').style.display = 'none';
-            document.getElementById('quiz').style.display = 'block';
-            iniciarQuiz();
-        }
-        
-        function iniciarQuiz() {
-            perguntaAtual = 0;
-            pontuacao = 0;
-            respondida = false;
-            document.getElementById('resultado').classList.remove('active');
-            document.getElementById('quiz').style.display = 'block';
-            document.getElementById('telaInicial').style.display = 'none';
-            mostrarPergunta();
-            atualizarProgresso();
-        }
-        
-        function mostrarPergunta() {
-            respondida = false;
-            const questao = perguntas[perguntaAtual];
-            
-            let html = `
-                <div class="numero-pergunta">Pergunta ${perguntaAtual + 1} de ${perguntas.length}</div>
-                <div class="texto-pergunta">${questao.pergunta}</div>
-                <ul class="opcoes">
-            `;
-            
-            questao.opcoes.forEach((opcao, index) => {
-                html += `
-                    <li class="opcao" onclick="selecionarResposta(${index})" tabindex="0">
-                        <strong>${String.fromCharCode(65 + index)}.</strong> ${opcao}
-                    </li>
-                `;
-            });
-            
-            html += `</ul>
-                <div class="feedback" id="feedback"></div>
-                <button class="btn-proximo" id="btnProximo" onclick="proximaPergunta()">
-                    ${perguntaAtual === perguntas.length - 1 ? 'Ver Resultado 🎯' : 'Próxima Pergunta →'}
-                </button>
-            `;
-            
-            document.getElementById('perguntasContainer').innerHTML = html;
-            atualizarProgresso();
-        }
-        
-        function selecionarResposta(index) {
-            if (respondida) return;
-            respondida = true;
-            
-            const questao = perguntas[perguntaAtual];
-            const opcoes = document.querySelectorAll('.opcao');
-            const feedback = document.getElementById('feedback');
-            const btnProximo = document.getElementById('btnProximo');
-            
-            opcoes.forEach(opcao => opcao.classList.add('bloqueada'));
-            
-            if (index === questao.correta) {
-                opcoes[index].classList.add('correta');
-                feedback.className = 'feedback mostrar correto';
-                feedback.innerHTML = `✅ <strong>Correto!</strong><br>${questao.explicacao}`;
-                pontuacao++;
-            } else {
-                opcoes[index].classList.add('incorreta');
-                opcoes[questao.correta].classList.add('correta');
-                feedback.className = 'feedback mostrar errado';
-                feedback.innerHTML = `❌ <strong>Incorreto!</strong><br>${questao.explicacao}`;
-            }
-            
-            btnProximo.classList.add('mostrar');
-            btnProximo.focus();
-        }
-        
-        function proximaPergunta() {
-            perguntaAtual++;
-            if (perguntaAtual < perguntas.length) {
-                mostrarPergunta();
-            } else {
-                mostrarResultado();
-            }
-        }
-        
-        function mostrarResultado() {
-            document.getElementById('quiz').style.display = 'none';
-            const resultado = document.getElementById('resultado');
-            resultado.classList.add('active');
-            
-            const porcentagem = Math.round((pontuacao / perguntas.length) * 100);
-            
-            let mensagem = '';
-            if (porcentagem >= 90) mensagem = '🏆 Incrível! Você é um especialista em acessibilidade!';
-            else if (porcentagem >= 70) mensagem = '👏 Muito bom! Seu conhecimento é sólido!';
-            else if (porcentagem >= 50) mensagem = '📚 Você está no caminho certo!';
-            else mensagem = '💡 Vale a pena aprender mais sobre este tema!';
-            
-            resultado.innerHTML = `
-                <h2>Quiz Concluído!</h2>
-                <div class="pontuacao">${porcentagem}%</div>
-                <p class="mensagem-resultado">${mensagem}</p>
-                <p>Você acertou <strong>${pontuacao}</strong> de <strong>${perguntas.length}</strong> perguntas.</p>
-                <button class="btn-reiniciar" onclick="iniciarQuiz()">🔄 Tentar Novamente</button>
-            `;
-            
-            document.getElementById('barraProgresso').style.width = '100%';
-        }
-        
-        function atualizarProgresso() {
-            const progresso = ((perguntaAtual) / perguntas.length) * 100;
-            document.getElementById('barraProgresso').style.width = progresso + '%';
-        }
-    </script>
-</body>
-</html>
+    <!-- ===== HEADER ===== -->
+    <header class="header">
+        <div class="header-inner">
+            <div class="logo">
+                <span class="logo-icon">🏥</span>
+                SUS<span>+</span>Organizado
+            </div>
+
+            <button class="menu-toggle" id="menuToggle" aria-label="Abrir menu">
+               
