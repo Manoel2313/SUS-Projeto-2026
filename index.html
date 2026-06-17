@@ -72,7 +72,6 @@
             top: 0;
             z-index: 1000;
             box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25);
-            backdrop-filter: blur(2px);
         }
 
         .header-inner {
@@ -130,7 +129,6 @@
             transition: var(--transition);
             font-family: var(--font);
             white-space: nowrap;
-            position: relative;
         }
 
         .nav-btn:hover {
@@ -141,14 +139,9 @@
         .nav-btn.active {
             color: var(--white);
             background: rgba(46, 134, 193, 0.35);
-            box-shadow: 0 0 0 1px rgba(46, 134, 193, 0.3);
         }
 
-        .nav-btn .badge {
-            display: none;
-        }
-
-        /* ===== MOBILE MENU TOGGLE ===== */
+        /* ===== MOBILE MENU ===== */
         .menu-toggle {
             display: none;
             flex-direction: column;
@@ -657,7 +650,6 @@
         .text-center {
             text-align: center;
         }
-
         .mt-16 {
             margin-top: 16px;
         }
@@ -666,30 +658,6 @@
         }
         .mb-8 {
             margin-bottom: 8px;
-        }
-
-        .badge-urgent {
-            display: inline-block;
-            background: #e74c3c;
-            color: white;
-            font-size: 0.7rem;
-            font-weight: 700;
-            padding: 2px 12px;
-            border-radius: 40px;
-            text-transform: uppercase;
-            letter-spacing: 0.3px;
-        }
-
-        .badge-stable {
-            display: inline-block;
-            background: #27ae60;
-            color: white;
-            font-size: 0.7rem;
-            font-weight: 700;
-            padding: 2px 12px;
-            border-radius: 40px;
-            text-transform: uppercase;
-            letter-spacing: 0.3px;
         }
 
         .footer-note {
@@ -701,11 +669,7 @@
             font-size: 0.85rem;
         }
 
-        .risk-bar-fill.animated {
-            transition: width 1.4s cubic-bezier(0.22, 1, 0.36, 1);
-        }
-
-        /* Animações de entrada para os cards */
+        /* Animações de entrada */
         .risk-card,
         .card,
         .improve-card,
@@ -772,4 +736,450 @@
             </div>
 
             <button class="menu-toggle" id="menuToggle" aria-label="Abrir menu">
-               
+                <span></span><span></span><span></span>
+            </button>
+
+            <nav class="nav" id="navMenu">
+                <button class="nav-btn active" data-page="page1">1. Projeto</button>
+                <button class="nav-btn" data-page="page2">2. Classes</button>
+                <button class="nav-btn" data-page="page3">3. Considerações</button>
+                <button class="nav-btn" data-page="page4">4. Melhorias</button>
+                <button class="nav-btn" data-page="page5">5. Extra</button>
+            </nav>
+        </div>
+    </header>
+
+    <!-- ===== MAIN ===== -->
+    <main class="main">
+
+        <!-- ===================== PAGE 1 ===================== -->
+        <section class="page active" id="page1">
+            <h1 class="page-title">🧬 O que é o projeto</h1>
+            <p class="page-subtitle">Uma proposta de organização das filas do SUS por classificação de risco</p>
+
+            <p style="font-size:1.05rem; color:var(--gray-700); max-width:800px;">
+                O SUS atende milhões de brasileiros diariamente. Um dos desafios mais conhecidos do sistema é o
+                <strong>tempo de espera</strong> para consultas, exames, procedimentos e atendimentos hospitalares.
+            </p>
+
+            <div class="card-grid">
+                <div class="card">
+                    <span class="card-icon">💡</span>
+                    <h3>O que muitos pensam</h3>
+                    <p>Muitas pessoas acreditam que a solução seria apenas investir mais dinheiro, contratar mais
+                        funcionários ou criar mais atendimentos online. Essas medidas ajudam, mas não resolvem
+                        completamente o problema.</p>
+                </div>
+                <div class="card">
+                    <span class="card-icon">⚙️</span>
+                    <h3>Fatores complexos</h3>
+                    <p>As filas envolvem alta demanda, limitação estrutural, gestão dos atendimentos e
+                        desigualdades regionais. É um problema multifatorial que exige soluções inteligentes.</p>
+                </div>
+                <div class="card">
+                    <span class="card-icon">🎯</span>
+                    <h3>Nossa proposta</h3>
+                    <p>Apresentamos um sistema de <strong>classificação de risco por cores</strong> para organizar
+                        melhor os pacientes de acordo com a gravidade dos casos, tornando o atendimento mais justo e
+                        eficiente.</p>
+                </div>
+            </div>
+
+            <div class="highlight-box">
+                <strong>“O objetivo deste projeto não é eliminar as filas do SUS, mas tornar o atendimento mais
+                    organizado, eficiente e justo.”</strong>
+            </div>
+
+            <h2 class="section-title">📌 Resumo do objetivo</h2>
+            <p style="color:var(--gray-700); max-width:800px;">
+                O projeto propõe uma ferramenta de gestão que auxilia profissionais de saúde a priorizar quem precisa de
+                atendimento imediato, sem desumanizar o cuidado. A classificação por cores é um protocolo já utilizado em
+                diversos serviços de emergência ao redor do mundo, e aqui adaptamos para o contexto do SUS com foco na
+                transparência e na equidade.
+            </p>
+
+            <div style="margin-top:32px; background:var(--white); border-radius:var(--radius); padding:24px; box-shadow:var(--shadow-sm); border:1px solid var(--gray-200);">
+                <p style="font-weight:600; color:var(--primary-dark);">🔍 Em resumo:</p>
+                <ul style="list-style:none; padding:0; margin-top:8px; display:flex; flex-wrap:wrap; gap:12px;">
+                    <li style="background:var(--primary-bg); padding:6px 18px; border-radius:40px; font-size:0.95rem;">✅ Organização</li>
+                    <li style="background:var(--primary-bg); padding:6px 18px; border-radius:40px; font-size:0.95rem;">✅ Priorização justa</li>
+                    <li style="background:var(--primary-bg); padding:6px 18px; border-radius:40px; font-size:0.95rem;">✅ Redução de desperdício</li>
+                    <li style="background:var(--primary-bg); padding:6px 18px; border-radius:40px; font-size:0.95rem;">✅ Melhor experiência</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- ===================== PAGE 2 ===================== -->
+        <section class="page" id="page2">
+            <h1 class="page-title">🎨 Classes de risco e exemplos</h1>
+            <p class="page-subtitle">Entenda cada cor e sua prioridade no atendimento</p>
+
+            <div class="risk-grid">
+
+                <!-- PRETA -->
+                <div class="risk-card black">
+                    <div class="risk-header">
+                        <span class="risk-dot black"></span>
+                        <span class="risk-name">Prioridade Máxima</span>
+                        <span class="risk-priority">⚫ 100%</span>
+                    </div>
+                    <p class="risk-desc">Casos com risco imediato de morte ou situações extremamente críticas.</p>
+                    <div class="risk-bar-wrap">
+                        <div class="risk-bar-fill black" style="width:100%;"></div>
+                    </div>
+                    <ul class="risk-examples">
+                        <li>Parada cardíaca</li>
+                        <li>Hemorragia intensa</li>
+                        <li>Trauma craniano grave</li>
+                        <li>Choque severo</li>
+                        <li>Falta extrema de ar</li>
+                    </ul>
+                </div>
+
+                <!-- VERMELHA -->
+                <div class="risk-card red">
+                    <div class="risk-header">
+                        <span class="risk-dot red"></span>
+                        <span class="risk-name">Alta Prioridade</span>
+                        <span class="risk-priority">🔴 80%</span>
+                    </div>
+                    <p class="risk-desc">Casos graves que precisam de atendimento rápido para evitar agravamento.</p>
+                    <div class="risk-bar-wrap">
+                        <div class="risk-bar-fill red" style="width:80%;"></div>
+                    </div>
+                    <ul class="risk-examples">
+                        <li>Suspeita de infarto</li>
+                        <li>Fratura exposta</li>
+                        <li>Crise grave de asma</li>
+                        <li>Sangramento forte</li>
+                        <li>Dor intensa no peito</li>
+                    </ul>
+                </div>
+
+                <!-- AMARELA -->
+                <div class="risk-card yellow">
+                    <div class="risk-header">
+                        <span class="risk-dot yellow"></span>
+                        <span class="risk-name">Situação de Atenção</span>
+                        <span class="risk-priority">🟡 50%</span>
+                    </div>
+                    <p class="risk-desc">Casos que precisam de avaliação médica, mas não apresentam risco imediato.</p>
+                    <div class="risk-bar-wrap">
+                        <div class="risk-bar-fill yellow" style="width:50%;"></div>
+                    </div>
+                    <ul class="risk-examples">
+                        <li>Febre alta persistente</li>
+                        <li>Dor abdominal moderada</li>
+                        <li>Infecção moderada</li>
+                        <li>Pressão alta</li>
+                        <li>Lesões moderadas</li>
+                    </ul>
+                </div>
+
+                <!-- VERDE -->
+                <div class="risk-card green">
+                    <div class="risk-header">
+                        <span class="risk-dot green"></span>
+                        <span class="risk-name">Condição Estável</span>
+                        <span class="risk-priority">🟢 20%</span>
+                    </div>
+                    <p class="risk-desc">Casos leves que podem aguardar atendimento.</p>
+                    <div class="risk-bar-wrap">
+                        <div class="risk-bar-fill green" style="width:20%;"></div>
+                    </div>
+                    <ul class="risk-examples">
+                        <li>Resfriado comum</li>
+                        <li>Dor muscular leve</li>
+                        <li>Pequenos cortes</li>
+                        <li>Dor de cabeça leve</li>
+                        <li>Alergia leve</li>
+                    </ul>
+                </div>
+
+            </div>
+
+            <p style="color:var(--gray-700); margin-top:12px; font-size:0.95rem;">
+                ⚠️ A classificação é dinâmica e deve ser reavaliada constantemente por profissionais treinados.
+            </p>
+        </section>
+
+        <!-- ===================== PAGE 3 ===================== -->
+        <section class="page" id="page3">
+            <h1 class="page-title">🧐 O que deve ser levado em consideração</h1>
+            <p class="page-subtitle">Limitações, riscos e a verdade sobre a proposta</p>
+
+            <p style="color:var(--gray-700); max-width:800px;">
+                A classificação por cores <strong>ajuda na organização</strong>, mas não resolve os problemas
+                estruturais do SUS. O sistema não cria médicos, não cria hospitais e não reduz automaticamente a
+                quantidade de pacientes.
+            </p>
+
+            <h2 class="section-title">⚠️ Possíveis riscos e falhas</h2>
+
+            <div class="card-grid">
+                <div class="card">
+                    <span class="card-icon">🔀</span>
+                    <h3>Erros de classificação</h3>
+                    <p>A avaliação humana pode falhar. Um paciente grave pode ser subestimado ou um caso leve pode ser
+                        superestimado, comprometendo a eficácia do sistema.</p>
+                </div>
+                <div class="card">
+                    <span class="card-icon">🏥</span>
+                    <h3>Diferenças entre hospitais</h3>
+                    <p>Cada unidade pode interpretar as cores de forma diferente, gerando inconsistências e
+                        desigualdades regionais.</p>
+                </div>
+                <div class="card">
+                    <span class="card-icon">📚</span>
+                    <h3>Falta de treinamento</h3>
+                    <p>Sem capacitação adequada, a classificação perde eficácia. Profissionais precisam de formação
+                        contínua e protocolos claros.</p>
+                </div>
+                <div class="card">
+                    <span class="card-icon">🎭</span>
+                    <h3>Tentativas de burlar</h3>
+                    <p>Alguns pacientes podem tentar simular sintomas mais graves para furar a fila, o que exige
+                        mecanismos de verificação.</p>
+                </div>
+                <div class="card">
+                    <span class="card-icon">⏰</span>
+                    <h3>Sobrecarga em horários de pico</h3>
+                    <p>Em momentos de alta demanda, mesmo com classificação, o sistema pode ficar sobrecarregado,
+                        aumentando o tempo de espera.</p>
+                </div>
+            </div>
+
+            <div class="highlight-box" style="border-left-color: #e67e22;">
+                <strong>Conclusão:</strong> A proposta é uma <strong>ferramenta de gestão</strong> e não uma solução
+                definitiva. Ela deve ser combinada com investimentos estruturais, valorização profissional e políticas
+                públicas consistentes.
+            </div>
+        </section>
+
+        <!-- ===================== PAGE 4 ===================== -->
+        <section class="page" id="page4">
+            <h1 class="page-title">🚀 O que poderia ser melhorado</h1>
+            <p class="page-subtitle">Ideias futuras para potencializar o sistema</p>
+
+            <div class="improve-grid">
+                <div class="improve-card">
+                    <h4>🌐 Integração digital entre hospitais</h4>
+                    <p>Compartilhamento de dados em tempo real para evitar duplicidade e melhorar o fluxo.</p>
+                    <span class="benefit">✅ Redução de filas regionais</span>
+                </div>
+                <div class="improve-card">
+                    <h4>📋 Compartilhamento de histórico médico</h4>
+                    <p>Prontuários eletrônicos acessíveis entre unidades, com consentimento do paciente.</p>
+                    <span class="benefit">✅ Atendimento mais preciso</span>
+                </div>
+                <div class="improve-card">
+                    <h4>🗺️ Fila regional unificada</h4>
+                    <p>Uma única fila por região, com distribuição inteligente de pacientes conforme a gravidade.</p>
+                    <span class="benefit">✅ Otimização de recursos</span>
+                </div>
+                <div class="improve-card">
+                    <h4>📲 Avisos automáticos de consultas</h4>
+                    <p>Notificações por SMS ou app para lembrar pacientes e reduzir faltas.</p>
+                    <span class="benefit">✅ Menos absenteísmo</span>
+                </div>
+                <div class="improve-card">
+                    <h4>⏱️ Tempo estimado de espera</h4>
+                    <p>Exibir ao paciente uma previsão atualizada com base na classificação e na fila.</p>
+                    <span class="benefit">✅ Mais transparência</span>
+                </div>
+                <div class="improve-card">
+                    <h4>📱 Aplicativo para acompanhamento</h4>
+                    <p>Permite que o paciente veja sua posição na fila, receba orientações e atualize dados.</p>
+                    <span class="benefit">✅ Empoderamento do paciente</span>
+                </div>
+                <div class="improve-card">
+                    <h4>📊 Painel de monitoramento em tempo real</h4>
+                    <p>Gestores acompanham indicadores de tempo de espera, gravidade e eficiência.</p>
+                    <span class="benefit">✅ Gestão baseada em dados</span>
+                </div>
+            </div>
+
+            <p style="color:var(--gray-700); margin-top:16px; font-style:italic;">
+                Essas melhorias dependem de investimento em tecnologia, capacitação e vontade política, mas mostram que o
+                sistema pode evoluir.
+            </p>
+        </section>
+
+        <!-- ===================== PAGE 5 ===================== -->
+        <section class="page" id="page5">
+            <h1 class="page-title">🧩 Extra — Comparação e reflexão</h1>
+            <p class="page-subtitle">Visualize a diferença e pense sobre a justiça no atendimento</p>
+
+            <!-- COMPARAÇÃO -->
+            <div class="compare-wrap">
+                <div class="compare-col without">
+                    <h4>❌ SEM CLASSIFICAÇÃO</h4>
+                    <div class="compare-item"><span class="emoji">🟥</span> Paciente grave</div>
+                    <div class="compare-item"><span class="emoji">🟩</span> Paciente leve</div>
+                    <div class="compare-item"><span class="emoji">🟥</span> Paciente grave</div>
+                    <div class="compare-item"><span class="emoji">🟩</span> Paciente leve</div>
+                    <p style="font-size:0.85rem; color:var(--gray-500); margin-top:12px;">Ordem de chegada — nem sempre justa</p>
+                </div>
+                <div class="compare-col with">
+                    <h4>✅ COM CLASSIFICAÇÃO</h4>
+                    <div class="compare-item"><span class="emoji">⚫</span> Paciente crítico</div>
+                    <div class="compare-item"><span class="emoji">🔴</span> Paciente grave</div>
+                    <div class="compare-item"><span class="emoji">🟡</span> Paciente moderado</div>
+                    <div class="compare-item"><span class="emoji">🟢</span> Paciente leve</div>
+                    <p style="font-size:0.85rem; color:var(--gray-500); margin-top:12px;">Prioridade pela gravidade — mais justa</p>
+                </div>
+            </div>
+
+            <!-- REFLEXÃO -->
+            <div class="reflection-box">
+                <h3>🤔 Pergunta para reflexão</h3>
+                <div class="question">
+                    “É mais justo atender por ordem de chegada ou pela gravidade do caso?”
+                </div>
+                <p style="color:var(--gray-700);">
+                    Essa pergunta não tem resposta simples. A ordem de chegada é democrática, mas pode deixar
+                    pacientes graves esperando. A classificação por risco é mais justa clinicamente, mas exige
+                    treinamento e confiança no sistema. O ideal é um equilíbrio entre ambos, com transparência e
+                    humanização.
+                </p>
+            </div>
+
+            <!-- CONCLUSÃO FINAL -->
+            <div class="reflection-box" style="border-left: 5px solid var(--primary-blue);">
+                <h3>📌 Conclusão Final</h3>
+                <div class="final-text">
+                    <p style="font-weight:500; color:var(--primary-dark);">
+                        A proposta não pretende substituir profissionais da saúde nem resolver completamente as filas,
+                        mas sim <strong>contribuir para uma organização mais eficiente dos atendimentos</strong>.
+                    </p>
+                    <p style="margin-top:12px;">
+                        O SUS é um patrimônio nacional e merece soluções inovadoras, realistas e centradas no paciente.
+                        Este projeto é um passo nessa direção, com honestidade sobre suas limitações e otimismo sobre
+                        seu potencial.
+                    </p>
+                </div>
+            </div>
+
+            <div style="text-align:center; margin-top:24px; padding:16px; background:var(--gray-100); border-radius:var(--radius-sm);">
+                <span style="font-size:0.9rem; color:var(--gray-700);">
+                    🏥 Projeto educacional — SUS + Organizado
+                </span>
+            </div>
+        </section>
+
+        <div class="footer-note">
+            Desenvolvido com 💙 para apresentação escolar · Classificação de Risco no SUS
+        </div>
+
+    </main>
+
+    <!-- ===== JAVASCRIPT ===== -->
+    <script>
+        (function() {
+            'use strict';
+
+            // ----- ELEMENTOS -----
+            var navBtns = document.querySelectorAll('.nav-btn');
+            var pages = document.querySelectorAll('.page');
+            var menuToggle = document.getElementById('menuToggle');
+            var navMenu = document.getElementById('navMenu');
+
+            // ----- NAVEGAÇÃO -----
+            function navigateTo(pageId) {
+                // Esconde todas as páginas
+                pages.forEach(function(p) {
+                    p.classList.remove('active');
+                });
+
+                // Mostra a página alvo
+                var target = document.getElementById(pageId);
+                if (target) {
+                    target.classList.add('active');
+                }
+
+                // Atualiza botões
+                navBtns.forEach(function(btn) {
+                    btn.classList.remove('active');
+                    if (btn.dataset.page === pageId) {
+                        btn.classList.add('active');
+                    }
+                });
+
+                // Fecha menu mobile
+                if (navMenu) {
+                    navMenu.classList.remove('open');
+                }
+                if (menuToggle) {
+                    menuToggle.classList.remove('open');
+                }
+
+                // Rola para o topo
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            }
+
+            // ----- EVENTOS DOS BOTÕES -----
+            navBtns.forEach(function(btn) {
+                btn.addEventListener('click', function(e) {
+                    var pageId = this.dataset.page;
+                    if (pageId) {
+                        navigateTo(pageId);
+                    }
+                });
+            });
+
+            // ----- MENU MOBILE -----
+            if (menuToggle) {
+                menuToggle.addEventListener('click', function() {
+                    this.classList.toggle('open');
+                    if (navMenu) {
+                        navMenu.classList.toggle('open');
+                    }
+                });
+            }
+
+            // Fecha menu ao clicar em um link (mobile)
+            navBtns.forEach(function(btn) {
+                btn.addEventListener('click', function() {
+                    if (navMenu) {
+                        navMenu.classList.remove('open');
+                    }
+                    if (menuToggle) {
+                        menuToggle.classList.remove('open');
+                    }
+                });
+            });
+
+            // ----- INICIALIZAÇÃO: PÁGINA 1 ATIVA -----
+            // Garante que a página 1 esteja ativa
+            var page1 = document.getElementById('page1');
+            if (page1) {
+                page1.classList.add('active');
+            }
+
+            // Atualiza o botão ativo
+            navBtns.forEach(function(btn) {
+                btn.classList.remove('active');
+                if (btn.dataset.page === 'page1') {
+                    btn.classList.add('active');
+                }
+            });
+
+            // Verifica se há uma página ativa, se não, ativa a página 1
+            var hasActive = false;
+            pages.forEach(function(p) {
+                if (p.classList.contains('active')) {
+                    hasActive = true;
+                }
+            });
+            if (!hasActive && page1) {
+                page1.classList.add('active');
+            }
+
+            console.log('Site carregado com sucesso! 🏥');
+            console.log('Páginas disponíveis:', pages.length);
+
+        })();
+    </script>
+
+</body>
+</html>
