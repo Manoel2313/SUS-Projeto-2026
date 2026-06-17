@@ -15,23 +15,18 @@
         }
 
         :root {
-            --primary-dark: #0a2e4a;
-            --primary-mid: #1a5276;
-            --primary-blue: #2e86c1;
-            --primary-light: #85c1e9;
-            --primary-bg: #eaf2f8;
-            --white: #ffffff;
-            --gray-100: #f8f9fa;
-            --gray-200: #e9ecef;
-            --gray-300: #dee2e6;
-            --gray-500: #adb5bd;
-            --gray-700: #495057;
-            --gray-900: #212529;
-            --shadow-sm: 0 2px 8px rgba(10, 46, 74, 0.08);
-            --shadow-md: 0 8px 24px rgba(10, 46, 74, 0.12);
-            --shadow-lg: 0 16px 48px rgba(10, 46, 74, 0.18);
-            --radius: 16px;
-            --radius-sm: 10px;
+            --bg-primary: #0a0a0a;
+            --bg-card: #111111;
+            --bg-card-hover: #1a1a1a;
+            --text-primary: #e0e0e0;
+            --text-secondary: #888888;
+            --neon-green: #00ff41;
+            --neon-green-dark: #00cc33;
+            --neon-green-glow: rgba(0, 255, 65, 0.3);
+            --neon-green-glow-strong: rgba(0, 255, 65, 0.6);
+            --border-color: #1a1a1a;
+            --shadow-neon: 0 0 30px rgba(0, 255, 65, 0.1);
+            --radius: 12px;
             --transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             --font: 'Segoe UI', system-ui, -apple-system, sans-serif;
         }
@@ -42,36 +37,44 @@
 
         body {
             font-family: var(--font);
-            background: var(--primary-bg);
-            color: var(--gray-900);
+            background: var(--bg-primary);
+            color: var(--text-primary);
             line-height: 1.6;
             min-height: 100vh;
             display: flex;
             flex-direction: column;
+            background-image: 
+                radial-gradient(circle at 20% 50%, rgba(0, 255, 65, 0.03) 0%, transparent 50%),
+                radial-gradient(circle at 80% 50%, rgba(0, 255, 65, 0.03) 0%, transparent 50%);
         }
 
         /* ===== SCROLLBAR ===== */
         ::-webkit-scrollbar {
-            width: 6px;
-            height: 6px;
+            width: 8px;
+            height: 8px;
         }
         ::-webkit-scrollbar-track {
-            background: var(--gray-200);
+            background: var(--bg-primary);
         }
         ::-webkit-scrollbar-thumb {
-            background: var(--primary-blue);
-            border-radius: 8px;
+            background: var(--neon-green);
+            border-radius: 4px;
+            box-shadow: 0 0 20px var(--neon-green-glow);
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--neon-green-dark);
         }
 
         /* ===== HEADER ===== */
         .header {
-            background: var(--primary-dark);
-            color: var(--white);
+            background: rgba(10, 10, 10, 0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--neon-green);
+            box-shadow: 0 0 40px var(--neon-green-glow);
             padding: 0 24px;
             position: sticky;
             top: 0;
             z-index: 1000;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25);
         }
 
         .header-inner {
@@ -80,48 +83,57 @@
             display: flex;
             align-items: center;
             justify-content: space-between;
-            height: 70px;
+            height: 75px;
         }
 
         .logo {
             display: flex;
             align-items: center;
-            gap: 12px;
+            gap: 14px;
             font-weight: 700;
-            font-size: 1.2rem;
+            font-size: 1.3rem;
             letter-spacing: -0.3px;
             flex-shrink: 0;
+            color: var(--text-primary);
         }
 
         .logo-icon {
             display: inline-flex;
             align-items: center;
             justify-content: center;
-            width: 40px;
-            height: 40px;
-            background: var(--primary-blue);
-            border-radius: 12px;
-            font-size: 1.4rem;
+            width: 44px;
+            height: 44px;
+            background: var(--neon-green);
+            color: var(--bg-primary);
+            border-radius: 10px;
+            font-size: 1.5rem;
+            box-shadow: 0 0 30px var(--neon-green-glow);
+            transition: var(--transition);
+        }
+
+        .logo-icon:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 50px var(--neon-green-glow-strong);
         }
 
         .logo span {
-            color: var(--primary-light);
-            font-weight: 300;
+            color: var(--neon-green);
+            text-shadow: 0 0 20px var(--neon-green-glow);
         }
 
         /* ===== NAV ===== */
         .nav {
             display: flex;
-            gap: 4px;
+            gap: 6px;
             flex-wrap: wrap;
             justify-content: flex-end;
         }
 
         .nav-btn {
             background: transparent;
-            border: none;
-            color: rgba(255, 255, 255, 0.7);
-            padding: 8px 16px;
+            border: 1px solid transparent;
+            color: var(--text-secondary);
+            padding: 8px 18px;
             border-radius: 40px;
             font-size: 0.85rem;
             font-weight: 500;
@@ -129,16 +141,26 @@
             transition: var(--transition);
             font-family: var(--font);
             white-space: nowrap;
+            position: relative;
         }
 
         .nav-btn:hover {
-            color: var(--white);
-            background: rgba(255, 255, 255, 0.08);
+            color: var(--text-primary);
+            border-color: var(--neon-green);
+            box-shadow: 0 0 20px var(--neon-green-glow);
         }
 
         .nav-btn.active {
-            color: var(--white);
-            background: rgba(46, 134, 193, 0.35);
+            color: var(--bg-primary);
+            background: var(--neon-green);
+            border-color: var(--neon-green);
+            box-shadow: 0 0 30px var(--neon-green-glow-strong);
+            font-weight: 600;
+        }
+
+        .nav-btn.active:hover {
+            box-shadow: 0 0 50px var(--neon-green-glow-strong);
+            transform: scale(1.02);
         }
 
         /* ===== MOBILE MENU ===== */
@@ -153,20 +175,22 @@
         }
         .menu-toggle span {
             display: block;
-            width: 26px;
+            width: 28px;
             height: 2.5px;
-            background: var(--white);
+            background: var(--text-primary);
             border-radius: 4px;
             transition: var(--transition);
         }
         .menu-toggle.open span:nth-child(1) {
             transform: rotate(45deg) translate(5px, 5px);
+            background: var(--neon-green);
         }
         .menu-toggle.open span:nth-child(2) {
             opacity: 0;
         }
         .menu-toggle.open span:nth-child(3) {
             transform: rotate(-45deg) translate(5px, -5px);
+            background: var(--neon-green);
         }
 
         /* ===== MAIN ===== */
@@ -174,24 +198,24 @@
             flex: 1;
             max-width: 1280px;
             margin: 0 auto;
-            padding: 32px 24px 60px;
+            padding: 40px 24px 60px;
             width: 100%;
         }
 
         /* ===== PAGES ===== */
         .page {
             display: none;
-            animation: fadeUp 0.5s ease forwards;
+            animation: fadeInUp 0.6s ease forwards;
         }
 
         .page.active {
             display: block;
         }
 
-        @keyframes fadeUp {
+        @keyframes fadeInUp {
             0% {
                 opacity: 0;
-                transform: translateY(28px);
+                transform: translateY(30px);
             }
             100% {
                 opacity: 1;
@@ -201,45 +225,83 @@
 
         /* ===== TYPOGRAPHY ===== */
         .page-title {
-            font-size: 2.2rem;
+            font-size: 2.5rem;
             font-weight: 700;
-            color: var(--primary-dark);
+            color: var(--text-primary);
             margin-bottom: 8px;
             letter-spacing: -0.5px;
+            text-shadow: 0 0 40px var(--neon-green-glow);
+        }
+
+        .page-title::after {
+            content: '';
+            display: block;
+            width: 60px;
+            height: 3px;
+            background: var(--neon-green);
+            margin-top: 8px;
+            box-shadow: 0 0 30px var(--neon-green-glow);
         }
 
         .page-subtitle {
-            font-size: 1.1rem;
-            color: var(--gray-700);
-            margin-bottom: 32px;
-            font-weight: 400;
+            font-size: 1.15rem;
+            color: var(--text-secondary);
+            margin-bottom: 35px;
+            font-weight: 300;
         }
 
         .section-title {
-            font-size: 1.6rem;
+            font-size: 1.8rem;
             font-weight: 600;
-            color: var(--primary-dark);
-            margin: 40px 0 16px;
+            color: var(--text-primary);
+            margin: 45px 0 20px;
+            text-shadow: 0 0 20px var(--neon-green-glow);
+        }
+
+        .section-title::after {
+            content: '';
+            display: block;
+            width: 40px;
+            height: 2px;
+            background: var(--neon-green);
+            margin-top: 6px;
+            box-shadow: 0 0 20px var(--neon-green-glow);
         }
 
         .section-title:first-of-type {
             margin-top: 0;
         }
 
+        /* ===== HIGHLIGHT BOX ===== */
         .highlight-box {
-            background: var(--white);
-            border-left: 5px solid var(--primary-blue);
-            padding: 20px 24px;
-            border-radius: var(--radius-sm);
-            box-shadow: var(--shadow-sm);
-            margin: 24px 0;
+            background: var(--bg-card);
+            border-left: 4px solid var(--neon-green);
+            padding: 24px 28px;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow-neon);
+            margin: 28px 0;
             font-weight: 500;
             font-size: 1.1rem;
-            color: var(--primary-dark);
+            color: var(--text-primary);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .highlight-box::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(90deg, var(--neon-green-glow), transparent);
+            opacity: 0.05;
+            pointer-events: none;
         }
 
         .highlight-box strong {
-            color: var(--primary-blue);
+            color: var(--neon-green);
+            text-shadow: 0 0 20px var(--neon-green-glow);
         }
 
         /* ===== CARDS ===== */
@@ -247,38 +309,57 @@
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
             gap: 24px;
-            margin: 24px 0;
+            margin: 28px 0;
         }
 
         .card {
-            background: var(--white);
+            background: var(--bg-card);
             border-radius: var(--radius);
-            padding: 24px;
-            box-shadow: var(--shadow-sm);
+            padding: 28px;
+            border: 1px solid var(--border-color);
             transition: var(--transition);
-            border: 1px solid var(--gray-200);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card::before {
+            content: '';
+            position: absolute;
+            top: -2px;
+            left: -2px;
+            right: -2px;
+            bottom: -2px;
+            background: linear-gradient(45deg, var(--neon-green), transparent, var(--neon-green));
+            opacity: 0;
+            transition: var(--transition);
+            border-radius: var(--radius);
+            z-index: -1;
         }
 
         .card:hover {
-            transform: translateY(-4px);
-            box-shadow: var(--shadow-md);
-            border-color: var(--primary-light);
+            transform: translateY(-6px);
+            border-color: var(--neon-green);
+            box-shadow: 0 0 40px var(--neon-green-glow);
+        }
+
+        .card:hover::before {
+            opacity: 0.1;
         }
 
         .card-icon {
-            font-size: 2rem;
-            margin-bottom: 12px;
+            font-size: 2.2rem;
+            margin-bottom: 14px;
             display: block;
         }
 
         .card h3 {
-            font-size: 1.1rem;
-            color: var(--primary-dark);
-            margin-bottom: 8px;
+            font-size: 1.15rem;
+            color: var(--text-primary);
+            margin-bottom: 10px;
         }
 
         .card p {
-            color: var(--gray-700);
+            color: var(--text-secondary);
             font-size: 0.95rem;
         }
 
@@ -287,172 +368,245 @@
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
             gap: 28px;
-            margin: 32px 0;
+            margin: 35px 0;
         }
 
         .risk-card {
-            background: var(--white);
+            background: var(--bg-card);
             border-radius: var(--radius);
-            padding: 24px;
-            box-shadow: var(--shadow-sm);
-            border-top: 6px solid var(--gray-500);
+            padding: 28px;
+            border: 1px solid var(--border-color);
+            border-top: 4px solid var(--text-secondary);
             transition: var(--transition);
             display: flex;
             flex-direction: column;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .risk-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: radial-gradient(circle at 50% 0%, var(--neon-green-glow), transparent 70%);
+            opacity: 0;
+            transition: var(--transition);
         }
 
         .risk-card:hover {
             transform: translateY(-6px);
-            box-shadow: var(--shadow-md);
+            border-color: var(--neon-green);
+            box-shadow: 0 0 40px var(--neon-green-glow);
+        }
+
+        .risk-card:hover::before {
+            opacity: 0.05;
         }
 
         .risk-card.black {
             border-top-color: #1a1a1a;
         }
         .risk-card.red {
-            border-top-color: #e74c3c;
+            border-top-color: #ff1744;
         }
         .risk-card.yellow {
-            border-top-color: #f1c40f;
+            border-top-color: #ffea00;
         }
         .risk-card.green {
-            border-top-color: #27ae60;
+            border-top-color: var(--neon-green);
         }
 
         .risk-header {
             display: flex;
             align-items: center;
             gap: 14px;
-            margin-bottom: 12px;
+            margin-bottom: 14px;
+            position: relative;
+            z-index: 1;
         }
 
         .risk-dot {
-            width: 20px;
-            height: 20px;
+            width: 22px;
+            height: 22px;
             border-radius: 50%;
             flex-shrink: 0;
-            border: 2px solid rgba(0, 0, 0, 0.08);
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
         }
         .risk-dot.black {
             background: #1a1a1a;
+            border-color: #333;
         }
         .risk-dot.red {
-            background: #e74c3c;
+            background: #ff1744;
+            box-shadow: 0 0 20px rgba(255, 23, 68, 0.3);
         }
         .risk-dot.yellow {
-            background: #f1c40f;
+            background: #ffea00;
+            box-shadow: 0 0 20px rgba(255, 234, 0, 0.3);
         }
         .risk-dot.green {
-            background: #27ae60;
+            background: var(--neon-green);
+            box-shadow: 0 0 30px var(--neon-green-glow-strong);
         }
 
         .risk-name {
             font-size: 1.2rem;
             font-weight: 700;
-            color: var(--primary-dark);
+            color: var(--text-primary);
         }
 
         .risk-priority {
             margin-left: auto;
             font-weight: 700;
             font-size: 0.9rem;
-            color: var(--gray-700);
-            background: var(--gray-200);
-            padding: 2px 12px;
+            color: var(--text-secondary);
+            background: rgba(255, 255, 255, 0.05);
+            padding: 4px 14px;
             border-radius: 40px;
+            border: 1px solid var(--border-color);
         }
 
         .risk-desc {
-            color: var(--gray-700);
+            color: var(--text-secondary);
             font-size: 0.95rem;
-            margin-bottom: 14px;
+            margin-bottom: 16px;
+            position: relative;
+            z-index: 1;
         }
 
         .risk-bar-wrap {
             width: 100%;
-            height: 8px;
-            background: var(--gray-200);
+            height: 6px;
+            background: rgba(255, 255, 255, 0.05);
             border-radius: 40px;
             overflow: hidden;
-            margin: 8px 0 14px;
+            margin: 10px 0 16px;
+            position: relative;
+            z-index: 1;
         }
 
         .risk-bar-fill {
             height: 100%;
             border-radius: 40px;
             width: 0%;
-            transition: width 1.2s ease;
+            transition: width 1.5s ease;
+            box-shadow: 0 0 20px var(--neon-green-glow);
         }
 
         .risk-bar-fill.black {
-            background: #1a1a1a;
+            background: #333;
         }
         .risk-bar-fill.red {
-            background: #e74c3c;
+            background: #ff1744;
+            box-shadow: 0 0 20px rgba(255, 23, 68, 0.4);
         }
         .risk-bar-fill.yellow {
-            background: #f1c40f;
+            background: #ffea00;
+            box-shadow: 0 0 20px rgba(255, 234, 0, 0.4);
         }
         .risk-bar-fill.green {
-            background: #27ae60;
+            background: var(--neon-green);
+            box-shadow: 0 0 30px var(--neon-green-glow-strong);
         }
 
         .risk-examples {
             list-style: none;
             padding: 0;
-            margin: 12px 0 0;
+            margin: 14px 0 0;
             display: flex;
             flex-wrap: wrap;
-            gap: 6px;
+            gap: 8px;
+            position: relative;
+            z-index: 1;
         }
 
         .risk-examples li {
-            background: var(--gray-100);
-            padding: 4px 14px;
+            background: rgba(255, 255, 255, 0.03);
+            padding: 5px 16px;
             border-radius: 40px;
             font-size: 0.82rem;
-            color: var(--gray-700);
-            border: 1px solid var(--gray-200);
+            color: var(--text-secondary);
+            border: 1px solid var(--border-color);
+            transition: var(--transition);
+        }
+
+        .risk-examples li:hover {
+            border-color: var(--neon-green);
+            color: var(--text-primary);
         }
 
         /* ===== IMPROVEMENT GRID ===== */
         .improve-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-            gap: 20px;
-            margin: 24px 0;
+            grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+            gap: 22px;
+            margin: 28px 0;
         }
 
         .improve-card {
-            background: var(--white);
-            border-radius: var(--radius-sm);
-            padding: 20px;
-            box-shadow: var(--shadow-sm);
-            border: 1px solid var(--gray-200);
+            background: var(--bg-card);
+            border-radius: var(--radius);
+            padding: 24px;
+            border: 1px solid var(--border-color);
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .improve-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(45deg, var(--neon-green-glow), transparent);
+            opacity: 0;
             transition: var(--transition);
         }
 
         .improve-card:hover {
-            border-color: var(--primary-blue);
-            box-shadow: var(--shadow-md);
-            transform: translateY(-3px);
+            border-color: var(--neon-green);
+            transform: translateY(-4px);
+            box-shadow: 0 0 30px var(--neon-green-glow);
+        }
+
+        .improve-card:hover::before {
+            opacity: 0.05;
         }
 
         .improve-card h4 {
-            color: var(--primary-dark);
+            color: var(--text-primary);
             font-size: 1rem;
-            margin-bottom: 6px;
+            margin-bottom: 8px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .improve-card p {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            position: relative;
+            z-index: 1;
         }
 
         .improve-card .benefit {
             display: inline-block;
-            margin-top: 10px;
+            margin-top: 12px;
             font-size: 0.8rem;
-            background: var(--primary-bg);
-            color: var(--primary-mid);
-            padding: 2px 14px;
+            background: var(--neon-green-glow);
+            color: var(--neon-green);
+            padding: 4px 16px;
             border-radius: 40px;
             font-weight: 500;
+            border: 1px solid var(--neon-green);
+            position: relative;
+            z-index: 1;
+            box-shadow: 0 0 20px var(--neon-green-glow);
         }
 
         /* ===== COMPARISON ===== */
@@ -460,94 +614,98 @@
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 32px;
-            margin: 28px 0;
-            background: var(--white);
+            margin: 32px 0;
+            background: var(--bg-card);
             border-radius: var(--radius);
-            padding: 28px;
-            box-shadow: var(--shadow-sm);
+            padding: 32px;
+            border: 1px solid var(--border-color);
+            box-shadow: var(--shadow-neon);
         }
 
         .compare-col h4 {
-            font-size: 1.1rem;
-            margin-bottom: 16px;
-            color: var(--primary-dark);
+            font-size: 1.15rem;
+            margin-bottom: 18px;
+            color: var(--text-primary);
             text-align: center;
-            border-bottom: 2px solid var(--gray-200);
-            padding-bottom: 10px;
+            border-bottom: 2px solid var(--border-color);
+            padding-bottom: 12px;
         }
 
         .compare-item {
             display: flex;
             align-items: center;
-            gap: 12px;
-            padding: 10px 12px;
-            margin-bottom: 8px;
-            border-radius: var(--radius-sm);
-            background: var(--gray-100);
-            border-left: 4px solid var(--gray-300);
+            gap: 14px;
+            padding: 12px 16px;
+            margin-bottom: 10px;
+            border-radius: var(--radius);
+            background: rgba(255, 255, 255, 0.02);
+            border-left: 4px solid var(--border-color);
             font-size: 0.95rem;
+            color: var(--text-secondary);
+            transition: var(--transition);
+        }
+
+        .compare-item:hover {
+            border-left-color: var(--neon-green);
+            background: rgba(0, 255, 65, 0.03);
         }
 
         .compare-item .emoji {
-            font-size: 1.3rem;
+            font-size: 1.4rem;
         }
 
         .compare-col.with .compare-item:nth-child(1) {
             border-left-color: #1a1a1a;
-            background: #f2f2f2;
         }
         .compare-col.with .compare-item:nth-child(2) {
-            border-left-color: #e74c3c;
-            background: #fdedec;
+            border-left-color: #ff1744;
         }
         .compare-col.with .compare-item:nth-child(3) {
-            border-left-color: #f1c40f;
-            background: #fef9e7;
+            border-left-color: #ffea00;
         }
         .compare-col.with .compare-item:nth-child(4) {
-            border-left-color: #27ae60;
-            background: #eafaf1;
+            border-left-color: var(--neon-green);
         }
 
         .compare-col.without .compare-item {
-            border-left-color: var(--gray-500);
-            background: var(--gray-100);
+            border-left-color: var(--border-color);
         }
 
         /* ===== REFLECTION ===== */
         .reflection-box {
-            background: var(--white);
+            background: var(--bg-card);
             border-radius: var(--radius);
-            padding: 28px 32px;
-            box-shadow: var(--shadow-sm);
-            margin: 28px 0;
-            border: 1px solid var(--gray-200);
+            padding: 32px;
+            border: 1px solid var(--border-color);
+            box-shadow: var(--shadow-neon);
+            margin: 32px 0;
         }
 
         .reflection-box h3 {
-            font-size: 1.3rem;
-            color: var(--primary-dark);
-            margin-bottom: 8px;
+            font-size: 1.4rem;
+            color: var(--text-primary);
+            margin-bottom: 10px;
         }
 
         .reflection-box .question {
             font-size: 1.2rem;
             font-weight: 500;
-            color: var(--primary-mid);
-            margin: 16px 0 8px;
-            padding: 16px 20px;
-            background: var(--primary-bg);
-            border-radius: var(--radius-sm);
-            border-left: 4px solid var(--primary-blue);
+            color: var(--text-primary);
+            margin: 18px 0 10px;
+            padding: 20px 24px;
+            background: rgba(0, 255, 65, 0.05);
+            border-radius: var(--radius);
+            border-left: 4px solid var(--neon-green);
         }
 
         .reflection-box .final-text {
-            margin-top: 16px;
-            color: var(--gray-700);
+            margin-top: 18px;
+            color: var(--text-secondary);
             font-size: 1rem;
-            padding: 16px 20px;
-            background: var(--gray-100);
-            border-radius: var(--radius-sm);
+            padding: 20px 24px;
+            background: rgba(255, 255, 255, 0.02);
+            border-radius: var(--radius);
+            border: 1px solid var(--border-color);
         }
 
         /* ===== RESPONSIVE ===== */
@@ -555,11 +713,11 @@
             .header-inner {
                 flex-wrap: wrap;
                 height: auto;
-                padding: 12px 0;
+                padding: 14px 0;
             }
 
             .logo {
-                font-size: 1rem;
+                font-size: 1.1rem;
             }
 
             .menu-toggle {
@@ -572,8 +730,8 @@
                 flex-direction: column;
                 align-items: stretch;
                 gap: 4px;
-                padding: 12px 0 6px;
-                border-top: 1px solid rgba(255, 255, 255, 0.08);
+                padding: 14px 0 6px;
+                border-top: 1px solid var(--border-color);
             }
 
             .nav.open {
@@ -581,25 +739,26 @@
             }
 
             .nav-btn {
-                padding: 10px 16px;
+                padding: 12px 18px;
                 width: 100%;
                 text-align: left;
-                border-radius: var(--radius-sm);
+                border-radius: var(--radius);
                 font-size: 0.95rem;
             }
 
             .nav-btn.active {
-                background: rgba(46, 134, 193, 0.25);
+                background: var(--neon-green);
+                color: var(--bg-primary);
             }
 
             .page-title {
-                font-size: 1.8rem;
+                font-size: 2rem;
             }
 
             .compare-wrap {
                 grid-template-columns: 1fr;
-                gap: 24px;
-                padding: 20px;
+                gap: 28px;
+                padding: 24px;
             }
 
             .risk-grid {
@@ -617,11 +776,11 @@
 
         @media (max-width: 500px) {
             .main {
-                padding: 20px 16px 40px;
+                padding: 24px 16px 40px;
             }
 
             .page-title {
-                font-size: 1.5rem;
+                font-size: 1.7rem;
             }
 
             .risk-header {
@@ -637,46 +796,56 @@
             }
 
             .reflection-box {
-                padding: 20px;
+                padding: 24px;
             }
 
             .highlight-box {
-                padding: 16px;
+                padding: 18px 20px;
                 font-size: 1rem;
+            }
+
+            .compare-wrap {
+                padding: 18px;
             }
         }
 
         /* ===== MISC ===== */
-        .text-center {
-            text-align: center;
-        }
-        .mt-16 {
-            margin-top: 16px;
-        }
-        .mt-24 {
-            margin-top: 24px;
-        }
-        .mb-8 {
-            margin-bottom: 8px;
-        }
-
         .footer-note {
             text-align: center;
-            margin-top: 48px;
-            padding-top: 24px;
-            border-top: 1px solid var(--gray-300);
-            color: var(--gray-500);
+            margin-top: 56px;
+            padding-top: 28px;
+            border-top: 1px solid var(--border-color);
+            color: var(--text-secondary);
             font-size: 0.85rem;
         }
 
-        /* Animações de entrada */
+        .footer-note strong {
+            color: var(--neon-green);
+        }
+
+        .text-center {
+            text-align: center;
+        }
+
+        /* ===== GLOW EFFECTS ===== */
+        .glow-text {
+            color: var(--neon-green);
+            text-shadow: 0 0 30px var(--neon-green-glow-strong);
+        }
+
+        .glow-border {
+            border-color: var(--neon-green) !important;
+            box-shadow: 0 0 30px var(--neon-green-glow) !important;
+        }
+
+        /* ===== ANIMATION DELAYS ===== */
         .risk-card,
         .card,
         .improve-card,
         .compare-wrap,
         .reflection-box {
             opacity: 0;
-            animation: fadeUp 0.6s ease forwards;
+            animation: fadeInUp 0.7s ease forwards;
         }
 
         .risk-card:nth-child(1) {
@@ -757,9 +926,9 @@
             <h1 class="page-title">🧬 O que é o projeto</h1>
             <p class="page-subtitle">Uma proposta de organização das filas do SUS por classificação de risco</p>
 
-            <p style="font-size:1.05rem; color:var(--gray-700); max-width:800px;">
+            <p style="font-size:1.05rem; color:var(--text-secondary); max-width:800px;">
                 O SUS atende milhões de brasileiros diariamente. Um dos desafios mais conhecidos do sistema é o
-                <strong>tempo de espera</strong> para consultas, exames, procedimentos e atendimentos hospitalares.
+                <strong style="color:var(--neon-green);">tempo de espera</strong> para consultas, exames, procedimentos e atendimentos hospitalares.
             </p>
 
             <div class="card-grid">
@@ -779,7 +948,7 @@
                 <div class="card">
                     <span class="card-icon">🎯</span>
                     <h3>Nossa proposta</h3>
-                    <p>Apresentamos um sistema de <strong>classificação de risco por cores</strong> para organizar
+                    <p>Apresentamos um sistema de <strong style="color:var(--neon-green);">classificação de risco por cores</strong> para organizar
                         melhor os pacientes de acordo com a gravidade dos casos, tornando o atendimento mais justo e
                         eficiente.</p>
                 </div>
@@ -791,20 +960,20 @@
             </div>
 
             <h2 class="section-title">📌 Resumo do objetivo</h2>
-            <p style="color:var(--gray-700); max-width:800px;">
+            <p style="color:var(--text-secondary); max-width:800px;">
                 O projeto propõe uma ferramenta de gestão que auxilia profissionais de saúde a priorizar quem precisa de
                 atendimento imediato, sem desumanizar o cuidado. A classificação por cores é um protocolo já utilizado em
                 diversos serviços de emergência ao redor do mundo, e aqui adaptamos para o contexto do SUS com foco na
                 transparência e na equidade.
             </p>
 
-            <div style="margin-top:32px; background:var(--white); border-radius:var(--radius); padding:24px; box-shadow:var(--shadow-sm); border:1px solid var(--gray-200);">
-                <p style="font-weight:600; color:var(--primary-dark);">🔍 Em resumo:</p>
-                <ul style="list-style:none; padding:0; margin-top:8px; display:flex; flex-wrap:wrap; gap:12px;">
-                    <li style="background:var(--primary-bg); padding:6px 18px; border-radius:40px; font-size:0.95rem;">✅ Organização</li>
-                    <li style="background:var(--primary-bg); padding:6px 18px; border-radius:40px; font-size:0.95rem;">✅ Priorização justa</li>
-                    <li style="background:var(--primary-bg); padding:6px 18px; border-radius:40px; font-size:0.95rem;">✅ Redução de desperdício</li>
-                    <li style="background:var(--primary-bg); padding:6px 18px; border-radius:40px; font-size:0.95rem;">✅ Melhor experiência</li>
+            <div style="margin-top:32px; background:var(--bg-card); border-radius:var(--radius); padding:24px; border:1px solid var(--border-color);">
+                <p style="font-weight:600; color:var(--text-primary);">🔍 Em resumo:</p>
+                <ul style="list-style:none; padding:0; margin-top:10px; display:flex; flex-wrap:wrap; gap:12px;">
+                    <li style="background:rgba(0,255,65,0.05); padding:8px 20px; border-radius:40px; font-size:0.95rem; color:var(--text-secondary); border:1px solid var(--border-color);">✅ Organização</li>
+                    <li style="background:rgba(0,255,65,0.05); padding:8px 20px; border-radius:40px; font-size:0.95rem; color:var(--text-secondary); border:1px solid var(--border-color);">✅ Priorização justa</li>
+                    <li style="background:rgba(0,255,65,0.05); padding:8px 20px; border-radius:40px; font-size:0.95rem; color:var(--text-secondary); border:1px solid var(--border-color);">✅ Redução de desperdício</li>
+                    <li style="background:rgba(0,255,65,0.05); padding:8px 20px; border-radius:40px; font-size:0.95rem; color:var(--text-secondary); border:1px solid var(--border-color);">✅ Melhor experiência</li>
                 </ul>
             </div>
         </section>
@@ -879,307 +1048,4 @@
                 <!-- VERDE -->
                 <div class="risk-card green">
                     <div class="risk-header">
-                        <span class="risk-dot green"></span>
-                        <span class="risk-name">Condição Estável</span>
-                        <span class="risk-priority">🟢 20%</span>
-                    </div>
-                    <p class="risk-desc">Casos leves que podem aguardar atendimento.</p>
-                    <div class="risk-bar-wrap">
-                        <div class="risk-bar-fill green" style="width:20%;"></div>
-                    </div>
-                    <ul class="risk-examples">
-                        <li>Resfriado comum</li>
-                        <li>Dor muscular leve</li>
-                        <li>Pequenos cortes</li>
-                        <li>Dor de cabeça leve</li>
-                        <li>Alergia leve</li>
-                    </ul>
-                </div>
-
-            </div>
-
-            <p style="color:var(--gray-700); margin-top:12px; font-size:0.95rem;">
-                ⚠️ A classificação é dinâmica e deve ser reavaliada constantemente por profissionais treinados.
-            </p>
-        </section>
-
-        <!-- ===================== PAGE 3 ===================== -->
-        <section class="page" id="page3">
-            <h1 class="page-title">🧐 O que deve ser levado em consideração</h1>
-            <p class="page-subtitle">Limitações, riscos e a verdade sobre a proposta</p>
-
-            <p style="color:var(--gray-700); max-width:800px;">
-                A classificação por cores <strong>ajuda na organização</strong>, mas não resolve os problemas
-                estruturais do SUS. O sistema não cria médicos, não cria hospitais e não reduz automaticamente a
-                quantidade de pacientes.
-            </p>
-
-            <h2 class="section-title">⚠️ Possíveis riscos e falhas</h2>
-
-            <div class="card-grid">
-                <div class="card">
-                    <span class="card-icon">🔀</span>
-                    <h3>Erros de classificação</h3>
-                    <p>A avaliação humana pode falhar. Um paciente grave pode ser subestimado ou um caso leve pode ser
-                        superestimado, comprometendo a eficácia do sistema.</p>
-                </div>
-                <div class="card">
-                    <span class="card-icon">🏥</span>
-                    <h3>Diferenças entre hospitais</h3>
-                    <p>Cada unidade pode interpretar as cores de forma diferente, gerando inconsistências e
-                        desigualdades regionais.</p>
-                </div>
-                <div class="card">
-                    <span class="card-icon">📚</span>
-                    <h3>Falta de treinamento</h3>
-                    <p>Sem capacitação adequada, a classificação perde eficácia. Profissionais precisam de formação
-                        contínua e protocolos claros.</p>
-                </div>
-                <div class="card">
-                    <span class="card-icon">🎭</span>
-                    <h3>Tentativas de burlar</h3>
-                    <p>Alguns pacientes podem tentar simular sintomas mais graves para furar a fila, o que exige
-                        mecanismos de verificação.</p>
-                </div>
-                <div class="card">
-                    <span class="card-icon">⏰</span>
-                    <h3>Sobrecarga em horários de pico</h3>
-                    <p>Em momentos de alta demanda, mesmo com classificação, o sistema pode ficar sobrecarregado,
-                        aumentando o tempo de espera.</p>
-                </div>
-            </div>
-
-            <div class="highlight-box" style="border-left-color: #e67e22;">
-                <strong>Conclusão:</strong> A proposta é uma <strong>ferramenta de gestão</strong> e não uma solução
-                definitiva. Ela deve ser combinada com investimentos estruturais, valorização profissional e políticas
-                públicas consistentes.
-            </div>
-        </section>
-
-        <!-- ===================== PAGE 4 ===================== -->
-        <section class="page" id="page4">
-            <h1 class="page-title">🚀 O que poderia ser melhorado</h1>
-            <p class="page-subtitle">Ideias futuras para potencializar o sistema</p>
-
-            <div class="improve-grid">
-                <div class="improve-card">
-                    <h4>🌐 Integração digital entre hospitais</h4>
-                    <p>Compartilhamento de dados em tempo real para evitar duplicidade e melhorar o fluxo.</p>
-                    <span class="benefit">✅ Redução de filas regionais</span>
-                </div>
-                <div class="improve-card">
-                    <h4>📋 Compartilhamento de histórico médico</h4>
-                    <p>Prontuários eletrônicos acessíveis entre unidades, com consentimento do paciente.</p>
-                    <span class="benefit">✅ Atendimento mais preciso</span>
-                </div>
-                <div class="improve-card">
-                    <h4>🗺️ Fila regional unificada</h4>
-                    <p>Uma única fila por região, com distribuição inteligente de pacientes conforme a gravidade.</p>
-                    <span class="benefit">✅ Otimização de recursos</span>
-                </div>
-                <div class="improve-card">
-                    <h4>📲 Avisos automáticos de consultas</h4>
-                    <p>Notificações por SMS ou app para lembrar pacientes e reduzir faltas.</p>
-                    <span class="benefit">✅ Menos absenteísmo</span>
-                </div>
-                <div class="improve-card">
-                    <h4>⏱️ Tempo estimado de espera</h4>
-                    <p>Exibir ao paciente uma previsão atualizada com base na classificação e na fila.</p>
-                    <span class="benefit">✅ Mais transparência</span>
-                </div>
-                <div class="improve-card">
-                    <h4>📱 Aplicativo para acompanhamento</h4>
-                    <p>Permite que o paciente veja sua posição na fila, receba orientações e atualize dados.</p>
-                    <span class="benefit">✅ Empoderamento do paciente</span>
-                </div>
-                <div class="improve-card">
-                    <h4>📊 Painel de monitoramento em tempo real</h4>
-                    <p>Gestores acompanham indicadores de tempo de espera, gravidade e eficiência.</p>
-                    <span class="benefit">✅ Gestão baseada em dados</span>
-                </div>
-            </div>
-
-            <p style="color:var(--gray-700); margin-top:16px; font-style:italic;">
-                Essas melhorias dependem de investimento em tecnologia, capacitação e vontade política, mas mostram que o
-                sistema pode evoluir.
-            </p>
-        </section>
-
-        <!-- ===================== PAGE 5 ===================== -->
-        <section class="page" id="page5">
-            <h1 class="page-title">🧩 Extra — Comparação e reflexão</h1>
-            <p class="page-subtitle">Visualize a diferença e pense sobre a justiça no atendimento</p>
-
-            <!-- COMPARAÇÃO -->
-            <div class="compare-wrap">
-                <div class="compare-col without">
-                    <h4>❌ SEM CLASSIFICAÇÃO</h4>
-                    <div class="compare-item"><span class="emoji">🟥</span> Paciente grave</div>
-                    <div class="compare-item"><span class="emoji">🟩</span> Paciente leve</div>
-                    <div class="compare-item"><span class="emoji">🟥</span> Paciente grave</div>
-                    <div class="compare-item"><span class="emoji">🟩</span> Paciente leve</div>
-                    <p style="font-size:0.85rem; color:var(--gray-500); margin-top:12px;">Ordem de chegada — nem sempre justa</p>
-                </div>
-                <div class="compare-col with">
-                    <h4>✅ COM CLASSIFICAÇÃO</h4>
-                    <div class="compare-item"><span class="emoji">⚫</span> Paciente crítico</div>
-                    <div class="compare-item"><span class="emoji">🔴</span> Paciente grave</div>
-                    <div class="compare-item"><span class="emoji">🟡</span> Paciente moderado</div>
-                    <div class="compare-item"><span class="emoji">🟢</span> Paciente leve</div>
-                    <p style="font-size:0.85rem; color:var(--gray-500); margin-top:12px;">Prioridade pela gravidade — mais justa</p>
-                </div>
-            </div>
-
-            <!-- REFLEXÃO -->
-            <div class="reflection-box">
-                <h3>🤔 Pergunta para reflexão</h3>
-                <div class="question">
-                    “É mais justo atender por ordem de chegada ou pela gravidade do caso?”
-                </div>
-                <p style="color:var(--gray-700);">
-                    Essa pergunta não tem resposta simples. A ordem de chegada é democrática, mas pode deixar
-                    pacientes graves esperando. A classificação por risco é mais justa clinicamente, mas exige
-                    treinamento e confiança no sistema. O ideal é um equilíbrio entre ambos, com transparência e
-                    humanização.
-                </p>
-            </div>
-
-            <!-- CONCLUSÃO FINAL -->
-            <div class="reflection-box" style="border-left: 5px solid var(--primary-blue);">
-                <h3>📌 Conclusão Final</h3>
-                <div class="final-text">
-                    <p style="font-weight:500; color:var(--primary-dark);">
-                        A proposta não pretende substituir profissionais da saúde nem resolver completamente as filas,
-                        mas sim <strong>contribuir para uma organização mais eficiente dos atendimentos</strong>.
-                    </p>
-                    <p style="margin-top:12px;">
-                        O SUS é um patrimônio nacional e merece soluções inovadoras, realistas e centradas no paciente.
-                        Este projeto é um passo nessa direção, com honestidade sobre suas limitações e otimismo sobre
-                        seu potencial.
-                    </p>
-                </div>
-            </div>
-
-            <div style="text-align:center; margin-top:24px; padding:16px; background:var(--gray-100); border-radius:var(--radius-sm);">
-                <span style="font-size:0.9rem; color:var(--gray-700);">
-                    🏥 Projeto educacional — SUS + Organizado
-                </span>
-            </div>
-        </section>
-
-        <div class="footer-note">
-            Desenvolvido com 💙 para apresentação escolar · Classificação de Risco no SUS
-        </div>
-
-    </main>
-
-    <!-- ===== JAVASCRIPT ===== -->
-    <script>
-        (function() {
-            'use strict';
-
-            // ----- ELEMENTOS -----
-            var navBtns = document.querySelectorAll('.nav-btn');
-            var pages = document.querySelectorAll('.page');
-            var menuToggle = document.getElementById('menuToggle');
-            var navMenu = document.getElementById('navMenu');
-
-            // ----- NAVEGAÇÃO -----
-            function navigateTo(pageId) {
-                // Esconde todas as páginas
-                pages.forEach(function(p) {
-                    p.classList.remove('active');
-                });
-
-                // Mostra a página alvo
-                var target = document.getElementById(pageId);
-                if (target) {
-                    target.classList.add('active');
-                }
-
-                // Atualiza botões
-                navBtns.forEach(function(btn) {
-                    btn.classList.remove('active');
-                    if (btn.dataset.page === pageId) {
-                        btn.classList.add('active');
-                    }
-                });
-
-                // Fecha menu mobile
-                if (navMenu) {
-                    navMenu.classList.remove('open');
-                }
-                if (menuToggle) {
-                    menuToggle.classList.remove('open');
-                }
-
-                // Rola para o topo
-                window.scrollTo({ top: 0, behavior: 'smooth' });
-            }
-
-            // ----- EVENTOS DOS BOTÕES -----
-            navBtns.forEach(function(btn) {
-                btn.addEventListener('click', function(e) {
-                    var pageId = this.dataset.page;
-                    if (pageId) {
-                        navigateTo(pageId);
-                    }
-                });
-            });
-
-            // ----- MENU MOBILE -----
-            if (menuToggle) {
-                menuToggle.addEventListener('click', function() {
-                    this.classList.toggle('open');
-                    if (navMenu) {
-                        navMenu.classList.toggle('open');
-                    }
-                });
-            }
-
-            // Fecha menu ao clicar em um link (mobile)
-            navBtns.forEach(function(btn) {
-                btn.addEventListener('click', function() {
-                    if (navMenu) {
-                        navMenu.classList.remove('open');
-                    }
-                    if (menuToggle) {
-                        menuToggle.classList.remove('open');
-                    }
-                });
-            });
-
-            // ----- INICIALIZAÇÃO: PÁGINA 1 ATIVA -----
-            // Garante que a página 1 esteja ativa
-            var page1 = document.getElementById('page1');
-            if (page1) {
-                page1.classList.add('active');
-            }
-
-            // Atualiza o botão ativo
-            navBtns.forEach(function(btn) {
-                btn.classList.remove('active');
-                if (btn.dataset.page === 'page1') {
-                    btn.classList.add('active');
-                }
-            });
-
-            // Verifica se há uma página ativa, se não, ativa a página 1
-            var hasActive = false;
-            pages.forEach(function(p) {
-                if (p.classList.contains('active')) {
-                    hasActive = true;
-                }
-            });
-            if (!hasActive && page1) {
-                page1.classList.add('active');
-            }
-
-            console.log('Site carregado com sucesso! 🏥');
-            console.log('Páginas disponíveis:', pages.length);
-
-        })();
-    </script>
-
-</body>
-</html>
+                        <span
