@@ -46,6 +46,7 @@
             background-image:
                 radial-gradient(circle at 20% 50%, rgba(0, 255, 65, 0.03) 0%, transparent 50%),
                 radial-gradient(circle at 80% 50%, rgba(0, 255, 65, 0.03) 0%, transparent 50%);
+            overflow-x: hidden;
         }
 
         /* ===== SCROLLBAR ===== */
@@ -75,6 +76,11 @@
             position: sticky;
             top: 0;
             z-index: 1000;
+            transition: all 0.5s ease;
+        }
+
+        .header.scrolled {
+            box-shadow: 0 0 60px var(--neon-green-glow-strong);
         }
 
         .header-inner {
@@ -109,10 +115,16 @@
             font-size: 1.5rem;
             box-shadow: 0 0 30px var(--neon-green-glow);
             transition: var(--transition);
+            animation: pulseIcon 2s ease-in-out infinite;
+        }
+
+        @keyframes pulseIcon {
+            0%, 100% { box-shadow: 0 0 30px var(--neon-green-glow); }
+            50% { box-shadow: 0 0 60px var(--neon-green-glow-strong); }
         }
 
         .logo-icon:hover {
-            transform: scale(1.05);
+            transform: scale(1.1) rotate(-5deg);
             box-shadow: 0 0 50px var(--neon-green-glow-strong);
         }
 
@@ -138,16 +150,37 @@
             font-size: 0.85rem;
             font-weight: 500;
             cursor: pointer;
-            transition: var(--transition);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
             font-family: var(--font);
             white-space: nowrap;
             position: relative;
+            overflow: hidden;
+        }
+
+        .nav-btn::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            background: var(--neon-green-glow);
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            transition: width 0.6s ease, height 0.6s ease;
+            z-index: -1;
+        }
+
+        .nav-btn:hover::before {
+            width: 300px;
+            height: 300px;
         }
 
         .nav-btn:hover {
             color: var(--text-primary);
             border-color: var(--neon-green);
             box-shadow: 0 0 20px var(--neon-green-glow);
+            transform: translateY(-2px);
         }
 
         .nav-btn.active {
@@ -156,6 +189,13 @@
             border-color: var(--neon-green);
             box-shadow: 0 0 30px var(--neon-green-glow-strong);
             font-weight: 600;
+            animation: btnActive 0.6s ease;
+        }
+
+        @keyframes btnActive {
+            0% { transform: scale(0.8); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
         }
 
         .nav-btn.active:hover {
@@ -172,6 +212,10 @@
             border: none;
             cursor: pointer;
             padding: 6px;
+            transition: all 0.3s ease;
+        }
+        .menu-toggle:hover span {
+            background: var(--neon-green);
         }
         .menu-toggle span {
             display: block;
@@ -179,7 +223,7 @@
             height: 2.5px;
             background: var(--text-primary);
             border-radius: 4px;
-            transition: var(--transition);
+            transition: all 0.3s ease;
         }
         .menu-toggle.open span:nth-child(1) {
             transform: rotate(45deg) translate(5px, 5px);
@@ -187,6 +231,7 @@
         }
         .menu-toggle.open span:nth-child(2) {
             opacity: 0;
+            transform: scaleX(0);
         }
         .menu-toggle.open span:nth-child(3) {
             transform: rotate(-45deg) translate(5px, -5px);
@@ -216,8 +261,8 @@
         }
 
         @keyframes pulseGlow {
-            0%, 100% { opacity: 0.3; }
-            50% { opacity: 0.8; }
+            0%, 100% { opacity: 0.2; transform: scale(1); }
+            50% { opacity: 0.6; transform: scale(1.1); }
         }
 
         .challenge-banner-content {
@@ -243,10 +288,22 @@
             color: var(--neon-green);
             text-shadow: 0 0 20px var(--neon-green-glow);
             box-shadow: 0 0 30px var(--neon-green-glow);
+            animation: badgePulse 2s ease-in-out infinite;
+        }
+
+        @keyframes badgePulse {
+            0%, 100% { box-shadow: 0 0 30px var(--neon-green-glow); }
+            50% { box-shadow: 0 0 60px var(--neon-green-glow-strong); }
         }
 
         .challenge-banner .badge-challenge .icon {
             font-size: 1.3rem;
+            animation: spinIcon 4s linear infinite;
+        }
+
+        @keyframes spinIcon {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
         }
 
         .challenge-banner .badge-challenge .highlight {
@@ -264,6 +321,12 @@
             border-radius: 40px;
             font-size: 0.85rem;
             color: var(--text-secondary);
+            transition: all 0.3s ease;
+        }
+
+        .challenge-banner .badge-year:hover {
+            border-color: var(--neon-green);
+            box-shadow: 0 0 20px var(--neon-green-glow);
         }
 
         .challenge-banner .badge-year strong {
@@ -282,21 +345,45 @@
         /* ===== PAGES ===== */
         .page {
             display: none;
-            animation: fadeInUp 0.6s ease forwards;
+            position: relative;
         }
 
         .page.active {
             display: block;
+            animation: pageEnter 0.8s cubic-bezier(0.4, 0, 0.2, 1) forwards;
         }
 
-        @keyframes fadeInUp {
+        .page.exit {
+            animation: pageExit 0.6s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+        }
+
+        @keyframes pageEnter {
             0% {
                 opacity: 0;
-                transform: translateY(30px);
+                transform: translateY(40px) scale(0.95);
+                filter: blur(10px);
+            }
+            50% {
+                opacity: 0.5;
+                transform: translateY(10px) scale(0.98);
             }
             100% {
                 opacity: 1;
-                transform: translateY(0);
+                transform: translateY(0) scale(1);
+                filter: blur(0);
+            }
+        }
+
+        @keyframes pageExit {
+            0% {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+                filter: blur(0);
+            }
+            100% {
+                opacity: 0;
+                transform: translateY(-30px) scale(0.95);
+                filter: blur(5px);
             }
         }
 
@@ -308,6 +395,12 @@
             margin-bottom: 8px;
             letter-spacing: -0.5px;
             text-shadow: 0 0 40px var(--neon-green-glow);
+            animation: titleGlow 3s ease-in-out infinite;
+        }
+
+        @keyframes titleGlow {
+            0%, 100% { text-shadow: 0 0 40px var(--neon-green-glow); }
+            50% { text-shadow: 0 0 80px var(--neon-green-glow-strong); }
         }
 
         .page-title::after {
@@ -318,6 +411,12 @@
             background: var(--neon-green);
             margin-top: 8px;
             box-shadow: 0 0 30px var(--neon-green-glow);
+            animation: lineExpand 1s ease forwards;
+        }
+
+        @keyframes lineExpand {
+            0% { width: 0; }
+            100% { width: 60px; }
         }
 
         .page-subtitle {
@@ -325,6 +424,12 @@
             color: var(--text-secondary);
             margin-bottom: 35px;
             font-weight: 300;
+            animation: subtitleFade 0.8s ease 0.3s both;
+        }
+
+        @keyframes subtitleFade {
+            0% { opacity: 0; transform: translateX(-20px); }
+            100% { opacity: 1; transform: translateX(0); }
         }
 
         .section-title {
@@ -333,6 +438,7 @@
             color: var(--text-primary);
             margin: 45px 0 20px;
             text-shadow: 0 0 20px var(--neon-green-glow);
+            position: relative;
         }
 
         .section-title::after {
@@ -362,6 +468,12 @@
             color: var(--text-primary);
             position: relative;
             overflow: hidden;
+            animation: highlightPulse 3s ease-in-out infinite;
+        }
+
+        @keyframes highlightPulse {
+            0%, 100% { box-shadow: var(--shadow-neon); }
+            50% { box-shadow: 0 0 50px var(--neon-green-glow); }
         }
 
         .highlight-box::before {
@@ -374,6 +486,12 @@
             background: linear-gradient(90deg, var(--neon-green-glow), transparent);
             opacity: 0.05;
             pointer-events: none;
+            animation: shineMove 4s linear infinite;
+        }
+
+        @keyframes shineMove {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
         }
 
         .highlight-box strong {
@@ -394,9 +512,10 @@
             border-radius: var(--radius);
             padding: 28px;
             border: 1px solid var(--border-color);
-            transition: var(--transition);
+            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
             position: relative;
             overflow: hidden;
+            cursor: default;
         }
 
         .card::before {
@@ -408,25 +527,36 @@
             bottom: -2px;
             background: linear-gradient(45deg, var(--neon-green), transparent, var(--neon-green));
             opacity: 0;
-            transition: var(--transition);
+            transition: all 0.5s ease;
             border-radius: var(--radius);
             z-index: -1;
         }
 
         .card:hover {
-            transform: translateY(-6px);
+            transform: translateY(-8px) scale(1.02);
             border-color: var(--neon-green);
-            box-shadow: 0 0 40px var(--neon-green-glow);
+            box-shadow: 0 0 50px var(--neon-green-glow);
         }
 
         .card:hover::before {
-            opacity: 0.1;
+            opacity: 0.15;
+        }
+
+        .card:hover .card-icon {
+            animation: iconBounce 0.6s ease;
+        }
+
+        @keyframes iconBounce {
+            0%, 100% { transform: scale(1); }
+            30% { transform: scale(1.3) rotate(-10deg); }
+            60% { transform: scale(0.9) rotate(5deg); }
         }
 
         .card-icon {
             font-size: 2.2rem;
             margin-bottom: 14px;
             display: block;
+            transition: all 0.3s ease;
         }
 
         .card h3 {
@@ -454,11 +584,12 @@
             padding: 28px;
             border: 1px solid var(--border-color);
             border-top: 4px solid var(--text-secondary);
-            transition: var(--transition);
+            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
             display: flex;
             flex-direction: column;
             position: relative;
             overflow: hidden;
+            cursor: default;
         }
 
         .risk-card::before {
@@ -470,17 +601,26 @@
             bottom: 0;
             background: radial-gradient(circle at 50% 0%, var(--neon-green-glow), transparent 70%);
             opacity: 0;
-            transition: var(--transition);
+            transition: all 0.5s ease;
         }
 
         .risk-card:hover {
-            transform: translateY(-6px);
+            transform: translateY(-8px) scale(1.02);
             border-color: var(--neon-green);
-            box-shadow: 0 0 40px var(--neon-green-glow);
+            box-shadow: 0 0 50px var(--neon-green-glow);
         }
 
         .risk-card:hover::before {
-            opacity: 0.05;
+            opacity: 0.1;
+        }
+
+        .risk-card:hover .risk-dot {
+            animation: dotPulse 1s ease-in-out infinite;
+        }
+
+        @keyframes dotPulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.3); }
         }
 
         .risk-card.black {
@@ -512,6 +652,7 @@
             flex-shrink: 0;
             border: 2px solid rgba(255, 255, 255, 0.1);
             box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
+            transition: all 0.3s ease;
         }
         .risk-dot.black {
             background: #1a1a1a;
@@ -545,6 +686,13 @@
             padding: 4px 14px;
             border-radius: 40px;
             border: 1px solid var(--border-color);
+            transition: all 0.3s ease;
+        }
+
+        .risk-card:hover .risk-priority {
+            border-color: var(--neon-green);
+            color: var(--neon-green);
+            box-shadow: 0 0 20px var(--neon-green-glow);
         }
 
         .risk-desc {
@@ -570,8 +718,25 @@
             height: 100%;
             border-radius: 40px;
             width: 0%;
-            transition: width 1.5s ease;
+            transition: width 1.5s cubic-bezier(0.4, 0, 0.2, 1);
             box-shadow: 0 0 20px var(--neon-green-glow);
+            position: relative;
+        }
+
+        .risk-bar-fill::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+            animation: barShine 2s ease-in-out infinite;
+        }
+
+        @keyframes barShine {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
         }
 
         .risk-bar-fill.black {
@@ -608,12 +773,14 @@
             font-size: 0.82rem;
             color: var(--text-secondary);
             border: 1px solid var(--border-color);
-            transition: var(--transition);
+            transition: all 0.3s ease;
         }
 
         .risk-examples li:hover {
             border-color: var(--neon-green);
             color: var(--text-primary);
+            transform: scale(1.05);
+            box-shadow: 0 0 20px var(--neon-green-glow);
         }
 
         /* ===== IMPROVEMENT GRID ===== */
@@ -629,7 +796,7 @@
             border-radius: var(--radius);
             padding: 24px;
             border: 1px solid var(--border-color);
-            transition: var(--transition);
+            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
             position: relative;
             overflow: hidden;
         }
@@ -643,17 +810,17 @@
             bottom: 0;
             background: linear-gradient(45deg, var(--neon-green-glow), transparent);
             opacity: 0;
-            transition: var(--transition);
+            transition: all 0.5s ease;
         }
 
         .improve-card:hover {
             border-color: var(--neon-green);
-            transform: translateY(-4px);
-            box-shadow: 0 0 30px var(--neon-green-glow);
+            transform: translateY(-6px) scale(1.02);
+            box-shadow: 0 0 40px var(--neon-green-glow);
         }
 
         .improve-card:hover::before {
-            opacity: 0.05;
+            opacity: 0.08;
         }
 
         .improve-card h4 {
@@ -662,6 +829,12 @@
             margin-bottom: 8px;
             position: relative;
             z-index: 1;
+            transition: all 0.3s ease;
+        }
+
+        .improve-card:hover h4 {
+            color: var(--neon-green);
+            text-shadow: 0 0 20px var(--neon-green-glow);
         }
 
         .improve-card p {
@@ -684,6 +857,12 @@
             position: relative;
             z-index: 1;
             box-shadow: 0 0 20px var(--neon-green-glow);
+            transition: all 0.3s ease;
+        }
+
+        .improve-card:hover .benefit {
+            box-shadow: 0 0 40px var(--neon-green-glow-strong);
+            transform: scale(1.05);
         }
 
         /* ===== COMPARISON ===== */
@@ -697,6 +876,12 @@
             padding: 32px;
             border: 1px solid var(--border-color);
             box-shadow: var(--shadow-neon);
+            transition: all 0.5s ease;
+        }
+
+        .compare-wrap:hover {
+            border-color: var(--neon-green);
+            box-shadow: 0 0 50px var(--neon-green-glow);
         }
 
         .compare-col h4 {
@@ -706,6 +891,11 @@
             text-align: center;
             border-bottom: 2px solid var(--border-color);
             padding-bottom: 12px;
+            transition: all 0.3s ease;
+        }
+
+        .compare-wrap:hover .compare-col h4 {
+            border-color: var(--neon-green);
         }
 
         .compare-item {
@@ -719,12 +909,13 @@
             border-left: 4px solid var(--border-color);
             font-size: 0.95rem;
             color: var(--text-secondary);
-            transition: var(--transition);
+            transition: all 0.4s ease;
         }
 
         .compare-item:hover {
             border-left-color: var(--neon-green);
-            background: rgba(0, 255, 65, 0.03);
+            background: rgba(0, 255, 65, 0.05);
+            transform: translateX(5px);
         }
 
         .compare-item .emoji {
@@ -756,6 +947,12 @@
             border: 1px solid var(--border-color);
             box-shadow: var(--shadow-neon);
             margin: 32px 0;
+            transition: all 0.5s ease;
+        }
+
+        .reflection-box:hover {
+            border-color: var(--neon-green);
+            box-shadow: 0 0 50px var(--neon-green-glow);
         }
 
         .reflection-box h3 {
@@ -773,6 +970,11 @@
             background: rgba(0, 255, 65, 0.05);
             border-radius: var(--radius);
             border-left: 4px solid var(--neon-green);
+            transition: all 0.3s ease;
+        }
+
+        .reflection-box:hover .question {
+            box-shadow: 0 0 30px var(--neon-green-glow);
         }
 
         .reflection-box .final-text {
@@ -783,6 +985,11 @@
             background: rgba(255, 255, 255, 0.02);
             border-radius: var(--radius);
             border: 1px solid var(--border-color);
+            transition: all 0.3s ease;
+        }
+
+        .reflection-box:hover .final-text {
+            border-color: var(--neon-green);
         }
 
         /* ===== CREDITS ===== */
@@ -799,7 +1006,7 @@
             padding: 32px 28px;
             border: 1px solid var(--border-color);
             text-align: center;
-            transition: var(--transition);
+            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
             position: relative;
             overflow: hidden;
         }
@@ -813,17 +1020,17 @@
             height: 200%;
             background: radial-gradient(circle, var(--neon-green-glow), transparent 70%);
             opacity: 0;
-            transition: var(--transition);
+            transition: all 0.6s ease;
         }
 
         .credit-card:hover {
-            transform: translateY(-8px) scale(1.02);
+            transform: translateY(-10px) scale(1.03);
             border-color: var(--neon-green);
-            box-shadow: 0 0 50px var(--neon-green-glow);
+            box-shadow: 0 0 60px var(--neon-green-glow);
         }
 
         .credit-card:hover::before {
-            opacity: 0.08;
+            opacity: 0.1;
         }
 
         .credit-card .avatar {
@@ -832,6 +1039,16 @@
             margin-bottom: 16px;
             position: relative;
             z-index: 1;
+            transition: all 0.5s ease;
+        }
+
+        .credit-card:hover .avatar {
+            animation: avatarFloat 1s ease-in-out infinite;
+        }
+
+        @keyframes avatarFloat {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
         }
 
         .credit-card .name {
@@ -841,6 +1058,12 @@
             margin-bottom: 4px;
             position: relative;
             z-index: 1;
+            transition: all 0.3s ease;
+        }
+
+        .credit-card:hover .name {
+            color: var(--neon-green);
+            text-shadow: 0 0 20px var(--neon-green-glow);
         }
 
         .credit-card .role {
@@ -864,6 +1087,12 @@
             box-shadow: 0 0 20px var(--neon-green-glow);
             position: relative;
             z-index: 1;
+            transition: all 0.3s ease;
+        }
+
+        .credit-card:hover .divider {
+            width: 60px;
+            box-shadow: 0 0 40px var(--neon-green-glow-strong);
         }
 
         .credit-card .description {
@@ -887,6 +1116,12 @@
             font-weight: 600;
             position: relative;
             z-index: 1;
+            transition: all 0.3s ease;
+        }
+
+        .credit-card:hover .badge-credit {
+            box-shadow: 0 0 30px var(--neon-green-glow-strong);
+            transform: scale(1.05);
         }
 
         .credits-footer {
@@ -896,6 +1131,12 @@
             border-radius: var(--radius);
             border: 1px solid var(--border-color);
             margin-top: 20px;
+            transition: all 0.5s ease;
+        }
+
+        .credits-footer:hover {
+            border-color: var(--neon-green);
+            box-shadow: 0 0 40px var(--neon-green-glow);
         }
 
         .credits-footer h3 {
@@ -913,6 +1154,12 @@
         .credits-footer .highlight-name {
             color: var(--text-primary);
             font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .credits-footer .highlight-name:hover {
+            color: var(--neon-green);
+            text-shadow: 0 0 20px var(--neon-green-glow);
         }
 
         /* ===== RESPONSIVE ===== */
@@ -943,6 +1190,12 @@
 
             .nav.open {
                 display: flex;
+                animation: navSlideDown 0.4s ease forwards;
+            }
+
+            @keyframes navSlideDown {
+                0% { opacity: 0; transform: translateY(-10px); }
+                100% { opacity: 1; transform: translateY(0); }
             }
 
             .nav-btn {
@@ -1058,10 +1311,27 @@
             border-top: 1px solid var(--border-color);
             color: var(--text-secondary);
             font-size: 0.85rem;
+            position: relative;
+        }
+
+        .footer-note::before {
+            content: '';
+            position: absolute;
+            top: -1px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--neon-green), transparent);
         }
 
         .footer-note strong {
             color: var(--neon-green);
+            transition: all 0.3s ease;
+        }
+
+        .footer-note strong:hover {
+            text-shadow: 0 0 20px var(--neon-green-glow);
         }
 
         .text-center {
@@ -1087,75 +1357,134 @@
         .reflection-box,
         .credit-card {
             opacity: 0;
-            animation: fadeInUp 0.7s ease forwards;
+            animation: cardEntrance 0.8s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+        }
+
+        @keyframes cardEntrance {
+            0% {
+                opacity: 0;
+                transform: translateY(30px) scale(0.9);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
         }
 
         .risk-card:nth-child(1) {
-            animation-delay: 0.05s;
+            animation-delay: 0.1s;
         }
         .risk-card:nth-child(2) {
-            animation-delay: 0.12s;
+            animation-delay: 0.2s;
         }
         .risk-card:nth-child(3) {
-            animation-delay: 0.19s;
+            animation-delay: 0.3s;
         }
         .risk-card:nth-child(4) {
-            animation-delay: 0.26s;
+            animation-delay: 0.4s;
         }
 
         .card:nth-child(1) {
-            animation-delay: 0.05s;
+            animation-delay: 0.1s;
         }
         .card:nth-child(2) {
-            animation-delay: 0.12s;
+            animation-delay: 0.2s;
         }
         .card:nth-child(3) {
-            animation-delay: 0.19s;
+            animation-delay: 0.3s;
         }
 
         .improve-card:nth-child(1) {
-            animation-delay: 0.05s;
+            animation-delay: 0.1s;
         }
         .improve-card:nth-child(2) {
-            animation-delay: 0.10s;
-        }
-        .improve-card:nth-child(3) {
             animation-delay: 0.15s;
         }
-        .improve-card:nth-child(4) {
-            animation-delay: 0.20s;
+        .improve-card:nth-child(3) {
+            animation-delay: 0.2s;
         }
-        .improve-card:nth-child(5) {
+        .improve-card:nth-child(4) {
             animation-delay: 0.25s;
         }
+        .improve-card:nth-child(5) {
+            animation-delay: 0.3s;
+        }
         .improve-card:nth-child(6) {
-            animation-delay: 0.30s;
+            animation-delay: 0.35s;
         }
         .improve-card:nth-child(7) {
-            animation-delay: 0.35s;
+            animation-delay: 0.4s;
         }
 
         .credit-card:nth-child(1) {
-            animation-delay: 0.05s;
+            animation-delay: 0.1s;
         }
         .credit-card:nth-child(2) {
-            animation-delay: 0.12s;
+            animation-delay: 0.2s;
         }
         .credit-card:nth-child(3) {
-            animation-delay: 0.19s;
+            animation-delay: 0.3s;
         }
         .credit-card:nth-child(4) {
-            animation-delay: 0.26s;
+            animation-delay: 0.4s;
         }
         .credit-card:nth-child(5) {
-            animation-delay: 0.33s;
+            animation-delay: 0.5s;
+        }
+
+        .compare-wrap {
+            animation-delay: 0.1s;
+        }
+
+        .reflection-box {
+            animation-delay: 0.2s;
+        }
+
+        /* ===== PARTICLES EFFECT ===== */
+        .particle-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+            overflow: hidden;
+        }
+
+        .particle {
+            position: absolute;
+            background: var(--neon-green);
+            border-radius: 50%;
+            opacity: 0;
+            animation: particleFloat linear infinite;
+        }
+
+        @keyframes particleFloat {
+            0% {
+                opacity: 0;
+                transform: translateY(100vh) scale(0);
+            }
+            10% {
+                opacity: 0.5;
+            }
+            90% {
+                opacity: 0.5;
+            }
+            100% {
+                opacity: 0;
+                transform: translateY(-10vh) scale(1);
+            }
         }
     </style>
 </head>
 <body>
 
+    <!-- ===== PARTICLES ===== -->
+    <div class="particle-container" id="particles"></div>
+
     <!-- ===== HEADER ===== -->
-    <header class="header">
+    <header class="header" id="header">
         <div class="header-inner">
             <div class="logo">
                 <span class="logo-icon">🏥</span>
@@ -1613,18 +1942,63 @@
             var pages = document.querySelectorAll('.page');
             var menuToggle = document.getElementById('menuToggle');
             var navMenu = document.getElementById('navMenu');
+            var header = document.getElementById('header');
 
-            // ----- NAVEGAÇÃO -----
+            // ----- PARTICLES -----
+            function createParticles() {
+                var container = document.getElementById('particles');
+                if (!container) return;
+
+                for (var i = 0; i < 30; i++) {
+                    var particle = document.createElement('div');
+                    particle.className = 'particle';
+                    var size = Math.random() * 3 + 1;
+                    particle.style.width = size + 'px';
+                    particle.style.height = size + 'px';
+                    particle.style.left = Math.random() * 100 + '%';
+                    particle.style.animationDuration = (Math.random() * 15 + 10) + 's';
+                    particle.style.animationDelay = (Math.random() * 10) + 's';
+                    particle.style.opacity = Math.random() * 0.3 + 0.1;
+                    container.appendChild(particle);
+                }
+            }
+            createParticles();
+
+            // ----- HEADER SCROLL EFFECT -----
+            window.addEventListener('scroll', function() {
+                if (window.scrollY > 50) {
+                    header.classList.add('scrolled');
+                } else {
+                    header.classList.remove('scrolled');
+                }
+            });
+
+            // ----- NAVEGAÇÃO COM ANIMAÇÃO -----
             function navigateTo(pageId) {
-                // Esconde todas as páginas
-                pages.forEach(function(p) {
-                    p.classList.remove('active');
-                });
+                // Página ativa atual
+                var currentActive = document.querySelector('.page.active');
+                var currentId = currentActive ? currentActive.id : null;
 
-                // Mostra a página alvo
+                // Se for a mesma página, não faz nada
+                if (currentId === pageId) return;
+
+                // Adiciona animação de saída na página atual
+                if (currentActive) {
+                    currentActive.classList.add('exit');
+                    setTimeout(function() {
+                        currentActive.classList.remove('active');
+                        currentActive.classList.remove('exit');
+                    }, 600);
+                }
+
+                // Mostra a página alvo com animação
                 var target = document.getElementById(pageId);
                 if (target) {
-                    target.classList.add('active');
+                    setTimeout(function() {
+                        target.classList.add('active');
+                        // Re-anima os cards após a troca
+                        animateCards(target);
+                    }, 300);
                 }
 
                 // Atualiza botões
@@ -1645,6 +2019,29 @@
 
                 // Rola para o topo
                 window.scrollTo({ top: 0, behavior: 'smooth' });
+            }
+
+            // ----- RE-ANIMA CARDS -----
+            function animateCards(container) {
+                var cards = container.querySelectorAll('.card, .risk-card, .improve-card, .credit-card');
+                cards.forEach(function(card, index) {
+                    card.style.animation = 'none';
+                    card.style.opacity = '0';
+                    setTimeout(function() {
+                        card.style.animation = 'cardEntrance 0.8s cubic-bezier(0.4, 0, 0.2, 1) forwards';
+                        card.style.animationDelay = (index * 0.08) + 's';
+                    }, 50);
+                });
+
+                // Re-anima barras de progresso
+                var bars = container.querySelectorAll('.risk-bar-fill');
+                bars.forEach(function(bar) {
+                    var width = bar.style.width;
+                    bar.style.width = '0%';
+                    setTimeout(function() {
+                        bar.style.width = width;
+                    }, 400);
+                });
             }
 
             // ----- EVENTOS DOS BOTÕES -----
@@ -1683,6 +2080,10 @@
             var page1 = document.getElementById('page1');
             if (page1) {
                 page1.classList.add('active');
+                // Anima cards da página inicial
+                setTimeout(function() {
+                    animateCards(page1);
+                }, 300);
             }
 
             // Atualiza o botão ativo
@@ -1704,9 +2105,19 @@
                 page1.classList.add('active');
             }
 
+            // ----- INTERCEPTA CLICKS EM LINKS INTERNOS (se houver) -----
+            document.querySelectorAll('a[href^="#page"]').forEach(function(link) {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    var target = this.getAttribute('href').replace('#', '');
+                    navigateTo(target);
+                });
+            });
+
             console.log('🏥 Site SUS + Organizado carregado com sucesso!');
             console.log('📄 Páginas disponíveis:', pages.length);
             console.log('🏆 Desafio Liga Jovem - Pedro Carli 2026');
+            console.log('✨ Animações avançadas ativadas!');
 
         })();
     </script>
