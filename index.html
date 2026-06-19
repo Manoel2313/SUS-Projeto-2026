@@ -3,11 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Black Mesa Research Facility — Sistema de Gestão</title>
+    <title>SUS + Organizado — Classificação de Risco por Cores</title>
     <style>
-        /* ======================================================================= */
-        /*  RESET E CONFIGURAÇÕES GLOBAIS                                           */
-        /* ======================================================================= */
+        /* ===== RESET & BASE ===== */
         *,
         *::before,
         *::after {
@@ -16,2344 +14,2112 @@
             box-sizing: border-box;
         }
 
-        @import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap');
-
         :root {
-            --laranja: #ff7a00;
-            --laranja-escuro: #cc6200;
-            --laranja-glow: rgba(255, 122, 0, 0.6);
-            --preto: #0a0a0a;
-            --cinza-escuro: #1a1a1a;
-            --cinza-medio: #2a2a2a;
-            --cinza-claro: #3a3a3a;
-            --metal: #6b6b6b;
-            --metal-claro: #8a8a8a;
-            --branco: #e8e8e8;
-            --vermelho: #ff3333;
-            --verde: #33ff66;
-            --azul: #3388ff;
-            --amarelo: #ffcc00;
-            --font-mono: 'Share Tech Mono', 'Courier New', monospace;
-            --scanline: rgba(0, 0, 0, 0.03);
-            --sombra-padrao: 0 0 30px rgba(0, 0, 0, 0.8);
-            --transicao-padrao: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            --bg-primary: #0a0a0a;
+            --bg-card: #111111;
+            --bg-card-hover: #1a1a1a;
+            --text-primary: #e0e0e0;
+            --text-secondary: #888888;
+            --neon-green: #00ff41;
+            --neon-green-dark: #00cc33;
+            --neon-green-glow: rgba(0, 255, 65, 0.3);
+            --neon-green-glow-strong: rgba(0, 255, 65, 0.6);
+            --border-color: #1a1a1a;
+            --shadow-neon: 0 0 30px rgba(0, 255, 65, 0.1);
+            --radius: 12px;
+            --transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            --font: 'Segoe UI', system-ui, -apple-system, sans-serif;
         }
 
         html {
             scroll-behavior: smooth;
-            font-size: 16px;
         }
 
         body {
-            font-family: var(--font-mono);
-            background: var(--preto);
-            color: var(--branco);
-            overflow-x: hidden;
-            line-height: 1.7;
-            position: relative;
+            font-family: var(--font);
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.6;
             min-height: 100vh;
-        }
-
-        /* ======================================================================= */
-        /*  SCANLINES E EFEITO CRT                                                  */
-        /* ======================================================================= */
-        body::before {
-            content: '';
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-            background: repeating-linear-gradient(0deg,
-                    rgba(0, 0, 0, 0.03) 0px,
-                    rgba(0, 0, 0, 0.03) 2px,
-                    transparent 2px,
-                    transparent 6px);
-            z-index: 9999;
-            animation: scanlines-move 10s linear infinite;
-        }
-
-        @keyframes scanlines-move {
-            0% {
-                background-position: 0 0;
-            }
-            100% {
-                background-position: 0 30px;
-            }
-        }
-
-        body::after {
-            content: '';
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-            background: radial-gradient(ellipse at center, transparent 60%, rgba(0, 0, 0, 0.5) 100%);
-            z-index: 9998;
-        }
-
-        /* ======================================================================= */
-        /*  PARTICLES CANVAS                                                        */
-        /* ======================================================================= */
-        #particles-canvas {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: 0;
-            pointer-events: none;
-        }
-
-        /* ======================================================================= */
-        /*  HUD HEV (fixed)                                                         */
-        /* ======================================================================= */
-        .hev-hud {
-            position: fixed;
-            bottom: 20px;
-            left: 20px;
-            z-index: 1000;
-            font-size: 11px;
-            color: var(--laranja);
-            background: rgba(0, 0, 0, 0.85);
-            padding: 12px 18px;
-            border: 1px solid var(--laranja);
-            border-radius: 4px;
-            box-shadow: 0 0 30px rgba(255, 122, 0, 0.15);
-            backdrop-filter: blur(6px);
             display: flex;
             flex-direction: column;
-            gap: 3px;
-            letter-spacing: 1px;
-            text-transform: uppercase;
-            pointer-events: none;
-            min-width: 160px;
-            transition: opacity 0.3s;
-        }
-        .hev-hud .line {
-            display: flex;
-            justify-content: space-between;
-            gap: 20px;
-        }
-        .hev-hud .value {
-            color: #fff;
-        }
-        .hev-hud .label {
-            color: var(--metal);
-        }
-        .hev-hud .value.warning {
-            color: var(--amarelo);
-        }
-        .hev-hud .value.danger {
-            color: var(--vermelho);
+            background-image:
+                radial-gradient(circle at 20% 50%, rgba(0, 255, 65, 0.03) 0%, transparent 50%),
+                radial-gradient(circle at 80% 50%, rgba(0, 255, 65, 0.03) 0%, transparent 50%);
+            overflow-x: hidden;
         }
 
-        /* ======================================================================= */
-        /*  SITE WRAPPER                                                            */
-        /* ======================================================================= */
-        .site-wrapper {
+        /* ===== SCROLLBAR ===== */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: var(--bg-primary);
+        }
+        ::-webkit-scrollbar-thumb {
+            background: var(--neon-green);
+            border-radius: 4px;
+            box-shadow: 0 0 20px var(--neon-green-glow);
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--neon-green-dark);
+        }
+
+        /* ===== HEADER ===== */
+        .header {
+            background: rgba(10, 10, 10, 0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--neon-green);
+            box-shadow: 0 0 40px var(--neon-green-glow);
+            padding: 0 24px;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            transition: all 0.5s ease;
+        }
+
+        .header.scrolled {
+            box-shadow: 0 0 60px var(--neon-green-glow-strong);
+        }
+
+        .header-inner {
+            max-width: 1280px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            height: 75px;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            font-weight: 700;
+            font-size: 1.3rem;
+            letter-spacing: -0.3px;
+            flex-shrink: 0;
+            color: var(--text-primary);
+        }
+
+        .logo-icon {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 44px;
+            height: 44px;
+            background: var(--neon-green);
+            color: var(--bg-primary);
+            border-radius: 10px;
+            font-size: 1.5rem;
+            box-shadow: 0 0 30px var(--neon-green-glow);
+            transition: var(--transition);
+            animation: pulseIcon 2s ease-in-out infinite;
+        }
+
+        @keyframes pulseIcon {
+            0%, 100% { box-shadow: 0 0 30px var(--neon-green-glow); }
+            50% { box-shadow: 0 0 60px var(--neon-green-glow-strong); }
+        }
+
+        .logo-icon:hover {
+            transform: scale(1.1) rotate(-5deg);
+            box-shadow: 0 0 50px var(--neon-green-glow-strong);
+        }
+
+        .logo span {
+            color: var(--neon-green);
+            text-shadow: 0 0 20px var(--neon-green-glow);
+        }
+
+        /* ===== NAV ===== */
+        .nav {
+            display: flex;
+            gap: 6px;
+            flex-wrap: wrap;
+            justify-content: flex-end;
+        }
+
+        .nav-btn {
+            background: transparent;
+            border: 1px solid transparent;
+            color: var(--text-secondary);
+            padding: 8px 18px;
+            border-radius: 40px;
+            font-size: 0.85rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            font-family: var(--font);
+            white-space: nowrap;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .nav-btn::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            background: var(--neon-green-glow);
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            transition: width 0.6s ease, height 0.6s ease;
+            z-index: -1;
+        }
+
+        .nav-btn:hover::before {
+            width: 300px;
+            height: 300px;
+        }
+
+        .nav-btn:hover {
+            color: var(--text-primary);
+            border-color: var(--neon-green);
+            box-shadow: 0 0 20px var(--neon-green-glow);
+            transform: translateY(-2px);
+        }
+
+        .nav-btn.active {
+            color: var(--bg-primary);
+            background: var(--neon-green);
+            border-color: var(--neon-green);
+            box-shadow: 0 0 30px var(--neon-green-glow-strong);
+            font-weight: 600;
+            animation: btnActive 0.6s ease;
+        }
+
+        @keyframes btnActive {
+            0% { transform: scale(0.8); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+
+        .nav-btn.active:hover {
+            box-shadow: 0 0 50px var(--neon-green-glow-strong);
+            transform: scale(1.02);
+        }
+
+        /* ===== MOBILE MENU ===== */
+        .menu-toggle {
+            display: none;
+            flex-direction: column;
+            gap: 5px;
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            padding: 6px;
+            transition: all 0.3s ease;
+        }
+        .menu-toggle:hover span {
+            background: var(--neon-green);
+        }
+        .menu-toggle span {
+            display: block;
+            width: 28px;
+            height: 2.5px;
+            background: var(--text-primary);
+            border-radius: 4px;
+            transition: all 0.3s ease;
+        }
+        .menu-toggle.open span:nth-child(1) {
+            transform: rotate(45deg) translate(5px, 5px);
+            background: var(--neon-green);
+        }
+        .menu-toggle.open span:nth-child(2) {
+            opacity: 0;
+            transform: scaleX(0);
+        }
+        .menu-toggle.open span:nth-child(3) {
+            transform: rotate(-45deg) translate(5px, -5px);
+            background: var(--neon-green);
+        }
+
+        /* ===== BANNER DESAFIO LIGA JOVEM ===== */
+        .challenge-banner {
+            background: linear-gradient(135deg, rgba(0, 255, 65, 0.08) 0%, rgba(0, 0, 0, 0.9) 100%);
+            border-bottom: 1px solid var(--neon-green);
+            padding: 14px 24px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            box-shadow: inset 0 0 60px var(--neon-green-glow);
+        }
+
+        .challenge-banner::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, var(--neon-green-glow), transparent 70%);
+            animation: pulseGlow 3s ease-in-out infinite;
+        }
+
+        @keyframes pulseGlow {
+            0%, 100% { opacity: 0.2; transform: scale(1); }
+            50% { opacity: 0.6; transform: scale(1.1); }
+        }
+
+        .challenge-banner-content {
+            position: relative;
+            z-index: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        .challenge-banner .badge-challenge {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            background: rgba(0, 255, 65, 0.1);
+            border: 1px solid var(--neon-green);
+            padding: 8px 24px;
+            border-radius: 40px;
+            font-weight: 700;
+            font-size: 0.95rem;
+            color: var(--neon-green);
+            text-shadow: 0 0 20px var(--neon-green-glow);
+            box-shadow: 0 0 30px var(--neon-green-glow);
+            animation: badgePulse 2s ease-in-out infinite;
+        }
+
+        @keyframes badgePulse {
+            0%, 100% { box-shadow: 0 0 30px var(--neon-green-glow); }
+            50% { box-shadow: 0 0 60px var(--neon-green-glow-strong); }
+        }
+
+        .challenge-banner .badge-challenge .icon {
+            font-size: 1.3rem;
+            animation: spinIcon 4s linear infinite;
+        }
+
+        @keyframes spinIcon {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .challenge-banner .badge-challenge .highlight {
+            color: var(--text-primary);
+            font-weight: 300;
+        }
+
+        .challenge-banner .badge-year {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid var(--border-color);
+            padding: 6px 20px;
+            border-radius: 40px;
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            transition: all 0.3s ease;
+        }
+
+        .challenge-banner .badge-year:hover {
+            border-color: var(--neon-green);
+            box-shadow: 0 0 20px var(--neon-green-glow);
+        }
+
+        .challenge-banner .badge-year strong {
+            color: var(--text-primary);
+        }
+
+        /* ===== MAIN ===== */
+        .main {
+            flex: 1;
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 40px 24px 60px;
+            width: 100%;
+        }
+
+        /* ===== PAGES ===== */
+        .page {
+            display: none;
+            position: relative;
+        }
+
+        .page.active {
+            display: block;
+            animation: pageEnter 0.8s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+        }
+
+        .page.exit {
+            animation: pageExit 0.6s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+        }
+
+        @keyframes pageEnter {
+            0% {
+                opacity: 0;
+                transform: translateY(40px) scale(0.95);
+                filter: blur(10px);
+            }
+            50% {
+                opacity: 0.5;
+                transform: translateY(10px) scale(0.98);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+                filter: blur(0);
+            }
+        }
+
+        @keyframes pageExit {
+            0% {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+                filter: blur(0);
+            }
+            100% {
+                opacity: 0;
+                transform: translateY(-30px) scale(0.95);
+                filter: blur(5px);
+            }
+        }
+
+        /* ===== TYPOGRAPHY ===== */
+        .page-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 8px;
+            letter-spacing: -0.5px;
+            text-shadow: 0 0 40px var(--neon-green-glow);
+            animation: titleGlow 3s ease-in-out infinite;
+        }
+
+        @keyframes titleGlow {
+            0%, 100% { text-shadow: 0 0 40px var(--neon-green-glow); }
+            50% { text-shadow: 0 0 80px var(--neon-green-glow-strong); }
+        }
+
+        .page-title::after {
+            content: '';
+            display: block;
+            width: 60px;
+            height: 3px;
+            background: var(--neon-green);
+            margin-top: 8px;
+            box-shadow: 0 0 30px var(--neon-green-glow);
+            animation: lineExpand 1s ease forwards;
+        }
+
+        @keyframes lineExpand {
+            0% { width: 0; }
+            100% { width: 60px; }
+        }
+
+        .page-subtitle {
+            font-size: 1.15rem;
+            color: var(--text-secondary);
+            margin-bottom: 35px;
+            font-weight: 300;
+            animation: subtitleFade 0.8s ease 0.3s both;
+        }
+
+        @keyframes subtitleFade {
+            0% { opacity: 0; transform: translateX(-20px); }
+            100% { opacity: 1; transform: translateX(0); }
+        }
+
+        .section-title {
+            font-size: 1.8rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin: 45px 0 20px;
+            text-shadow: 0 0 20px var(--neon-green-glow);
+            position: relative;
+        }
+
+        .section-title::after {
+            content: '';
+            display: block;
+            width: 40px;
+            height: 2px;
+            background: var(--neon-green);
+            margin-top: 6px;
+            box-shadow: 0 0 20px var(--neon-green-glow);
+        }
+
+        .section-title:first-of-type {
+            margin-top: 0;
+        }
+
+        /* ===== HIGHLIGHT BOX ===== */
+        .highlight-box {
+            background: var(--bg-card);
+            border-left: 4px solid var(--neon-green);
+            padding: 24px 28px;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow-neon);
+            margin: 28px 0;
+            font-weight: 500;
+            font-size: 1.1rem;
+            color: var(--text-primary);
+            position: relative;
+            overflow: hidden;
+            animation: highlightPulse 3s ease-in-out infinite;
+        }
+
+        @keyframes highlightPulse {
+            0%, 100% { box-shadow: var(--shadow-neon); }
+            50% { box-shadow: 0 0 50px var(--neon-green-glow); }
+        }
+
+        .highlight-box::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(90deg, var(--neon-green-glow), transparent);
+            opacity: 0.05;
+            pointer-events: none;
+            animation: shineMove 4s linear infinite;
+        }
+
+        @keyframes shineMove {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+        }
+
+        .highlight-box strong {
+            color: var(--neon-green);
+            text-shadow: 0 0 20px var(--neon-green-glow);
+        }
+
+        /* ===== CARDS ===== */
+        .card-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 24px;
+            margin: 28px 0;
+        }
+
+        .card {
+            background: var(--bg-card);
+            border-radius: var(--radius);
+            padding: 28px;
+            border: 1px solid var(--border-color);
+            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+            cursor: default;
+        }
+
+        .card::before {
+            content: '';
+            position: absolute;
+            top: -2px;
+            left: -2px;
+            right: -2px;
+            bottom: -2px;
+            background: linear-gradient(45deg, var(--neon-green), transparent, var(--neon-green));
+            opacity: 0;
+            transition: all 0.5s ease;
+            border-radius: var(--radius);
+            z-index: -1;
+        }
+
+        .card:hover {
+            transform: translateY(-8px) scale(1.02);
+            border-color: var(--neon-green);
+            box-shadow: 0 0 50px var(--neon-green-glow);
+        }
+
+        .card:hover::before {
+            opacity: 0.15;
+        }
+
+        .card:hover .card-icon {
+            animation: iconBounce 0.6s ease;
+        }
+
+        @keyframes iconBounce {
+            0%, 100% { transform: scale(1); }
+            30% { transform: scale(1.3) rotate(-10deg); }
+            60% { transform: scale(0.9) rotate(5deg); }
+        }
+
+        .card-icon {
+            font-size: 2.2rem;
+            margin-bottom: 14px;
+            display: block;
+            transition: all 0.3s ease;
+        }
+
+        .card h3 {
+            font-size: 1.15rem;
+            color: var(--text-primary);
+            margin-bottom: 10px;
+        }
+
+        .card p {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+        }
+
+        /* ===== RISK CARDS ===== */
+        .risk-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 28px;
+            margin: 35px 0;
+        }
+
+        .risk-card {
+            background: var(--bg-card);
+            border-radius: var(--radius);
+            padding: 28px;
+            border: 1px solid var(--border-color);
+            border-top: 4px solid var(--text-secondary);
+            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            overflow: hidden;
+            cursor: default;
+        }
+
+        .risk-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: radial-gradient(circle at 50% 0%, var(--neon-green-glow), transparent 70%);
+            opacity: 0;
+            transition: all 0.5s ease;
+        }
+
+        .risk-card:hover {
+            transform: translateY(-8px) scale(1.02);
+            border-color: var(--neon-green);
+            box-shadow: 0 0 50px var(--neon-green-glow);
+        }
+
+        .risk-card:hover::before {
+            opacity: 0.1;
+        }
+
+        .risk-card:hover .risk-dot {
+            animation: dotPulse 1s ease-in-out infinite;
+        }
+
+        @keyframes dotPulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.3); }
+        }
+
+        .risk-card.black {
+            border-top-color: #1a1a1a;
+        }
+        .risk-card.red {
+            border-top-color: #ff1744;
+        }
+        .risk-card.yellow {
+            border-top-color: #ffea00;
+        }
+        .risk-card.green {
+            border-top-color: var(--neon-green);
+        }
+
+        .risk-header {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            margin-bottom: 14px;
             position: relative;
             z-index: 1;
         }
 
-        /* ======================================================================= */
-        /*  SEÇÃO HERO                                                              */
-        /* ======================================================================= */
-        .hero {
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            padding: 2rem;
-            text-align: center;
-            position: relative;
-            background: radial-gradient(ellipse at 30% 40%, rgba(255, 122, 0, 0.06), transparent 70%),
-                radial-gradient(ellipse at 70% 60%, rgba(255, 122, 0, 0.04), transparent 60%),
-                var(--preto);
-            overflow: hidden;
-        }
-        .hero::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><path d="M10 10 L90 10 L90 90 L10 90 Z" stroke="%23ff7a00" stroke-width="0.5" fill="none" opacity="0.05"/><path d="M30 30 L70 30 L70 70 L30 70 Z" stroke="%23ff7a00" stroke-width="0.3" fill="none" opacity="0.03"/></svg>');
-            background-size: 100px 100px;
-            opacity: 0.3;
-            pointer-events: none;
-        }
-        .hero .lambda-logo {
-            font-size: 7rem;
-            font-weight: bold;
-            color: var(--laranja);
-            text-shadow: 0 0 50px var(--laranja-glow), 0 0 100px rgba(255, 122, 0, 0.3);
-            margin-bottom: 1rem;
-            animation: pulse-lambda 3s ease-in-out infinite;
-            letter-spacing: 10px;
-            position: relative;
-        }
-        @keyframes pulse-lambda {
-            0%,
-            100% {
-                text-shadow: 0 0 50px var(--laranja-glow), 0 0 100px rgba(255, 122, 0, 0.3);
-            }
-            50% {
-                text-shadow: 0 0 70px var(--laranja-glow), 0 0 150px rgba(255, 122, 0, 0.5);
-            }
-        }
-        .hero h1 {
-            font-size: clamp(2.5rem, 10vw, 5.5rem);
-            font-weight: 400;
-            letter-spacing: 10px;
-            text-transform: uppercase;
-            color: #fff;
-            text-shadow: 0 0 40px rgba(255, 122, 0, 0.2);
-            margin-bottom: 0.5rem;
-        }
-        .hero .subtitle {
-            font-size: clamp(1rem, 2.8vw, 2rem);
-            color: var(--metal-claro);
-            letter-spacing: 8px;
-            text-transform: uppercase;
-            margin-bottom: 2.5rem;
-        }
-        .hero .btn-database {
-            background: transparent;
-            border: 2px solid var(--laranja);
-            color: var(--laranja);
-            padding: 1.2rem 3.5rem;
-            font-family: var(--font-mono);
-            font-size: 1.2rem;
-            letter-spacing: 5px;
-            text-transform: uppercase;
-            cursor: pointer;
+        .risk-dot {
+            width: 22px;
+            height: 22px;
+            border-radius: 50%;
+            flex-shrink: 0;
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
             transition: all 0.3s ease;
-            position: relative;
-            overflow: hidden;
-            box-shadow: 0 0 30px rgba(255, 122, 0, 0.1);
-            z-index: 2;
         }
-        .hero .btn-database:hover {
-            background: var(--laranja);
-            color: #000;
-            box-shadow: 0 0 80px var(--laranja-glow);
-            transform: scale(1.03);
+        .risk-dot.black {
+            background: #1a1a1a;
+            border-color: #333;
         }
-        .hero .btn-database::after {
-            content: '';
-            position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: conic-gradient(from 0deg, transparent, rgba(255, 122, 0, 0.1), transparent, rgba(255, 122, 0, 0.1), transparent);
-            animation: rotate-btn 6s linear infinite;
-            pointer-events: none;
+        .risk-dot.red {
+            background: #ff1744;
+            box-shadow: 0 0 20px rgba(255, 23, 68, 0.3);
         }
-        @keyframes rotate-btn {
-            0% {
-                transform: rotate(0deg);
-            }
-            100% {
-                transform: rotate(360deg);
-            }
+        .risk-dot.yellow {
+            background: #ffea00;
+            box-shadow: 0 0 20px rgba(255, 234, 0, 0.3);
         }
-        .hero .scroll-indicator {
-            position: absolute;
-            bottom: 30px;
-            left: 50%;
-            transform: translateX(-50%);
-            color: var(--metal);
-            font-size: 2rem;
-            animation: bounce 2s infinite;
-            cursor: pointer;
-            z-index: 2;
-        }
-        @keyframes bounce {
-            0%,
-            100% {
-                transform: translateX(-50%) translateY(0);
-            }
-            50% {
-                transform: translateX(-50%) translateY(-12px);
-            }
+        .risk-dot.green {
+            background: var(--neon-green);
+            box-shadow: 0 0 30px var(--neon-green-glow-strong);
         }
 
-        /* ======================================================================= */
-        /*  SEÇÕES COMUNS                                                           */
-        /* ======================================================================= */
-        section {
-            padding: 5rem 2rem;
-            max-width: 1300px;
-            margin: 0 auto;
-            position: relative;
+        .risk-name {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: var(--text-primary);
         }
-        .section-title {
-            font-size: clamp(2rem, 4.5vw, 3.2rem);
-            letter-spacing: 5px;
-            text-transform: uppercase;
-            color: var(--laranja);
-            margin-bottom: 3.5rem;
-            text-align: center;
-            text-shadow: 0 0 40px rgba(255, 122, 0, 0.15);
-            position: relative;
-            display: inline-block;
-            left: 50%;
-            transform: translateX(-50%);
+
+        .risk-priority {
+            margin-left: auto;
+            font-weight: 700;
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            background: rgba(255, 255, 255, 0.05);
+            padding: 4px 14px;
+            border-radius: 40px;
+            border: 1px solid var(--border-color);
+            transition: all 0.3s ease;
         }
-        .section-title::after {
-            content: '';
-            position: absolute;
-            bottom: -12px;
-            left: 0;
+
+        .risk-card:hover .risk-priority {
+            border-color: var(--neon-green);
+            color: var(--neon-green);
+            box-shadow: 0 0 20px var(--neon-green-glow);
+        }
+
+        .risk-desc {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+            margin-bottom: 16px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .risk-bar-wrap {
             width: 100%;
-            height: 2px;
-            background: linear-gradient(90deg, transparent, var(--laranja), transparent);
-        }
-        .section-subtitle {
-            text-align: center;
-            color: var(--metal);
-            font-size: 1rem;
-            letter-spacing: 2px;
-            margin-bottom: 2.5rem;
-        }
-
-        /* ======================================================================= */
-        /*  REVEAL ANIMATION                                                        */
-        /* ======================================================================= */
-        .reveal {
-            opacity: 0;
-            transform: translateY(50px);
-            transition: all 0.9s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-        }
-        .reveal.visible {
-            opacity: 1;
-            transform: translateY(0);
-        }
-        .reveal-left {
-            opacity: 0;
-            transform: translateX(-60px);
-            transition: all 0.9s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-        }
-        .reveal-left.visible {
-            opacity: 1;
-            transform: translateX(0);
-        }
-        .reveal-right {
-            opacity: 0;
-            transform: translateX(60px);
-            transition: all 0.9s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-        }
-        .reveal-right.visible {
-            opacity: 1;
-            transform: translateX(0);
-        }
-
-        /* ======================================================================= */
-        /*  SEÇÃO SOBRE                                                            */
-        /* ======================================================================= */
-        .sobre-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-            gap: 2rem;
-            margin-bottom: 3rem;
-        }
-        .sobre-card {
-            background: var(--cinza-escuro);
-            border: 1px solid #333;
-            padding: 2rem 1.8rem;
-            text-align: center;
-            border-radius: 4px;
-            transition: var(--transicao-padrao);
-            position: relative;
+            height: 6px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 40px;
             overflow: hidden;
-        }
-        .sobre-card::before {
-            content: '';
-            position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: radial-gradient(circle at center, rgba(255, 122, 0, 0.03), transparent 70%);
-            opacity: 0;
-            transition: opacity 0.6s;
-        }
-        .sobre-card:hover::before {
-            opacity: 1;
-        }
-        .sobre-card:hover {
-            border-color: var(--laranja);
-            box-shadow: 0 0 50px rgba(255, 122, 0, 0.08);
-            transform: translateY(-6px);
-        }
-        .sobre-card .icon {
-            font-size: 3rem;
-            color: var(--laranja);
-            margin-bottom: 0.8rem;
-            display: block;
-            filter: drop-shadow(0 0 15px rgba(255, 122, 0, 0.2));
-        }
-        .sobre-card h3 {
-            font-size: 1.2rem;
-            letter-spacing: 2px;
-            text-transform: uppercase;
-            margin-bottom: 0.5rem;
-            color: #fff;
-        }
-        .sobre-card p {
-            color: var(--metal-claro);
-            font-size: 0.9rem;
-        }
-
-        .stats-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
-            gap: 1.5rem;
-            margin-top: 3rem;
-            background: var(--cinza-escuro);
-            border: 1px solid #333;
-            padding: 2.5rem 2rem;
-            border-radius: 4px;
-        }
-        .stat-item {
-            text-align: center;
-        }
-        .stat-number {
-            font-size: 2.8rem;
-            font-weight: bold;
-            color: var(--laranja);
-            text-shadow: 0 0 30px rgba(255, 122, 0, 0.2);
-            display: block;
-        }
-        .stat-label {
-            font-size: 0.8rem;
-            color: var(--metal);
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-
-        /* ======================================================================= */
-        /*  SEÇÃO INSTALAÇÕES                                                       */
-        /* ======================================================================= */
-        .instalacoes-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-            gap: 2.5rem;
-        }
-        .instalacao-card {
-            background: var(--cinza-escuro);
-            border: 1px solid #333;
-            padding: 2.5rem 1.8rem;
-            border-radius: 4px;
-            text-align: center;
-            transition: var(--transicao-padrao);
-            cursor: default;
+            margin: 10px 0 16px;
             position: relative;
-            overflow: hidden;
-        }
-        .instalacao-card::before {
-            content: '';
-            position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: radial-gradient(circle at center, rgba(255, 122, 0, 0.06), transparent 70%);
-            opacity: 0;
-            transition: opacity 0.6s;
-        }
-        .instalacao-card:hover::before {
-            opacity: 1;
-        }
-        .instalacao-card:hover {
-            border-color: var(--laranja);
-            box-shadow: 0 0 70px rgba(255, 122, 0, 0.12), inset 0 0 60px rgba(255, 122, 0, 0.04);
-            transform: scale(1.03) translateY(-10px);
-        }
-        .instalacao-card .icon {
-            font-size: 3.2rem;
-            color: var(--laranja);
-            margin-bottom: 1rem;
-            display: block;
-            filter: drop-shadow(0 0 20px rgba(255, 122, 0, 0.2));
-        }
-        .instalacao-card h3 {
-            font-size: 1.2rem;
-            letter-spacing: 2px;
-            text-transform: uppercase;
-            color: #fff;
-            margin-bottom: 0.6rem;
-        }
-        .instalacao-card p {
-            color: var(--metal-claro);
-            font-size: 0.9rem;
-        }
-        .instalacao-card .status-badge {
-            display: inline-block;
-            margin-top: 0.8rem;
-            font-size: 0.7rem;
-            letter-spacing: 1px;
-            padding: 0.2rem 0.8rem;
-            border-radius: 20px;
-            background: rgba(255, 122, 0, 0.15);
-            color: var(--laranja);
-            border: 1px solid rgba(255, 122, 0, 0.2);
+            z-index: 1;
         }
 
-        /* ======================================================================= */
-        /*  SEÇÃO TIMELINE                                                          */
-        /* ======================================================================= */
-        .timeline {
+        .risk-bar-fill {
+            height: 100%;
+            border-radius: 40px;
+            width: 0%;
+            transition: width 1.5s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 0 20px var(--neon-green-glow);
             position: relative;
-            padding: 2rem 0;
         }
-        .timeline::before {
+
+        .risk-bar-fill::after {
             content: '';
             position: absolute;
-            left: 50%;
             top: 0;
+            left: 0;
+            right: 0;
             bottom: 0;
-            width: 3px;
-            background: linear-gradient(to bottom, var(--laranja), transparent);
-            transform: translateX(-50%);
-            opacity: 0.4;
-        }
-        .timeline-item {
-            display: flex;
-            justify-content: flex-end;
-            padding: 1.2rem 0;
-            position: relative;
-            width: 50%;
-        }
-        .timeline-item:nth-child(odd) {
-            justify-content: flex-start;
-            padding-right: 3.5rem;
-        }
-        .timeline-item:nth-child(even) {
-            padding-left: 3.5rem;
-            margin-left: 50%;
-        }
-        .timeline-item .content {
-            background: var(--cinza-escuro);
-            border: 1px solid #333;
-            padding: 1.8rem;
-            border-radius: 4px;
-            width: 100%;
-            transition: var(--transicao-padrao);
-            position: relative;
-        }
-        .timeline-item .content:hover {
-            border-color: var(--laranja);
-            box-shadow: 0 0 40px rgba(255, 122, 0, 0.08);
-        }
-        .timeline-item .content .year {
-            color: var(--laranja);
-            font-size: 1.3rem;
-            font-weight: bold;
-            display: block;
-            margin-bottom: 0.3rem;
-        }
-        .timeline-item .content h4 {
-            font-size: 1.1rem;
-            letter-spacing: 1px;
-            text-transform: uppercase;
-            color: #fff;
-        }
-        .timeline-item .content p {
-            color: var(--metal-claro);
-            font-size: 0.85rem;
-        }
-        .timeline-item .dot {
-            position: absolute;
-            top: 50%;
-            width: 16px;
-            height: 16px;
-            background: var(--laranja);
-            border-radius: 50%;
-            box-shadow: 0 0 40px var(--laranja-glow);
-            transform: translateY(-50%);
-            border: 2px solid var(--preto);
-        }
-        .timeline-item:nth-child(odd) .dot {
-            right: -8px;
-        }
-        .timeline-item:nth-child(even) .dot {
-            left: -8px;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+            animation: barShine 2s ease-in-out infinite;
         }
 
-        /* ======================================================================= */
-        /*  SEÇÃO DATABASE (TERMINAL)                                               */
-        /* ======================================================================= */
-        .terminal-wrapper {
-            max-width: 900px;
-            margin: 0 auto;
-        }
-        .terminal {
-            background: var(--preto);
-            border: 1px solid var(--laranja);
-            border-radius: 6px;
-            padding: 1.8rem;
-            font-family: var(--font-mono);
-            box-shadow: 0 0 80px rgba(255, 122, 0, 0.05), inset 0 0 60px rgba(0, 0, 0, 0.8);
-            margin-top: 1rem;
-        }
-        .terminal .terminal-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            border-bottom: 1px solid #333;
-            padding-bottom: 0.7rem;
-            margin-bottom: 1.2rem;
-            color: var(--metal);
-            font-size: 0.8rem;
-            letter-spacing: 1px;
-        }
-        .terminal .terminal-header .dots span {
-            display: inline-block;
-            width: 12px;
-            height: 12px;
-            border-radius: 50%;
-            margin-right: 6px;
-        }
-        .terminal .terminal-header .dots .red {
-            background: #ff4444;
-        }
-        .terminal .terminal-header .dots .yellow {
-            background: #ffbb33;
-        }
-        .terminal .terminal-header .dots .green {
-            background: #00c851;
-        }
-        .terminal .output {
-            color: #aaffaa;
-            min-height: 180px;
-            padding: 0.5rem 0;
-            white-space: pre-wrap;
-            font-size: 0.9rem;
-            line-height: 1.9;
-            max-height: 400px;
-            overflow-y: auto;
-        }
-        .terminal .output .prompt {
-            color: var(--laranja);
-        }
-        .terminal .output .cmd {
-            color: #88ddff;
-        }
-        .terminal .output .error {
-            color: #ff5555;
-        }
-        .terminal .output .success {
-            color: #55ff88;
-        }
-        .terminal .output .info {
-            color: #ffaa55;
-        }
-        .terminal .input-line {
-            display: flex;
-            align-items: center;
-            border-top: 1px solid #333;
-            padding-top: 0.8rem;
-            margin-top: 0.5rem;
-        }
-        .terminal .input-line span {
-            color: var(--laranja);
-            margin-right: 12px;
-            font-size: 1.1rem;
-        }
-        .terminal .input-line input {
-            background: transparent;
-            border: none;
-            outline: none;
-            color: #fff;
-            font-family: var(--font-mono);
-            font-size: 0.9rem;
-            width: 100%;
-            caret-color: var(--laranja);
-        }
-        .terminal .input-line input::selection {
-            background: var(--laranja);
-            color: #000;
+        @keyframes barShine {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
         }
 
-        /* ======================================================================= */
-        /*  SEÇÃO PESSOAL                                                           */
-        /* ======================================================================= */
-        .personnel-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-            gap: 2rem;
+        .risk-bar-fill.black {
+            background: #333;
         }
-        .personnel-card {
-            background: var(--cinza-escuro);
-            border: 1px solid #333;
-            border-radius: 4px;
-            padding: 2rem 1.5rem;
-            text-align: center;
-            transition: var(--transicao-padrao);
+        .risk-bar-fill.red {
+            background: #ff1744;
+            box-shadow: 0 0 20px rgba(255, 23, 68, 0.4);
+        }
+        .risk-bar-fill.yellow {
+            background: #ffea00;
+            box-shadow: 0 0 20px rgba(255, 234, 0, 0.4);
+        }
+        .risk-bar-fill.green {
+            background: var(--neon-green);
+            box-shadow: 0 0 30px var(--neon-green-glow-strong);
+        }
+
+        .risk-examples {
+            list-style: none;
+            padding: 0;
+            margin: 14px 0 0;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
             position: relative;
-        }
-        .personnel-card:hover {
-            border-color: var(--laranja);
-            box-shadow: 0 0 60px rgba(255, 122, 0, 0.08);
-            transform: translateY(-8px);
-        }
-        .personnel-card .avatar {
-            font-size: 4rem;
-            color: var(--laranja);
-            margin-bottom: 0.5rem;
-            display: block;
-            filter: drop-shadow(0 0 25px rgba(255, 122, 0, 0.15));
-        }
-        .personnel-card h4 {
-            font-size: 1.1rem;
-            letter-spacing: 1px;
-            color: #fff;
-        }
-        .personnel-card .role {
-            color: var(--metal);
-            font-size: 0.8rem;
-            text-transform: uppercase;
-        }
-        .personnel-card .clearance {
-            margin-top: 0.5rem;
-            font-size: 0.7rem;
-            color: var(--amarelo);
-            letter-spacing: 1px;
+            z-index: 1;
         }
 
-        /* ======================================================================= */
-        /*  SEÇÃO ALERTA                                                            */
-        /* ======================================================================= */
-        .alerta-section {
-            text-align: center;
-        }
-        .btn-alerta {
-            background: transparent;
-            border: 2px solid var(--vermelho);
-            color: var(--vermelho);
-            padding: 1.2rem 3.5rem;
-            font-family: var(--font-mono);
-            font-size: 1.2rem;
-            letter-spacing: 5px;
-            text-transform: uppercase;
-            cursor: pointer;
+        .risk-examples li {
+            background: rgba(255, 255, 255, 0.03);
+            padding: 5px 16px;
+            border-radius: 40px;
+            font-size: 0.82rem;
+            color: var(--text-secondary);
+            border: 1px solid var(--border-color);
             transition: all 0.3s ease;
-            margin-top: 1rem;
-            box-shadow: 0 0 30px rgba(255, 0, 0, 0.05);
+        }
+
+        .risk-examples li:hover {
+            border-color: var(--neon-green);
+            color: var(--text-primary);
+            transform: scale(1.05);
+            box-shadow: 0 0 20px var(--neon-green-glow);
+        }
+
+        /* ===== IMPROVEMENT GRID ===== */
+        .improve-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+            gap: 22px;
+            margin: 28px 0;
+        }
+
+        .improve-card {
+            background: var(--bg-card);
+            border-radius: var(--radius);
+            padding: 24px;
+            border: 1px solid var(--border-color);
+            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
             position: relative;
+            overflow: hidden;
         }
-        .btn-alerta:hover {
-            background: var(--vermelho);
-            color: #000;
-            box-shadow: 0 0 80px rgba(255, 0, 0, 0.3);
-        }
-        .alerta-mensagem {
-            margin-top: 2rem;
-            font-size: 2rem;
-            color: var(--vermelho);
-            text-shadow: 0 0 50px rgba(255, 0, 0, 0.5);
-            letter-spacing: 5px;
-            display: none;
-            animation: alert-pulse 0.5s infinite alternate;
-        }
-        .alerta-mensagem.ativo {
-            display: block;
-        }
-        @keyframes alert-pulse {
-            0% {
-                opacity: 0.6;
-                transform: scale(1);
-            }
-            100% {
-                opacity: 1;
-                transform: scale(1.02);
-            }
-        }
-        .alerta-flash {
-            position: fixed;
+
+        .improve-card::before {
+            content: '';
+            position: absolute;
             top: 0;
             left: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-            background: rgba(255, 0, 0, 0.08);
-            z-index: 9997;
-            animation: flash-alert 0.3s infinite alternate;
-            display: none;
-        }
-        .alerta-flash.ativo {
-            display: block;
-        }
-        @keyframes flash-alert {
-            0% {
-                opacity: 0;
-            }
-            100% {
-                opacity: 1;
-            }
-        }
-        .alerta-detalhes {
-            margin-top: 1.5rem;
-            color: var(--metal);
-            font-size: 0.9rem;
-            display: none;
-        }
-        .alerta-detalhes.ativo {
-            display: block;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(45deg, var(--neon-green-glow), transparent);
+            opacity: 0;
+            transition: all 0.5s ease;
         }
 
-        /* ======================================================================= */
-        /*  SEÇÃO PROJETOS (nova)                                                   */
-        /* ======================================================================= */
-        .projetos-grid {
+        .improve-card:hover {
+            border-color: var(--neon-green);
+            transform: translateY(-6px) scale(1.02);
+            box-shadow: 0 0 40px var(--neon-green-glow);
+        }
+
+        .improve-card:hover::before {
+            opacity: 0.08;
+        }
+
+        .improve-card h4 {
+            color: var(--text-primary);
+            font-size: 1rem;
+            margin-bottom: 8px;
+            position: relative;
+            z-index: 1;
+            transition: all 0.3s ease;
+        }
+
+        .improve-card:hover h4 {
+            color: var(--neon-green);
+            text-shadow: 0 0 20px var(--neon-green-glow);
+        }
+
+        .improve-card p {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .improve-card .benefit {
+            display: inline-block;
+            margin-top: 12px;
+            font-size: 0.8rem;
+            background: var(--neon-green-glow);
+            color: var(--neon-green);
+            padding: 4px 16px;
+            border-radius: 40px;
+            font-weight: 500;
+            border: 1px solid var(--neon-green);
+            position: relative;
+            z-index: 1;
+            box-shadow: 0 0 20px var(--neon-green-glow);
+            transition: all 0.3s ease;
+        }
+
+        .improve-card:hover .benefit {
+            box-shadow: 0 0 40px var(--neon-green-glow-strong);
+            transform: scale(1.05);
+        }
+
+        /* ===== COMPARISON ===== */
+        .compare-wrap {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 32px;
+            margin: 32px 0;
+            background: var(--bg-card);
+            border-radius: var(--radius);
+            padding: 32px;
+            border: 1px solid var(--border-color);
+            box-shadow: var(--shadow-neon);
+            transition: all 0.5s ease;
+        }
+
+        .compare-wrap:hover {
+            border-color: var(--neon-green);
+            box-shadow: 0 0 50px var(--neon-green-glow);
+        }
+
+        .compare-col h4 {
+            font-size: 1.15rem;
+            margin-bottom: 18px;
+            color: var(--text-primary);
+            text-align: center;
+            border-bottom: 2px solid var(--border-color);
+            padding-bottom: 12px;
+            transition: all 0.3s ease;
+        }
+
+        .compare-wrap:hover .compare-col h4 {
+            border-color: var(--neon-green);
+        }
+
+        .compare-item {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            padding: 12px 16px;
+            margin-bottom: 10px;
+            border-radius: var(--radius);
+            background: rgba(255, 255, 255, 0.02);
+            border-left: 4px solid var(--border-color);
+            font-size: 0.95rem;
+            color: var(--text-secondary);
+            transition: all 0.4s ease;
+        }
+
+        .compare-item:hover {
+            border-left-color: var(--neon-green);
+            background: rgba(0, 255, 65, 0.05);
+            transform: translateX(5px);
+        }
+
+        .compare-item .emoji {
+            font-size: 1.4rem;
+        }
+
+        .compare-col.with .compare-item:nth-child(1) {
+            border-left-color: #1a1a1a;
+        }
+        .compare-col.with .compare-item:nth-child(2) {
+            border-left-color: #ff1744;
+        }
+        .compare-col.with .compare-item:nth-child(3) {
+            border-left-color: #ffea00;
+        }
+        .compare-col.with .compare-item:nth-child(4) {
+            border-left-color: var(--neon-green);
+        }
+
+        .compare-col.without .compare-item {
+            border-left-color: var(--border-color);
+        }
+
+        /* ===== REFLECTION ===== */
+        .reflection-box {
+            background: var(--bg-card);
+            border-radius: var(--radius);
+            padding: 32px;
+            border: 1px solid var(--border-color);
+            box-shadow: var(--shadow-neon);
+            margin: 32px 0;
+            transition: all 0.5s ease;
+        }
+
+        .reflection-box:hover {
+            border-color: var(--neon-green);
+            box-shadow: 0 0 50px var(--neon-green-glow);
+        }
+
+        .reflection-box h3 {
+            font-size: 1.4rem;
+            color: var(--text-primary);
+            margin-bottom: 10px;
+        }
+
+        .reflection-box .question {
+            font-size: 1.2rem;
+            font-weight: 500;
+            color: var(--text-primary);
+            margin: 18px 0 10px;
+            padding: 20px 24px;
+            background: rgba(0, 255, 65, 0.05);
+            border-radius: var(--radius);
+            border-left: 4px solid var(--neon-green);
+            transition: all 0.3s ease;
+        }
+
+        .reflection-box:hover .question {
+            box-shadow: 0 0 30px var(--neon-green-glow);
+        }
+
+        .reflection-box .final-text {
+            margin-top: 18px;
+            color: var(--text-secondary);
+            font-size: 1rem;
+            padding: 20px 24px;
+            background: rgba(255, 255, 255, 0.02);
+            border-radius: var(--radius);
+            border: 1px solid var(--border-color);
+            transition: all 0.3s ease;
+        }
+
+        .reflection-box:hover .final-text {
+            border-color: var(--neon-green);
+        }
+
+        /* ===== CREDITS ===== */
+        .credits-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 2rem;
+            gap: 30px;
+            margin: 35px 0;
         }
-        .projeto-card {
-            background: var(--cinza-escuro);
-            border: 1px solid #333;
-            border-radius: 4px;
-            padding: 2rem;
-            transition: var(--transicao-padrao);
+
+        .credit-card {
+            background: var(--bg-card);
+            border-radius: var(--radius);
+            padding: 32px 28px;
+            border: 1px solid var(--border-color);
+            text-align: center;
+            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
             position: relative;
+            overflow: hidden;
         }
-        .projeto-card:hover {
-            border-color: var(--laranja);
-            box-shadow: 0 0 40px rgba(255, 122, 0, 0.08);
-            transform: translateY(-5px);
+
+        .credit-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, var(--neon-green-glow), transparent 70%);
+            opacity: 0;
+            transition: all 0.6s ease;
         }
-        .projeto-card .projeto-titulo {
-            font-size: 1.2rem;
-            color: var(--laranja);
-            letter-spacing: 1px;
-            margin-bottom: 0.5rem;
+
+        .credit-card:hover {
+            transform: translateY(-10px) scale(1.03);
+            border-color: var(--neon-green);
+            box-shadow: 0 0 60px var(--neon-green-glow);
         }
-        .projeto-card .projeto-desc {
-            color: var(--metal-claro);
+
+        .credit-card:hover::before {
+            opacity: 0.1;
+        }
+
+        .credit-card .avatar {
+            font-size: 4rem;
+            display: block;
+            margin-bottom: 16px;
+            position: relative;
+            z-index: 1;
+            transition: all 0.5s ease;
+        }
+
+        .credit-card:hover .avatar {
+            animation: avatarFloat 1s ease-in-out infinite;
+        }
+
+        @keyframes avatarFloat {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        .credit-card .name {
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 4px;
+            position: relative;
+            z-index: 1;
+            transition: all 0.3s ease;
+        }
+
+        .credit-card:hover .name {
+            color: var(--neon-green);
+            text-shadow: 0 0 20px var(--neon-green-glow);
+        }
+
+        .credit-card .role {
+            font-size: 0.95rem;
+            color: var(--neon-green);
+            font-weight: 500;
+            position: relative;
+            z-index: 1;
+        }
+
+        .credit-card .role::before {
+            content: '▸ ';
+            color: var(--neon-green);
+        }
+
+        .credit-card .divider {
+            width: 40px;
+            height: 2px;
+            background: var(--neon-green);
+            margin: 12px auto;
+            box-shadow: 0 0 20px var(--neon-green-glow);
+            position: relative;
+            z-index: 1;
+            transition: all 0.3s ease;
+        }
+
+        .credit-card:hover .divider {
+            width: 60px;
+            box-shadow: 0 0 40px var(--neon-green-glow-strong);
+        }
+
+        .credit-card .description {
+            color: var(--text-secondary);
             font-size: 0.9rem;
+            position: relative;
+            z-index: 1;
         }
-        .projeto-card .projeto-status {
+
+        .credit-card .badge-credit {
             display: inline-block;
-            margin-top: 0.8rem;
+            margin-top: 12px;
             font-size: 0.7rem;
-            letter-spacing: 1px;
-            padding: 0.2rem 1rem;
-            border-radius: 20px;
-            background: rgba(255, 122, 0, 0.1);
-            color: var(--laranja);
-            border: 1px solid rgba(255, 122, 0, 0.15);
-        }
-        .projeto-card .projeto-status.verde {
-            background: rgba(51, 255, 102, 0.1);
-            color: var(--verde);
-            border-color: rgba(51, 255, 102, 0.2);
-        }
-        .projeto-card .projeto-status.vermelho {
-            background: rgba(255, 51, 51, 0.1);
-            color: var(--vermelho);
-            border-color: rgba(255, 51, 51, 0.2);
-        }
-
-        /* ======================================================================= */
-        /*  SEÇÃO SEGURANÇA (nova)                                                  */
-        /* ======================================================================= */
-        .seguranca-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 2rem;
-        }
-        .seguranca-item {
-            background: var(--cinza-escuro);
-            border: 1px solid #333;
-            padding: 1.8rem;
-            border-radius: 4px;
-            text-align: center;
-            transition: var(--transicao-padrao);
-        }
-        .seguranca-item:hover {
-            border-color: var(--laranja);
-        }
-        .seguranca-item .nivel {
-            font-size: 2.5rem;
-            font-weight: bold;
-            color: var(--laranja);
-        }
-        .seguranca-item .desc {
-            color: var(--metal-claro);
-            font-size: 0.8rem;
-            margin-top: 0.3rem;
-        }
-        .seguranca-item .status {
-            margin-top: 0.5rem;
-            font-size: 0.7rem;
-            color: var(--verde);
-        }
-
-        /* ======================================================================= */
-        /*  SEÇÃO ENERGIA (nova)                                                    */
-        /* ======================================================================= */
-        .energia-container {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 2rem;
-            justify-content: center;
-        }
-        .energia-card {
-            background: var(--cinza-escuro);
-            border: 1px solid #333;
-            border-radius: 4px;
-            padding: 2rem;
-            flex: 1 1 200px;
-            text-align: center;
-            transition: var(--transicao-padrao);
-        }
-        .energia-card:hover {
-            border-color: var(--laranja);
-            box-shadow: 0 0 40px rgba(255, 122, 0, 0.05);
-        }
-        .energia-card .valor {
-            font-size: 2.2rem;
-            color: var(--laranja);
-            font-weight: bold;
-        }
-        .energia-card .rotulo {
-            color: var(--metal);
-            font-size: 0.8rem;
+            background: var(--neon-green-glow);
+            color: var(--neon-green);
+            padding: 4px 16px;
+            border-radius: 40px;
+            border: 1px solid var(--neon-green);
             text-transform: uppercase;
             letter-spacing: 1px;
-        }
-
-        /* ======================================================================= */
-        /*  SEÇÃO MAPA (nova)                                                       */
-        /* ======================================================================= */
-        .mapa-container {
-            background: var(--cinza-escuro);
-            border: 1px solid #333;
-            border-radius: 4px;
-            padding: 2rem;
-            text-align: center;
+            font-weight: 600;
             position: relative;
-            min-height: 300px;
-        }
-        .mapa-container .mapa-placeholder {
-            color: var(--metal);
-            font-size: 1.2rem;
-            letter-spacing: 2px;
-        }
-        .mapa-container .mapa-placeholder span {
-            color: var(--laranja);
+            z-index: 1;
+            transition: all 0.3s ease;
         }
 
-        /* ======================================================================= */
-        /*  SEÇÃO NOTÍCIAS (nova)                                                   */
-        /* ======================================================================= */
-        .noticias-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-            gap: 2rem;
-        }
-        .noticia-card {
-            background: var(--cinza-escuro);
-            border: 1px solid #333;
-            border-radius: 4px;
-            padding: 1.8rem;
-            transition: var(--transicao-padrao);
-        }
-        .noticia-card:hover {
-            border-color: var(--laranja);
-            box-shadow: 0 0 30px rgba(255, 122, 0, 0.05);
-        }
-        .noticia-card .data {
-            font-size: 0.7rem;
-            color: var(--metal);
-            letter-spacing: 1px;
-        }
-        .noticia-card h4 {
-            font-size: 1.1rem;
-            color: #fff;
-            margin: 0.5rem 0;
-        }
-        .noticia-card p {
-            color: var(--metal-claro);
-            font-size: 0.9rem;
+        .credit-card:hover .badge-credit {
+            box-shadow: 0 0 30px var(--neon-green-glow-strong);
+            transform: scale(1.05);
         }
 
-        /* ======================================================================= */
-        /*  SEÇÃO RELATÓRIOS (nova)                                                 */
-        /* ======================================================================= */
-        .relatorios-lista {
-            background: var(--cinza-escuro);
-            border: 1px solid #333;
-            border-radius: 4px;
-            padding: 1.5rem;
-        }
-        .relatorio-item {
-            display: flex;
-            justify-content: space-between;
-            padding: 0.8rem 0;
-            border-bottom: 1px solid #222;
-            color: var(--metal-claro);
-            font-size: 0.9rem;
-            transition: var(--transicao-padrao);
-        }
-        .relatorio-item:last-child {
-            border-bottom: none;
-        }
-        .relatorio-item:hover {
-            color: #fff;
-        }
-        .relatorio-item .rel-titulo {
-            color: #fff;
-        }
-        .relatorio-item .rel-status {
-            color: var(--verde);
-        }
-
-        /* ======================================================================= */
-        /*  SEÇÃO FOOTER                                                            */
-        /* ======================================================================= */
-        footer {
-            background: var(--cinza-escuro);
-            border-top: 1px solid #333;
-            padding: 4rem 2rem;
+        .credits-footer {
             text-align: center;
-            margin-top: 4rem;
-        }
-        footer .footer-content {
-            max-width: 900px;
-            margin: 0 auto;
-            display: flex;
-            flex-direction: column;
-            gap: 1.5rem;
-        }
-        footer .logo-footer {
-            font-size: 2.5rem;
-            color: var(--laranja);
-            letter-spacing: 8px;
-            font-weight: bold;
-            text-shadow: 0 0 40px rgba(255, 122, 0, 0.15);
-        }
-        footer .footer-text {
-            color: var(--metal);
-            font-size: 0.8rem;
-            letter-spacing: 1px;
-            text-transform: uppercase;
-            line-height: 2;
-        }
-        footer .footer-text .classified {
-            color: var(--vermelho);
-        }
-        footer .footer-links {
-            display: flex;
-            justify-content: center;
-            gap: 2rem;
-            flex-wrap: wrap;
-            font-size: 0.7rem;
-        }
-        footer .footer-links a {
-            color: var(--metal);
-            text-decoration: none;
-            letter-spacing: 1px;
-            transition: color 0.3s;
-        }
-        footer .footer-links a:hover {
-            color: var(--laranja);
-        }
-        footer .footer-coords {
-            font-size: 0.7rem;
-            color: #333;
-            letter-spacing: 2px;
+            padding: 30px;
+            background: var(--bg-card);
+            border-radius: var(--radius);
+            border: 1px solid var(--border-color);
+            margin-top: 20px;
+            transition: all 0.5s ease;
         }
 
-        /* ======================================================================= */
-        /*  GLITCH EFEITO                                                           */
-        /* ======================================================================= */
-        .glitch-text {
-            animation: glitch 0.2s infinite;
-        }
-        @keyframes glitch {
-            0% {
-                transform: translate(0);
-            }
-            20% {
-                transform: translate(-3px, 3px);
-            }
-            40% {
-                transform: translate(3px, -3px);
-            }
-            60% {
-                transform: translate(-2px, 2px);
-            }
-            80% {
-                transform: translate(2px, -2px);
-            }
-            100% {
-                transform: translate(0);
-            }
+        .credits-footer:hover {
+            border-color: var(--neon-green);
+            box-shadow: 0 0 40px var(--neon-green-glow);
         }
 
-        /* ======================================================================= */
-        /*  HOLOGRAFIC LINES (decorativo)                                           */
-        /* ======================================================================= */
-        .holographic-line {
-            width: 100%;
-            height: 1px;
-            background: linear-gradient(90deg, transparent, var(--laranja), transparent);
-            opacity: 0.2;
-            margin: 2rem 0;
-            animation: holographic-pulse 3s ease-in-out infinite;
-        }
-        @keyframes holographic-pulse {
-            0%,
-            100% {
-                opacity: 0.1;
-            }
-            50% {
-                opacity: 0.4;
-            }
+        .credits-footer h3 {
+            color: var(--neon-green);
+            font-size: 1.2rem;
+            margin-bottom: 10px;
+            text-shadow: 0 0 20px var(--neon-green-glow);
         }
 
-        /* ======================================================================= */
-        /*  RESPONSIVIDADE                                                          */
-        /* ======================================================================= */
-        @media (max-width: 992px) {
-            .hero .lambda-logo {
-                font-size: 5rem;
+        .credits-footer p {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+        }
+
+        .credits-footer .highlight-name {
+            color: var(--text-primary);
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .credits-footer .highlight-name:hover {
+            color: var(--neon-green);
+            text-shadow: 0 0 20px var(--neon-green-glow);
+        }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 900px) {
+            .header-inner {
+                flex-wrap: wrap;
+                height: auto;
+                padding: 14px 0;
             }
-            .hero h1 {
-                font-size: 2.8rem;
-                letter-spacing: 6px;
+
+            .logo {
+                font-size: 1.1rem;
             }
-            .timeline::before {
-                left: 20px;
+
+            .menu-toggle {
+                display: flex;
             }
-            .timeline-item {
+
+            .nav {
+                display: none;
                 width: 100%;
-                padding-left: 50px !important;
-                padding-right: 0 !important;
-                margin-left: 0 !important;
-                justify-content: flex-start !important;
+                flex-direction: column;
+                align-items: stretch;
+                gap: 4px;
+                padding: 14px 0 6px;
+                border-top: 1px solid var(--border-color);
             }
-            .timeline-item .dot {
-                left: 13px !important;
-                right: auto !important;
+
+            .nav.open {
+                display: flex;
+                animation: navSlideDown 0.4s ease forwards;
             }
-            .timeline-item:nth-child(odd) .dot {
-                right: auto;
-                left: 13px;
+
+            @keyframes navSlideDown {
+                0% { opacity: 0; transform: translateY(-10px); }
+                100% { opacity: 1; transform: translateY(0); }
             }
-            .timeline-item:nth-child(even) .dot {
-                left: 13px;
+
+            .nav-btn {
+                padding: 12px 18px;
+                width: 100%;
+                text-align: left;
+                border-radius: var(--radius);
+                font-size: 0.95rem;
             }
-            .terminal .input-line input {
-                font-size: 0.8rem;
+
+            .nav-btn.active {
+                background: var(--neon-green);
+                color: var(--bg-primary);
             }
-            .hev-hud {
-                bottom: 10px;
-                left: 10px;
-                font-size: 9px;
-                padding: 8px 12px;
-                min-width: 120px;
+
+            .page-title {
+                font-size: 2rem;
+            }
+
+            .compare-wrap {
+                grid-template-columns: 1fr;
+                gap: 28px;
+                padding: 24px;
+            }
+
+            .risk-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .card-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .improve-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .credits-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .challenge-banner-content {
+                flex-direction: column;
+                gap: 10px;
+            }
+
+            .challenge-banner .badge-challenge {
+                font-size: 0.85rem;
+                padding: 6px 18px;
             }
         }
-        @media (max-width: 768px) {
-            section {
-                padding: 3rem 1.5rem;
+
+        @media (max-width: 500px) {
+            .main {
+                padding: 24px 16px 40px;
             }
-            .hero .lambda-logo {
-                font-size: 4rem;
+
+            .page-title {
+                font-size: 1.7rem;
             }
-            .hero h1 {
-                font-size: 2rem;
-                letter-spacing: 4px;
+
+            .risk-header {
+                flex-wrap: wrap;
             }
-            .hero .subtitle {
-                font-size: 0.9rem;
-                letter-spacing: 4px;
+
+            .risk-priority {
+                margin-left: 0;
             }
-            .hero .btn-database {
-                padding: 0.8rem 2rem;
+
+            .improve-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .credits-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .reflection-box {
+                padding: 24px;
+            }
+
+            .highlight-box {
+                padding: 18px 20px;
                 font-size: 1rem;
             }
-            .stats-grid {
-                grid-template-columns: repeat(2, 1fr);
+
+            .compare-wrap {
+                padding: 18px;
             }
-            .instalacoes-grid {
-                grid-template-columns: 1fr 1fr;
+
+            .challenge-banner {
+                padding: 12px 16px;
             }
-            .personnel-grid {
-                grid-template-columns: 1fr 1fr;
-            }
-            .sobre-grid {
-                grid-template-columns: 1fr 1fr;
-            }
-            .projetos-grid {
-                grid-template-columns: 1fr;
-            }
-            .noticias-grid {
-                grid-template-columns: 1fr;
-            }
-            .seguranca-grid {
-                grid-template-columns: 1fr 1fr;
-            }
-        }
-        @media (max-width: 480px) {
-            .hero .lambda-logo {
-                font-size: 3rem;
-            }
-            .hero h1 {
-                font-size: 1.6rem;
-                letter-spacing: 2px;
-            }
-            .hero .subtitle {
-                font-size: 0.7rem;
-                letter-spacing: 2px;
-            }
-            .hero .btn-database {
-                padding: 0.6rem 1.2rem;
-                font-size: 0.8rem;
-            }
-            .instalacoes-grid {
-                grid-template-columns: 1fr;
-            }
-            .personnel-grid {
-                grid-template-columns: 1fr;
-            }
-            .sobre-grid {
-                grid-template-columns: 1fr;
-            }
-            .seguranca-grid {
-                grid-template-columns: 1fr;
-            }
-            .stats-grid {
-                grid-template-columns: 1fr 1fr;
-            }
-            .terminal {
-                padding: 1rem;
-            }
-            .terminal .output {
+
+            .challenge-banner .badge-challenge {
                 font-size: 0.75rem;
-                min-height: 120px;
+                padding: 5px 14px;
+                flex-wrap: wrap;
+                justify-content: center;
             }
-            .hev-hud {
-                font-size: 7px;
-                padding: 4px 8px;
-                min-width: 80px;
-                bottom: 5px;
-                left: 5px;
-            }
-            .alerta-mensagem {
-                font-size: 1.2rem;
+
+            .challenge-banner .badge-year {
+                font-size: 0.75rem;
+                padding: 4px 14px;
             }
         }
 
-        /* ======================================================================= */
-        /*  EFEITOS ADICIONAIS                                                      */
-        /* ======================================================================= */
-        .blink {
-            animation: blink 1s step-end infinite;
+        /* ===== MISC ===== */
+        .footer-note {
+            text-align: center;
+            margin-top: 56px;
+            padding-top: 28px;
+            border-top: 1px solid var(--border-color);
+            color: var(--text-secondary);
+            font-size: 0.85rem;
+            position: relative;
         }
-        @keyframes blink {
-            0%,
+
+        .footer-note::before {
+            content: '';
+            position: absolute;
+            top: -1px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--neon-green), transparent);
+        }
+
+        .footer-note strong {
+            color: var(--neon-green);
+            transition: all 0.3s ease;
+        }
+
+        .footer-note strong:hover {
+            text-shadow: 0 0 20px var(--neon-green-glow);
+        }
+
+        .text-center {
+            text-align: center;
+        }
+
+        /* ===== GLOW EFFECTS ===== */
+        .glow-text {
+            color: var(--neon-green);
+            text-shadow: 0 0 30px var(--neon-green-glow-strong);
+        }
+
+        .glow-border {
+            border-color: var(--neon-green) !important;
+            box-shadow: 0 0 30px var(--neon-green-glow) !important;
+        }
+
+        /* ===== ANIMATION DELAYS ===== */
+        .risk-card,
+        .card,
+        .improve-card,
+        .compare-wrap,
+        .reflection-box,
+        .credit-card {
+            opacity: 0;
+            animation: cardEntrance 0.8s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+        }
+
+        @keyframes cardEntrance {
+            0% {
+                opacity: 0;
+                transform: translateY(30px) scale(0.9);
+            }
             100% {
                 opacity: 1;
-            }
-            50% {
-                opacity: 0;
+                transform: translateY(0) scale(1);
             }
         }
 
-        .scanline-overlay {
+        .risk-card:nth-child(1) {
+            animation-delay: 0.1s;
+        }
+        .risk-card:nth-child(2) {
+            animation-delay: 0.2s;
+        }
+        .risk-card:nth-child(3) {
+            animation-delay: 0.3s;
+        }
+        .risk-card:nth-child(4) {
+            animation-delay: 0.4s;
+        }
+
+        .card:nth-child(1) {
+            animation-delay: 0.1s;
+        }
+        .card:nth-child(2) {
+            animation-delay: 0.2s;
+        }
+        .card:nth-child(3) {
+            animation-delay: 0.3s;
+        }
+
+        .improve-card:nth-child(1) {
+            animation-delay: 0.1s;
+        }
+        .improve-card:nth-child(2) {
+            animation-delay: 0.15s;
+        }
+        .improve-card:nth-child(3) {
+            animation-delay: 0.2s;
+        }
+        .improve-card:nth-child(4) {
+            animation-delay: 0.25s;
+        }
+        .improve-card:nth-child(5) {
+            animation-delay: 0.3s;
+        }
+        .improve-card:nth-child(6) {
+            animation-delay: 0.35s;
+        }
+        .improve-card:nth-child(7) {
+            animation-delay: 0.4s;
+        }
+
+        .credit-card:nth-child(1) {
+            animation-delay: 0.1s;
+        }
+        .credit-card:nth-child(2) {
+            animation-delay: 0.2s;
+        }
+        .credit-card:nth-child(3) {
+            animation-delay: 0.3s;
+        }
+        .credit-card:nth-child(4) {
+            animation-delay: 0.4s;
+        }
+        .credit-card:nth-child(5) {
+            animation-delay: 0.5s;
+        }
+
+        .compare-wrap {
+            animation-delay: 0.1s;
+        }
+
+        .reflection-box {
+            animation-delay: 0.2s;
+        }
+
+        /* ===== PARTICLES EFFECT ===== */
+        .particle-container {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
             pointer-events: none;
-            background: repeating-linear-gradient(0deg,
-                    rgba(0, 0, 0, 0.02) 0px,
-                    rgba(0, 0, 0, 0.02) 1px,
-                    transparent 1px,
-                    transparent 3px);
-            z-index: 9996;
-        }
-
-        /* ======================================================================= */
-        /*  LAMBDA OCULTO (easter egg)                                              */
-        /* ======================================================================= */
-        .hidden-lambda {
-            position: fixed;
-            bottom: 15px;
-            right: 15px;
-            color: rgba(255, 122, 0, 0.02);
-            font-size: 3.5rem;
-            z-index: 0;
-            pointer-events: none;
-            user-select: none;
-            transition: color 0.8s;
-        }
-        .hidden-lambda:hover {
-            color: rgba(255, 122, 0, 0.08);
-        }
-
-        /* ======================================================================= */
-        /*  BARRA DE PROGRESSO (simulada)                                           */
-        /* ======================================================================= */
-        .progress-bar {
-            width: 100%;
-            height: 4px;
-            background: #222;
-            border-radius: 2px;
+            z-index: -1;
             overflow: hidden;
-            margin: 0.5rem 0;
-        }
-        .progress-bar .fill {
-            height: 100%;
-            background: var(--laranja);
-            width: 0%;
-            border-radius: 2px;
-            transition: width 1s ease;
         }
 
-        /* ======================================================================= */
-        /*  TOOLTIP                                                                 */
-        /* ======================================================================= */
-        .tooltip {
-            position: relative;
-            cursor: help;
-        }
-        .tooltip::after {
-            content: attr(data-tooltip);
+        .particle {
             position: absolute;
-            bottom: 120%;
-            left: 50%;
-            transform: translateX(-50%);
-            background: var(--cinza-escuro);
-            color: #fff;
-            padding: 0.3rem 0.8rem;
-            border-radius: 4px;
-            font-size: 0.7rem;
-            white-space: nowrap;
-            border: 1px solid var(--laranja);
+            background: var(--neon-green);
+            border-radius: 50%;
             opacity: 0;
-            pointer-events: none;
-            transition: opacity 0.3s;
-        }
-        .tooltip:hover::after {
-            opacity: 1;
+            animation: particleFloat linear infinite;
         }
 
-        /* ======================================================================= */
-        /*  ANIMAÇÃO DE CARREGAMENTO (simulada)                                     */
-        /* ======================================================================= */
-        .loading-dots::after {
-            content: '';
-            animation: dots 1.5s steps(4, end) infinite;
-        }
-        @keyframes dots {
+        @keyframes particleFloat {
             0% {
-                content: '';
+                opacity: 0;
+                transform: translateY(100vh) scale(0);
             }
-            25% {
-                content: '.';
+            10% {
+                opacity: 0.5;
             }
-            50% {
-                content: '..';
-            }
-            75% {
-                content: '...';
+            90% {
+                opacity: 0.5;
             }
             100% {
-                content: '';
+                opacity: 0;
+                transform: translateY(-10vh) scale(1);
             }
         }
-
-        /* FIM DO CSS */
     </style>
 </head>
 <body>
 
-    <!-- ======================================================================= -->
-    <!--  PARTICLES CANVAS                                                        -->
-    <!-- ======================================================================= -->
-    <canvas id="particles-canvas"></canvas>
+    <!-- ===== PARTICLES ===== -->
+    <div class="particle-container" id="particles"></div>
 
-    <!-- ======================================================================= -->
-    <!--  SCANLINE OVERLAY                                                        -->
-    <!-- ======================================================================= -->
-    <div class="scanline-overlay"></div>
+    <!-- ===== HEADER ===== -->
+    <header class="header" id="header">
+        <div class="header-inner">
+            <div class="logo">
+                <span class="logo-icon">🏥</span>
+                SUS<span>+</span>Organizado
+            </div>
 
-    <!-- ======================================================================= -->
-    <!--  HUD HEV                                                                 -->
-    <!-- ======================================================================= -->
-    <div class="hev-hud" id="hevHud">
-        <div class="line"><span class="label">HEV Suit</span><span class="value">ONLINE</span></div>
-        <div class="line"><span class="label">Shield</span><span class="value" id="shield-value">100%</span></div>
-        <div class="line"><span class="label">Health</span><span class="value" id="health-value">100%</span></div>
-        <div class="line"><span class="label">Location</span><span class="value" id="location-value">SECTOR C</span></div>
-        <div class="line"><span class="label">Time</span><span class="value" id="hud-time">--:--</span></div>
+            <button class="menu-toggle" id="menuToggle" aria-label="Abrir menu">
+                <span></span><span></span><span></span>
+            </button>
+
+            <nav class="nav" id="navMenu">
+                <button class="nav-btn active" data-page="page1">1. Projeto</button>
+                <button class="nav-btn" data-page="page2">2. Classes</button>
+                <button class="nav-btn" data-page="page3">3. Considerações</button>
+                <button class="nav-btn" data-page="page4">4. Melhorias</button>
+                <button class="nav-btn" data-page="page5">5. Extra</button>
+                <button class="nav-btn" data-page="page6">6. Créditos</button>
+            </nav>
+        </div>
+    </header>
+
+    <!-- ===== BANNER DESAFIO LIGA JOVEM ===== -->
+    <div class="challenge-banner">
+        <div class="challenge-banner-content">
+            <div class="badge-challenge">
+                <span class="icon">🏆</span>
+                <span>DESAFIO <strong style="color:var(--text-primary);">LIGA JOVEM</strong></span>
+                <span class="highlight">|</span>
+                <span>PEDRO CARLI</span>
+            </div>
+            <div class="badge-year">
+                <span>📅</span>
+                <span><strong>2026</strong></span>
+            </div>
+        </div>
     </div>
 
-    <!-- ======================================================================= -->
-    <!--  LAMBDA OCULTO                                                           -->
-    <!-- ======================================================================= -->
-    <div class="hidden-lambda">λ</div>
+    <!-- ===== MAIN ===== -->
+    <main class="main">
 
-    <!-- ======================================================================= -->
-    <!--  ALERTA FLASH                                                           -->
-    <!-- ======================================================================= -->
-    <div class="alerta-flash" id="alertaFlash"></div>
+        <!-- ===================== PAGE 1 ===================== -->
+        <section class="page active" id="page1">
+            <h1 class="page-title">🧬 O que é o projeto</h1>
+            <p class="page-subtitle">Uma proposta de organização das filas do SUS por classificação de risco</p>
 
-    <!-- ======================================================================= -->
-    <!--  SITE WRAPPER                                                           -->
-    <!-- ======================================================================= -->
-    <div class="site-wrapper">
+            <p style="font-size:1.05rem; color:var(--text-secondary); max-width:800px;">
+                O SUS atende milhões de brasileiros diariamente. Um dos desafios mais conhecidos do sistema é o
+                <strong style="color:var(--neon-green);">tempo de espera</strong> para consultas, exames, procedimentos e atendimentos hospitalares.
+            </p>
 
-        <!-- =================================================================== -->
-        <!--  HERO                                                                -->
-        <!-- =================================================================== -->
-        <section class="hero" id="hero">
-            <div class="lambda-logo">λ</div>
-            <h1>BLACK MESA RESEARCH FACILITY</h1>
-            <p class="subtitle">Advancing Humanity Through Science</p>
-            <button class="btn-database" id="btnAccessDB">ACCESS DATABASE</button>
-            <div class="scroll-indicator" id="scrollIndicator">▼</div>
-        </section>
-
-        <!-- =================================================================== -->
-        <!--  SEÇÃO SOBRE                                                         -->
-        <!-- =================================================================== -->
-        <section id="sobre">
-            <h2 class="section-title reveal">Sobre a Black Mesa</h2>
-            <p class="section-subtitle reveal">Pesquisa, inovação e segurança em nome do progresso humano.</p>
-            <div class="sobre-grid">
-                <div class="sobre-card reveal">
-                    <span class="icon">🔬</span>
-                    <h3>Pesquisa Avançada</h3>
-                    <p>Pesquisas de ponta em física teórica, quântica e aplicada.</p>
+            <div class="card-grid">
+                <div class="card">
+                    <span class="card-icon">💡</span>
+                    <h3>O que muitos pensam</h3>
+                    <p>Muitas pessoas acreditam que a solução seria apenas investir mais dinheiro, contratar mais
+                        funcionários ou criar mais atendimentos online. Essas medidas ajudam, mas não resolvem
+                        completamente o problema.</p>
                 </div>
-                <div class="sobre-card reveal">
-                    <span class="icon">⚡</span>
-                    <h3>Tecnologias Experimentais</h3>
-                    <p>Desenvolvimento de equipamentos de alto risco e protótipos.</p>
+                <div class="card">
+                    <span class="card-icon">⚙️</span>
+                    <h3>Fatores complexos</h3>
+                    <p>As filas envolvem alta demanda, limitação estrutural, gestão dos atendimentos e
+                        desigualdades regionais. É um problema multifatorial que exige soluções inteligentes.</p>
                 </div>
-                <div class="sobre-card reveal">
-                    <span class="icon">🌀</span>
-                    <h3>Teletransporte</h3>
-                    <p>Manipulação de portais e dobras espaciais para viagens interdimensonais.</p>
-                </div>
-                <div class="sobre-card reveal">
-                    <span class="icon">☢️</span>
-                    <h3>Energia Exótica</h3>
-                    <p>Fontes de energia além do espectro conhecido, incluindo matéria escura.</p>
-                </div>
-                <div class="sobre-card reveal">
-                    <span class="icon">🧠</span>
-                    <h3>Inteligência Artificial</h3>
-                    <p>Sistemas de IA para simulação e controle de experimentos.</p>
-                </div>
-                <div class="sobre-card reveal">
-                    <span class="icon">🛸</span>
-                    <h3>Contato Alienígena</h3>
-                    <p>Estudo de espécies e tecnologias de dimensões paralelas.</p>
+                <div class="card">
+                    <span class="card-icon">🎯</span>
+                    <h3>Nossa proposta</h3>
+                    <p>Apresentamos um sistema de <strong style="color:var(--neon-green);">classificação de risco por cores</strong> para organizar
+                        melhor os pacientes de acordo com a gravidade dos casos, tornando o atendimento mais justo e
+                        eficiente.</p>
                 </div>
             </div>
 
-            <div class="stats-grid reveal">
-                <div class="stat-item">
-                    <span class="stat-number" data-target="12400">0</span>
-                    <span class="stat-label">Researchers</span>
-                </div>
-                <div class="stat-item">
-                    <span class="stat-number" data-target="890">0</span>
-                    <span class="stat-label">Projects</span>
-                </div>
-                <div class="stat-item">
-                    <span class="stat-number" data-target="134">0</span>
-                    <span class="stat-label">Laboratories</span>
-                </div>
-                <div class="stat-item">
-                    <span class="stat-number" data-target="OMEGA">Ω</span>
-                    <span class="stat-label">Security Level</span>
-                </div>
-                <div class="stat-item">
-                    <span class="stat-number" data-target="47">0</span>
-                    <span class="stat-label">Years of Research</span>
-                </div>
-                <div class="stat-item">
-                    <span class="stat-number" data-target="1024">0</span>
-                    <span class="stat-label">Xen Artifacts</span>
-                </div>
+            <div class="highlight-box">
+                <strong>“O objetivo deste projeto não é eliminar as filas do SUS, mas tornar o atendimento mais
+                    organizado, eficiente e justo.”</strong>
+            </div>
+
+            <h2 class="section-title">📌 Resumo do objetivo</h2>
+            <p style="color:var(--text-secondary); max-width:800px;">
+                O projeto propõe uma ferramenta de gestão que auxilia profissionais de saúde a priorizar quem precisa de
+                atendimento imediato, sem desumanizar o cuidado. A classificação por cores é um protocolo já utilizado em
+                diversos serviços de emergência ao redor do mundo, e aqui adaptamos para o contexto do SUS com foco na
+                transparência e na equidade.
+            </p>
+
+            <div style="margin-top:32px; background:var(--bg-card); border-radius:var(--radius); padding:24px; border:1px solid var(--border-color);">
+                <p style="font-weight:600; color:var(--text-primary);">🔍 Em resumo:</p>
+                <ul style="list-style:none; padding:0; margin-top:10px; display:flex; flex-wrap:wrap; gap:12px;">
+                    <li style="background:rgba(0,255,65,0.05); padding:8px 20px; border-radius:40px; font-size:0.95rem; color:var(--text-secondary); border:1px solid var(--border-color);">✅ Organização</li>
+                    <li style="background:rgba(0,255,65,0.05); padding:8px 20px; border-radius:40px; font-size:0.95rem; color:var(--text-secondary); border:1px solid var(--border-color);">✅ Priorização justa</li>
+                    <li style="background:rgba(0,255,65,0.05); padding:8px 20px; border-radius:40px; font-size:0.95rem; color:var(--text-secondary); border:1px solid var(--border-color);">✅ Redução de desperdício</li>
+                    <li style="background:rgba(0,255,65,0.05); padding:8px 20px; border-radius:40px; font-size:0.95rem; color:var(--text-secondary); border:1px solid var(--border-color);">✅ Melhor experiência</li>
+                </ul>
             </div>
         </section>
 
-        <!-- =================================================================== -->
-        <!--  SEÇÃO INSTALAÇÕES                                                    -->
-        <!-- =================================================================== -->
-        <section id="instalacoes">
-            <h2 class="section-title reveal">Instalações</h2>
-            <p class="section-subtitle reveal">Complexos de pesquisa e desenvolvimento.</p>
-            <div class="instalacoes-grid">
-                <div class="instalacao-card reveal">
-                    <span class="icon">🧪</span>
-                    <h3>Anomalous Materials Lab</h3>
-                    <p>Estudo de materiais de dimensões paralelas e suas propriedades.</p>
-                    <span class="status-badge">ATIVO</span>
-                </div>
-                <div class="instalacao-card reveal">
-                    <span class="icon">🏛️</span>
-                    <h3>Lambda Complex</h3>
-                    <p>Núcleo da pesquisa sobre teletransporte e portais.</p>
-                    <span class="status-badge">OPERACIONAL</span>
-                </div>
-                <div class="instalacao-card reveal">
-                    <span class="icon">⚙️</span>
-                    <h3>Sector C Test Labs</h3>
-                    <p>Testes de equipamentos, protocolos de segurança e simulações.</p>
-                    <span class="status-badge">EM TESTE</span>
-                </div>
-                <div class="instalacao-card reveal">
-                    <span class="icon">🌌</span>
-                    <h3>Xen Research Division</h3>
-                    <p>Exploração e análise do mundo border e suas formas de vida.</p>
-                    <span class="status-badge">ALERTA</span>
-                </div>
-                <div class="instalacao-card reveal">
-                    <span class="icon">💻</span>
-                    <h3>Data Core</h3>
-                    <p>Processamento central de dados e inteligência artificial.</p>
-                    <span class="status-badge">ONLINE</span>
-                </div>
-                <div class="instalacao-card reveal">
-                    <span class="icon">🔒</span>
-                    <h3>Containment Sector</h3>
-                    <p>Área de contenção de anomalias e espécimes Xen.</p>
-                    <span class="status-badge">SEGURO</span>
-                </div>
-            </div>
-        </section>
+        <!-- ===================== PAGE 2 ===================== -->
+        <section class="page" id="page2">
+            <h1 class="page-title">🎨 Classes de risco e exemplos</h1>
+            <p class="page-subtitle">Entenda cada cor e sua prioridade no atendimento</p>
 
-        <!-- =================================================================== -->
-        <!--  SEÇÃO TIMELINE                                                       -->
-        <!-- =================================================================== -->
-        <section id="timeline">
-            <h2 class="section-title reveal">Linha do Tempo</h2>
-            <p class="section-subtitle reveal">Marcos históricos da Black Mesa.</p>
-            <div class="timeline">
-                <div class="timeline-item reveal">
-                    <div class="content">
-                        <span class="year">1945</span>
-                        <h4>Fundação da Black Mesa</h4>
-                        <p>Estabelecida como instalação de pesquisa científica militar.</p>
+            <div class="risk-grid">
+
+                <!-- PRETA -->
+                <div class="risk-card black">
+                    <div class="risk-header">
+                        <span class="risk-dot black"></span>
+                        <span class="risk-name">Prioridade Máxima</span>
+                        <span class="risk-priority">⚫ 100%</span>
                     </div>
-                    <div class="dot"></div>
-                </div>
-                <div class="timeline-item reveal">
-                    <div class="content">
-                        <span class="year">1962</span>
-                        <h4>Primeiros Experimentos com Teletransporte</h4>
-                        <p>Protótipos iniciais de teleportação de objetos inanimados.</p>
+                    <p class="risk-desc">Casos com risco imediato de morte ou situações extremamente críticas.</p>
+                    <div class="risk-bar-wrap">
+                        <div class="risk-bar-fill black" style="width:100%;"></div>
                     </div>
-                    <div class="dot"></div>
+                    <ul class="risk-examples">
+                        <li>Parada cardíaca</li>
+                        <li>Hemorragia intensa</li>
+                        <li>Trauma craniano grave</li>
+                        <li>Choque severo</li>
+                        <li>Falta extrema de ar</li>
+                    </ul>
                 </div>
-                <div class="timeline-item reveal">
-                    <div class="content">
-                        <span class="year">1998</span>
-                        <h4>Descoberta de Xen</h4>
-                        <p>Primeiro contato com o mundo border através de ressonância.</p>
+
+                <!-- VERMELHA -->
+                <div class="risk-card red">
+                    <div class="risk-header">
+                        <span class="risk-dot red"></span>
+                        <span class="risk-name">Alta Prioridade</span>
+                        <span class="risk-priority">🔴 80%</span>
                     </div>
-                    <div class="dot"></div>
-                </div>
-                <div class="timeline-item reveal">
-                    <div class="content">
-                        <span class="year">2000</span>
-                        <h4>Desenvolvimento do Teleportador</h4>
-                        <p>Protótipo funcional do teleportador de matéria.</p>
+                    <p class="risk-desc">Casos graves que precisam de atendimento rápido para evitar agravamento.</p>
+                    <div class="risk-bar-wrap">
+                        <div class="risk-bar-fill red" style="width:80%;"></div>
                     </div>
-                    <div class="dot"></div>
+                    <ul class="risk-examples">
+                        <li>Suspeita de infarto</li>
+                        <li>Fratura exposta</li>
+                        <li>Crise grave de asma</li>
+                        <li>Sangramento forte</li>
+                        <li>Dor intensa no peito</li>
+                    </ul>
                 </div>
-                <div class="timeline-item reveal">
-                    <div class="content">
-                        <span class="year">2003</span>
-                        <h4>Cascade Resonance</h4>
-                        <p>Evento catastrófico que abriu portais massivos para Xen.</p>
+
+                <!-- AMARELA -->
+                <div class="risk-card yellow">
+                    <div class="risk-header">
+                        <span class="risk-dot yellow"></span>
+                        <span class="risk-name">Situação de Atenção</span>
+                        <span class="risk-priority">🟡 50%</span>
                     </div>
-                    <div class="dot"></div>
-                </div>
-                <div class="timeline-item reveal">
-                    <div class="content">
-                        <span class="year">2004</span>
-                        <h4>Invasão Alienígena e Contenção</h4>
-                        <p>Forças de Xen invadem a instalação, iniciando a crise.</p>
+                    <p class="risk-desc">Casos que precisam de avaliação médica, mas não apresentam risco imediato.</p>
+                    <div class="risk-bar-wrap">
+                        <div class="risk-bar-fill yellow" style="width:50%;"></div>
                     </div>
-                    <div class="dot"></div>
+                    <ul class="risk-examples">
+                        <li>Febre alta persistente</li>
+                        <li>Dor abdominal moderada</li>
+                        <li>Infecção moderada</li>
+                        <li>Pressão alta</li>
+                        <li>Lesões moderadas</li>
+                    </ul>
                 </div>
-                <div class="timeline-item reveal">
-                    <div class="content">
-                        <span class="year">2026</span>
-                        <h4>Reconstrução e Nova Era</h4>
-                        <p>Reconstrução da instalação com tecnologias avançadas.</p>
+
+                <!-- VERDE -->
+                <div class="risk-card green">
+                    <div class="risk-header">
+                        <span class="risk-dot green"></span>
+                        <span class="risk-name">Condição Estável</span>
+                        <span class="risk-priority">🟢 20%</span>
                     </div>
-                    <div class="dot"></div>
+                    <p class="risk-desc">Casos leves que podem aguardar atendimento.</p>
+                    <div class="risk-bar-wrap">
+                        <div class="risk-bar-fill green" style="width:20%;"></div>
+                    </div>
+                    <ul class="risk-examples">
+                        <li>Resfriado comum</li>
+                        <li>Dor muscular leve</li>
+                        <li>Pequenos cortes</li>
+                        <li>Dor de cabeça leve</li>
+                        <li>Alergia leve</li>
+                    </ul>
                 </div>
+
+            </div>
+
+            <p style="color:var(--text-secondary); margin-top:12px; font-size:0.95rem;">
+                ⚠️ A classificação é dinâmica e deve ser reavaliada constantemente por profissionais treinados.
+            </p>
+        </section>
+
+        <!-- ===================== PAGE 3 ===================== -->
+        <section class="page" id="page3">
+            <h1 class="page-title">🧐 O que deve ser levado em consideração</h1>
+            <p class="page-subtitle">Limitações, riscos e a verdade sobre a proposta</p>
+
+            <p style="color:var(--text-secondary); max-width:800px;">
+                A classificação por cores <strong style="color:var(--neon-green);">ajuda na organização</strong>, mas não resolve os problemas
+                estruturais do SUS. O sistema não cria médicos, não cria hospitais e não reduz automaticamente a
+                quantidade de pacientes.
+            </p>
+
+            <h2 class="section-title">⚠️ Possíveis riscos e falhas</h2>
+
+            <div class="card-grid">
+                <div class="card">
+                    <span class="card-icon">🔀</span>
+                    <h3>Erros de classificação</h3>
+                    <p>A avaliação humana pode falhar. Um paciente grave pode ser subestimado ou um caso leve pode ser
+                        superestimado, comprometendo a eficácia do sistema.</p>
+                </div>
+                <div class="card">
+                    <span class="card-icon">🏥</span>
+                    <h3>Diferenças entre hospitais</h3>
+                    <p>Cada unidade pode interpretar as cores de forma diferente, gerando inconsistências e
+                        desigualdades regionais.</p>
+                </div>
+                <div class="card">
+                    <span class="card-icon">📚</span>
+                    <h3>Falta de treinamento</h3>
+                    <p>Sem capacitação adequada, a classificação perde eficácia. Profissionais precisam de formação
+                        contínua e protocolos claros.</p>
+                </div>
+                <div class="card">
+                    <span class="card-icon">🎭</span>
+                    <h3>Tentativas de burlar</h3>
+                    <p>Alguns pacientes podem tentar simular sintomas mais graves para furar a fila, o que exige
+                        mecanismos de verificação.</p>
+                </div>
+                <div class="card">
+                    <span class="card-icon">⏰</span>
+                    <h3>Sobrecarga em horários de pico</h3>
+                    <p>Em momentos de alta demanda, mesmo com classificação, o sistema pode ficar sobrecarregado,
+                        aumentando o tempo de espera.</p>
+                </div>
+            </div>
+
+            <div class="highlight-box" style="border-left-color: #ffea00;">
+                <strong style="color:#ffea00;">Conclusão:</strong> A proposta é uma <strong>ferramenta de gestão</strong> e não uma solução
+                definitiva. Ela deve ser combinada com investimentos estruturais, valorização profissional e políticas
+                públicas consistentes.
             </div>
         </section>
 
-        <!-- =================================================================== -->
-        <!--  SEÇÃO PROJETOS (nova)                                               -->
-        <!-- =================================================================== -->
-        <section id="projetos">
-            <h2 class="section-title reveal">Projetos Ativos</h2>
-            <p class="section-subtitle reveal">Iniciativas de pesquisa em andamento.</p>
-            <div class="projetos-grid">
-                <div class="projeto-card reveal">
-                    <div class="projeto-titulo">Projeto Lambda</div>
-                    <div class="projeto-desc">Desenvolvimento de teletransporte interestelar e portais estáveis.</div>
-                    <span class="projeto-status">EM ANDAMENTO</span>
-                    <div class="progress-bar"><div class="fill" style="width:78%;"></div></div>
+        <!-- ===================== PAGE 4 ===================== -->
+        <section class="page" id="page4">
+            <h1 class="page-title">🚀 O que poderia ser melhorado</h1>
+            <p class="page-subtitle">Ideias futuras para potencializar o sistema</p>
+
+            <div class="improve-grid">
+                <div class="improve-card">
+                    <h4>🌐 Integração digital entre hospitais</h4>
+                    <p>Compartilhamento de dados em tempo real para evitar duplicidade e melhorar o fluxo.</p>
+                    <span class="benefit">✅ Redução de filas regionais</span>
                 </div>
-                <div class="projeto-card reveal">
-                    <div class="projeto-titulo">Projeto Xen</div>
-                    <div class="projeto-desc">Análise de fauna, flora e artefatos do mundo border.</div>
-                    <span class="projeto-status verde">ATIVO</span>
-                    <div class="progress-bar"><div class="fill" style="width:92%;"></div></div>
+                <div class="improve-card">
+                    <h4>📋 Compartilhamento de histórico médico</h4>
+                    <p>Prontuários eletrônicos acessíveis entre unidades, com consentimento do paciente.</p>
+                    <span class="benefit">✅ Atendimento mais preciso</span>
                 </div>
-                <div class="projeto-card reveal">
-                    <div class="projeto-titulo">Projeto Anomalous</div>
-                    <div class="projeto-desc">Estudo de materiais exóticos e suas aplicações energéticas.</div>
-                    <span class="projeto-status">EM ANDAMENTO</span>
-                    <div class="progress-bar"><div class="fill" style="width:45%;"></div></div>
+                <div class="improve-card">
+                    <h4>🗺️ Fila regional unificada</h4>
+                    <p>Uma única fila por região, com distribuição inteligente de pacientes conforme a gravidade.</p>
+                    <span class="benefit">✅ Otimização de recursos</span>
                 </div>
-                <div class="projeto-card reveal">
-                    <div class="projeto-titulo">Projeto Cascade</div>
-                    <div class="projeto-desc">Prevenção de ressonância e contenção de portais.</div>
-                    <span class="projeto-status vermelho">CRÍTICO</span>
-                    <div class="progress-bar"><div class="fill" style="width:30%;"></div></div>
+                <div class="improve-card">
+                    <h4>📲 Avisos automáticos de consultas</h4>
+                    <p>Notificações por SMS ou app para lembrar pacientes e reduzir faltas.</p>
+                    <span class="benefit">✅ Menos absenteísmo</span>
                 </div>
-                <div class="projeto-card reveal">
-                    <div class="projeto-titulo">Projeto HEV</div>
-                    <div class="projeto-desc">Aprimoramento de trajes de proteção e sistemas de suporte.</div>
-                    <span class="projeto-status verde">CONCLUÍDO</span>
-                    <div class="progress-bar"><div class="fill" style="width:100%;"></div></div>
+                <div class="improve-card">
+                    <h4>⏱️ Tempo estimado de espera</h4>
+                    <p>Exibir ao paciente uma previsão atualizada com base na classificação e na fila.</p>
+                    <span class="benefit">✅ Mais transparência</span>
                 </div>
-                <div class="projeto-card reveal">
-                    <div class="projeto-titulo">Projeto A.I.</div>
-                    <div class="projeto-desc">Desenvolvimento de inteligência artificial para simulações.</div>
-                    <span class="projeto-status">EM ANDAMENTO</span>
-                    <div class="progress-bar"><div class="fill" style="width:60%;"></div></div>
+                <div class="improve-card">
+                    <h4>📱 Aplicativo para acompanhamento</h4>
+                    <p>Permite que o paciente veja sua posição na fila, receba orientações e atualize dados.</p>
+                    <span class="benefit">✅ Empoderamento do paciente</span>
                 </div>
+                <div class="improve-card">
+                    <h4>📊 Painel de monitoramento em tempo real</h4>
+                    <p>Gestores acompanham indicadores de tempo de espera, gravidade e eficiência.</p>
+                    <span class="benefit">✅ Gestão baseada em dados</span>
+                </div>
+            </div>
+
+            <p style="color:var(--text-secondary); margin-top:16px; font-style:italic;">
+                Essas melhorias dependem de investimento em tecnologia, capacitação e vontade política, mas mostram que o
+                sistema pode evoluir.
+            </p>
+        </section>
+
+        <!-- ===================== PAGE 5 ===================== -->
+        <section class="page" id="page5">
+            <h1 class="page-title">🧩 Extra — Comparação e reflexão</h1>
+            <p class="page-subtitle">Visualize a diferença e pense sobre a justiça no atendimento</p>
+
+            <!-- COMPARAÇÃO -->
+            <div class="compare-wrap">
+                <div class="compare-col without">
+                    <h4>❌ SEM CLASSIFICAÇÃO</h4>
+                    <div class="compare-item"><span class="emoji">🟥</span> Paciente grave</div>
+                    <div class="compare-item"><span class="emoji">🟩</span> Paciente leve</div>
+                    <div class="compare-item"><span class="emoji">🟥</span> Paciente grave</div>
+                    <div class="compare-item"><span class="emoji">🟩</span> Paciente leve</div>
+                    <p style="font-size:0.85rem; color:var(--text-secondary); margin-top:12px;">Ordem de chegada — nem sempre justa</p>
+                </div>
+                <div class="compare-col with">
+                    <h4>✅ COM CLASSIFICAÇÃO</h4>
+                    <div class="compare-item"><span class="emoji">⚫</span> Paciente crítico</div>
+                    <div class="compare-item"><span class="emoji">🔴</span> Paciente grave</div>
+                    <div class="compare-item"><span class="emoji">🟡</span> Paciente moderado</div>
+                    <div class="compare-item"><span class="emoji">🟢</span> Paciente leve</div>
+                    <p style="font-size:0.85rem; color:var(--text-secondary); margin-top:12px;">Prioridade pela gravidade — mais justa</p>
+                </div>
+            </div>
+
+            <!-- REFLEXÃO -->
+            <div class="reflection-box">
+                <h3>🤔 Pergunta para reflexão</h3>
+                <div class="question">
+                    “É mais justo atender por ordem de chegada ou pela gravidade do caso?”
+                </div>
+                <p style="color:var(--text-secondary);">
+                    Essa pergunta não tem resposta simples. A ordem de chegada é democrática, mas pode deixar
+                    pacientes graves esperando. A classificação por risco é mais justa clinicamente, mas exige
+                    treinamento e confiança no sistema. O ideal é um equilíbrio entre ambos, com transparência e
+                    humanização.
+                </p>
+            </div>
+
+            <!-- CONCLUSÃO FINAL -->
+            <div class="reflection-box" style="border-left: 5px solid var(--neon-green);">
+                <h3>📌 Conclusão Final</h3>
+                <div class="final-text">
+                    <p style="font-weight:500; color:var(--text-primary);">
+                        A proposta não pretende substituir profissionais da saúde nem resolver completamente as filas,
+                        mas sim <strong style="color:var(--neon-green);">contribuir para uma organização mais eficiente dos atendimentos</strong>.
+                    </p>
+                    <p style="margin-top:12px;">
+                        O SUS é um patrimônio nacional e merece soluções inovadoras, realistas e centradas no paciente.
+                        Este projeto é um passo nessa direção, com honestidade sobre suas limitações e otimismo sobre
+                        seu potencial.
+                    </p>
+                </div>
+            </div>
+
+            <div style="text-align:center; margin-top:24px; padding:16px; background:var(--bg-card); border-radius:var(--radius-sm); border:1px solid var(--border-color);">
+                <span style="font-size:0.9rem; color:var(--text-secondary);">
+                    🏥 Projeto educacional — SUS + Organizado
+                </span>
             </div>
         </section>
 
-        <!-- =================================================================== -->
-        <!--  SEÇÃO SEGURANÇA (nova)                                              -->
-        <!-- =================================================================== -->
-        <section id="seguranca">
-            <h2 class="section-title reveal">Níveis de Segurança</h2>
-            <p class="section-subtitle reveal">Classificação de acesso e protocolos.</p>
-            <div class="seguranca-grid">
-                <div class="seguranca-item reveal">
-                    <div class="nivel">Ω</div>
-                    <div class="desc">Nível Omega — Acesso restrito ao diretor e alta cúpula.</div>
-                    <div class="status">🔒 ATIVO</div>
-                </div>
-                <div class="seguranca-item reveal">
-                    <div class="nivel">5</div>
-                    <div class="desc">Nível 5 — Cientistas seniores e líderes de projeto.</div>
-                    <div class="status">🔒 ATIVO</div>
-                </div>
-                <div class="seguranca-item reveal">
-                    <div class="nivel">4</div>
-                    <div class="desc">Nível 4 — Pesquisadores e engenheiros especializados.</div>
-                    <div class="status">🔒 ATIVO</div>
-                </div>
-                <div class="seguranca-item reveal">
-                    <div class="nivel">3</div>
-                    <div class="desc">Nível 3 — Técnicos e pessoal de suporte.</div>
-                    <div class="status">🔒 ATIVO</div>
-                </div>
-                <div class="seguranca-item reveal">
-                    <div class="nivel">2</div>
-                    <div class="desc">Nível 2 — Estagiários e pessoal administrativo.</div>
-                    <div class="status">🔒 ATIVO</div>
-                </div>
-                <div class="seguranca-item reveal">
-                    <div class="nivel">1</div>
-                    <div class="desc">Nível 1 — Visitantes e contratados temporários.</div>
-                    <div class="status">🔓 RESTRITO</div>
-                </div>
-            </div>
-        </section>
+        <!-- ===================== PAGE 6 - CRÉDITOS ===================== -->
+        <section class="page" id="page6">
+            <h1 class="page-title">🙏 Créditos</h1>
+            <p class="page-subtitle">As pessoas por trás deste projeto</p>
 
-        <!-- =================================================================== -->
-        <!--  SEÇÃO ENERGIA (nova)                                                -->
-        <!-- =================================================================== -->
-        <section id="energia">
-            <h2 class="section-title reveal">Consumo de Energia</h2>
-            <p class="section-subtitle reveal">Monitoramento de recursos da instalação.</p>
-            <div class="energia-container">
-                <div class="energia-card reveal">
-                    <div class="valor">4.8 GW</div>
-                    <div class="rotulo">Consumo Total</div>
-                    <div class="progress-bar"><div class="fill" style="width:72%;"></div></div>
-                </div>
-                <div class="energia-card reveal">
-                    <div class="valor">1.2 GW</div>
-                    <div class="rotulo">Lambda Complex</div>
-                    <div class="progress-bar"><div class="fill" style="width:60%;"></div></div>
-                </div>
-                <div class="energia-card reveal">
-                    <div class="valor">0.8 GW</div>
-                    <div class="rotulo">Sector C</div>
-                    <div class="progress-bar"><div class="fill" style="width:40%;"></div></div>
-                </div>
-                <div class="energia-card reveal">
-                    <div class="valor">2.1 GW</div>
-                    <div class="rotulo">Xen Research</div>
-                    <div class="progress-bar"><div class="fill" style="width:85%;"></div></div>
-                </div>
-                <div class="energia-card reveal">
-                    <div class="valor">0.7 GW</div>
-                    <div class="rotulo">Data Core</div>
-                    <div class="progress-bar"><div class="fill" style="width:35%;"></div></div>
-                </div>
-            </div>
-        </section>
-
-        <!-- =================================================================== -->
-        <!--  SEÇÃO MAPA (nova)                                                   -->
-        <!-- =================================================================== -->
-        <section id="mapa">
-            <h2 class="section-title reveal">Mapa da Instalação</h2>
-            <p class="section-subtitle reveal">Visão geral dos setores e complexos.</p>
-            <div class="mapa-container reveal">
-                <div class="mapa-placeholder">
-                    <span>⏺</span> MAPA INTERATIVO DA BLACK MESA <span>⏺</span><br>
-                    <span style="font-size:0.8rem; color:var(--metal);">(Sistema de navegação em desenvolvimento)</span>
-                    <div style="margin-top:1rem; display:flex; flex-wrap:wrap; gap:1rem; justify-content:center; font-size:0.8rem; color:var(--metal-claro);">
-                        <span>🔴 Setor A — Administração</span>
-                        <span>🟠 Setor B — Laboratórios</span>
-                        <span>🟡 Setor C — Testes</span>
-                        <span>🟢 Setor D — Xen</span>
-                        <span>🔵 Setor E — Contenção</span>
-                        <span>🟣 Setor F — Data Core</span>
+            <div class="credits-grid">
+                <!-- Rafael -->
+                <div class="credit-card">
+                    <span class="avatar">👨‍💻</span>
+                    <div class="name">Rafael</div>
+                    <div class="role">Pesquisador e Desenvolvedor</div>
+                    <div class="divider"></div>
+                    <div class="description">
+                        Responsável pela pesquisa, estruturação do conteúdo e desenvolvimento do site.
                     </div>
+                    <span class="badge-credit">💚 Equipe Criativa</span>
                 </div>
-            </div>
-        </section>
 
-        <!-- =================================================================== -->
-        <!--  SEÇÃO NOTÍCIAS (nova)                                               -->
-        <!-- =================================================================== -->
-        <section id="noticias">
-            <h2 class="section-title reveal">Comunicados Internos</h2>
-            <p class="section-subtitle reveal">Últimas atualizações da Black Mesa.</p>
-            <div class="noticias-grid">
-                <div class="noticia-card reveal">
-                    <div class="data">19 JUN 2026</div>
-                    <h4>Novo Portal Estabilizado</h4>
-                    <p>Equipe do Lambda Complex relata sucesso na estabilização de portal para Xen.</p>
-                </div>
-                <div class="noticia-card reveal">
-                    <div class="data">17 JUN 2026</div>
-                    <h4>Atualização do HEV Suit</h4>
-                    <p>Novo firmware aumenta resistência a danos por radiação em 40%.</p>
-                </div>
-                <div class="noticia-card reveal">
-                    <div class="data">15 JUN 2026</div>
-                    <h4>Alerta de Contenção</h4>
-                    <p>Protocolo de segurança ativado no Setor E após anomalia detectada.</p>
-                </div>
-                <div class="noticia-card reveal">
-                    <div class="data">12 JUN 2026</div>
-                    <h4>Descoberta de Artefato</h4>
-                    <p>Pesquisadores encontram objeto de origem desconhecida em Xen.</p>
-                </div>
-            </div>
-        </section>
-
-        <!-- =================================================================== -->
-        <!--  SEÇÃO RELATÓRIOS (nova)                                             -->
-        <!-- =================================================================== -->
-        <section id="relatorios">
-            <h2 class="section-title reveal">Relatórios de Pesquisa</h2>
-            <p class="section-subtitle reveal">Documentos e publicações científicas.</p>
-            <div class="relatorios-lista reveal">
-                <div class="relatorio-item">
-                    <span class="rel-titulo">Análise de Ressonância Cascade</span>
-                    <span class="rel-status">Publicado</span>
-                </div>
-                <div class="relatorio-item">
-                    <span class="rel-titulo">Propriedades de Materiais Anômalos</span>
-                    <span class="rel-status">Em Revisão</span>
-                </div>
-                <div class="relatorio-item">
-                    <span class="rel-titulo">Estudo da Fauna Xen</span>
-                    <span class="rel-status">Classificado</span>
-                </div>
-                <div class="relatorio-item">
-                    <span class="rel-titulo">Eficiência do Teleportador Lambda</span>
-                    <span class="rel-status">Publicado</span>
-                </div>
-                <div class="relatorio-item">
-                    <span class="rel-titulo">Protocolos de Contenção de Anomalias</span>
-                    <span class="rel-status">Em Atualização</span>
-                </div>
-                <div class="relatorio-item">
-                    <span class="rel-titulo">IA Aplicada a Simulações Quânticas</span>
-                    <span class="rel-status">Em Andamento</span>
-                </div>
-            </div>
-        </section>
-
-        <!-- =================================================================== -->
-        <!--  SEÇÃO DATABASE (TERMINAL)                                           -->
-        <!-- =================================================================== -->
-        <section id="database">
-            <h2 class="section-title reveal">Database Terminal</h2>
-            <p class="section-subtitle reveal">Interface de acesso ao sistema central.</p>
-            <div class="terminal-wrapper">
-                <div class="terminal reveal">
-                    <div class="terminal-header">
-                        <span>BLACK MESA DATABASE v3.1 — SISTEMA DE GESTÃO</span>
-                        <div class="dots">
-                            <span class="red"></span>
-                            <span class="yellow"></span>
-                            <span class="green"></span>
-                        </div>
+                <!-- Sergio -->
+                <div class="credit-card">
+                    <span class="avatar">🧠</span>
+                    <div class="name">Sergio</div>
+                    <div class="role">Pesquisador e Conteudista</div>
+                    <div class="divider"></div>
+                    <div class="description">
+                        Responsável pela pesquisa aprofundada sobre classificação de risco e organização do conteúdo.
                     </div>
-                    <div class="output" id="terminalOutput">
-                        <span class="prompt">></span> Sistema inicializado. Bem-vindo, pesquisador.<br>
-                        <span class="prompt">></span> Digite <span style="color:#ff7a00;">help</span> para ver os comandos disponíveis.
+                    <span class="badge-credit">💚 Equipe Criativa</span>
+                </div>
+
+                <!-- Alessandra Hilario -->
+                <div class="credit-card">
+                    <span class="avatar">👩‍⚕️</span>
+                    <div class="name">Alessandra Hilario</div>
+                    <div class="role">Pesquisadora e Revisora</div>
+                    <div class="divider"></div>
+                    <div class="description">
+                        Responsável pela revisão técnica, validação das informações e ajustes finais.
                     </div>
-                    <div class="input-line">
-                        <span>></span>
-                        <input type="text" id="terminalInput" placeholder="Digite um comando..." autofocus>
+                    <span class="badge-credit">💚 Equipe Criativa</span>
+                </div>
+
+                <!-- Professora Charlaine -->
+                <div class="credit-card" style="border-top-color: #ffea00;">
+                    <span class="avatar">👩‍🏫</span>
+                    <div class="name">Professora Charlaine</div>
+                    <div class="role">Orientadora e Mentora</div>
+                    <div class="divider"></div>
+                    <div class="description">
+                        Orientação pedagógica, direcionamento do projeto e suporte técnico durante todo o processo.
                     </div>
+                    <span class="badge-credit" style="color:#ffea00; border-color:#ffea00; background:rgba(255,234,0,0.1);">⭐ Orientação</span>
                 </div>
+
+                <!-- Manoel Eduardo -->
+                <div class="credit-card" style="border-top-color: var(--neon-green);">
+                    <span class="avatar">💻</span>
+                    <div class="name">Manoel Eduardo</div>
+                    <div class="role">Desenvolvedor Front-End</div>
+                    <div class="divider"></div>
+                    <div class="description">
+                        Responsável pela criação do site, design neon/cyberpunk e implementação completa do sistema.
+                    </div>
+                    <span class="badge-credit">🚀 Desenvolvimento</span>
+                </div>
+            </div>
+
+            <div class="credits-footer">
+                <h3>🏥 SUS + Organizado</h3>
+                <p>
+                    Um projeto desenvolvido com <strong style="color:var(--neon-green);">💚</strong> para apresentação escolar
+                </p>
+                <p style="margin-top:8px; font-size:0.9rem;">
+                    <span class="highlight-name">Rafael</span> ·
+                    <span class="highlight-name">Sergio</span> ·
+                    <span class="highlight-name">Alessandra Hilario</span>
+                </p>
+                <p style="margin-top:4px; font-size:0.85rem; color:var(--text-secondary);">
+                    Com orientação da <span class="highlight-name">Professora Charlaine</span>
+                </p>
+                <p style="margin-top:12px; font-size:0.85rem; color:var(--neon-green);">
+                    🌟 Site desenvolvido por <span class="highlight-name" style="color:var(--neon-green);">Manoel Eduardo</span>
+                </p>
             </div>
         </section>
 
-        <!-- =================================================================== -->
-        <!--  SEÇÃO PESSOAL                                                       -->
-        <!-- =================================================================== -->
-        <section id="pessoal">
-            <h2 class="section-title reveal">Pessoal</h2>
-            <p class="section-subtitle reveal">Cientistas e equipe da Black Mesa.</p>
-            <div class="personnel-grid">
-                <div class="personnel-card reveal">
-                    <span class="avatar">🧑‍🔬</span>
-                    <h4>Dr. Gordon Freeman</h4>
-                    <span class="role">PhD, Físico Teórico</span>
-                    <div class="clearance">Nível 5 — Omega</div>
-                </div>
-                <div class="personnel-card reveal">
-                    <span class="avatar">👨‍🦳</span>
-                    <h4>Dr. Eli Vance</h4>
-                    <span class="role">PhD, Diretor de Pesquisa</span>
-                    <div class="clearance">Nível 5 — Omega</div>
-                </div>
-                <div class="personnel-card reveal">
-                    <span class="avatar">👨‍🏫</span>
-                    <h4>Dr. Isaac Kleiner</h4>
-                    <span class="role">PhD, Ciências Exóticas</span>
-                    <div class="clearance">Nível 5</div>
-                </div>
-                <div class="personnel-card reveal">
-                    <span class="avatar">🛡️</span>
-                    <h4>Barney Calhoun</h4>
-                    <span class="role">Chefe de Segurança</span>
-                    <div class="clearance">Nível 4</div>
-                </div>
-                <div class="personnel-card reveal">
-                    <span class="avatar">👩‍🔬</span>
-                    <h4>Dr. Judith Mossman</h4>
-                    <span class="role">PhD, Bióloga Molecular</span>
-                    <div class="clearance">Nível 4</div>
-                </div>
-                <div class="personnel-card reveal">
-                    <span class="avatar">🧑‍💻</span>
-                    <h4>Dr. Arne Magnusson</h4>
-                    <span class="role">PhD, Engenharia de Sistemas</span>
-                    <div class="clearance">Nível 4</div>
-                </div>
-            </div>
-        </section>
+        <div class="footer-note">
+            Desenvolvido com <strong>💚</strong> para apresentação escolar · Classificação de Risco no SUS
+        </div>
 
-        <!-- =================================================================== -->
-        <!--  SEÇÃO ALERTA                                                        -->
-        <!-- =================================================================== -->
-        <section id="alerta" class="alerta-section">
-            <h2 class="section-title reveal">Sistema de Alerta</h2>
-            <p class="section-subtitle reveal">Ative o protocolo de emergência.</p>
-            <button class="btn-alerta" id="btnAlerta">ATIVAR ALERTA</button>
-            <div class="alerta-mensagem" id="alertaMensagem">⚠️ WARNING: DIMENSIONAL BREACH DETECTED ⚠️</div>
-            <div class="alerta-detalhes" id="alertaDetalhes">
-                <p style="color:var(--vermelho);">🔴 Protocolo de contenção ativado. Isolamento de setores em andamento.</p>
-                <p style="color:var(--metal);">Todos os pesquisadores devem se dirigir aos abrigos.</p>
-            </div>
-        </section>
+    </main>
 
-        <!-- =================================================================== -->
-        <!--  FOOTER                                                              -->
-        <!-- =================================================================== -->
-        <footer>
-            <div class="footer-content">
-                <div class="logo-footer">λ BLACK MESA</div>
-                <div class="footer-text">
-                    <span class="classified">■ CLASSIFIED INFORMATION ■</span><br>
-                    Security Clearance Required — Level 5<br>
-                    © 2026 Black Mesa Research Facility. Todos os direitos reservados.
-                </div>
-                <div class="footer-links">
-                    <a href="#">Sobre</a>
-                    <a href="#">Segurança</a>
-                    <a href="#">Relatórios</a>
-                    <a href="#">Contato</a>
-                    <a href="#">Intranet</a>
-                </div>
-                <div class="footer-coords">
-                    Coordenadas Xen: 47.9°N 122.3°W  |  Setor Administrativo: 45.5°N 121.8°W
-                </div>
-                <div style="font-size:0.6rem; color:#222; letter-spacing:1px;">
-                    Este sistema é monitorado 24/7. Qualquer acesso não autorizado será registrado.
-                </div>
-            </div>
-        </footer>
-
-    </div>
-
-    <!-- ======================================================================= -->
-    <!--  JAVASCRIPT                                                              -->
-    <!-- ======================================================================= -->
+    <!-- ===== JAVASCRIPT ===== -->
     <script>
-        // =====================================================================
-        // 1. PARTICLES
-        // =====================================================================
-        const canvas = document.getElementById('particles-canvas');
-        const ctx = canvas.getContext('2d');
-        let w, h;
-        const particles = [];
-        const NUM_PARTICLES = 150;
+        (function() {
+            'use strict';
 
-        function resize() {
-            w = canvas.width = window.innerWidth;
-            h = canvas.height = window.innerHeight;
-        }
-        window.addEventListener('resize', resize);
-        resize();
+            // ----- ELEMENTOS -----
+            var navBtns = document.querySelectorAll('.nav-btn');
+            var pages = document.querySelectorAll('.page');
+            var menuToggle = document.getElementById('menuToggle');
+            var navMenu = document.getElementById('navMenu');
+            var header = document.getElementById('header');
 
-        class Particle {
-            constructor() { this.reset(); }
-            reset() {
-                this.x = Math.random() * w;
-                this.y = Math.random() * h;
-                this.size = Math.random() * 2.5 + 0.5;
-                this.speedX = (Math.random() - 0.5) * 0.8;
-                this.speedY = (Math.random() - 0.5) * 0.8;
-                this.opacity = Math.random() * 0.5 + 0.15;
-            }
-            update() {
-                this.x += this.speedX;
-                this.y += this.speedY;
-                if (this.x < 0 || this.x > w) this.speedX *= -1;
-                if (this.y < 0 || this.y > h) this.speedY *= -1;
-            }
-            draw() {
-                ctx.beginPath();
-                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-                ctx.fillStyle = `rgba(255, 122, 0, ${this.opacity})`;
-                ctx.shadowColor = 'rgba(255, 122, 0, 0.2)';
-                ctx.shadowBlur = 12;
-                ctx.fill();
-                ctx.shadowBlur = 0;
-            }
-        }
+            // ----- PARTICLES -----
+            function createParticles() {
+                var container = document.getElementById('particles');
+                if (!container) return;
 
-        for (let i = 0; i < NUM_PARTICLES; i++) particles.push(new Particle());
-
-        function drawLines() {
-            for (let i = 0; i < particles.length; i++) {
-                for (let j = i + 1; j < particles.length; j++) {
-                    const dx = particles[i].x - particles[j].x;
-                    const dy = particles[i].y - particles[j].y;
-                    const dist = Math.sqrt(dx * dx + dy * dy);
-                    if (dist < 180) {
-                        ctx.beginPath();
-                        ctx.moveTo(particles[i].x, particles[i].y);
-                        ctx.lineTo(particles[j].x, particles[j].y);
-                        ctx.strokeStyle = `rgba(255, 122, 0, ${0.05 * (1 - dist / 180)})`;
-                        ctx.lineWidth = 0.6;
-                        ctx.stroke();
-                    }
+                for (var i = 0; i < 30; i++) {
+                    var particle = document.createElement('div');
+                    particle.className = 'particle';
+                    var size = Math.random() * 3 + 1;
+                    particle.style.width = size + 'px';
+                    particle.style.height = size + 'px';
+                    particle.style.left = Math.random() * 100 + '%';
+                    particle.style.animationDuration = (Math.random() * 15 + 10) + 's';
+                    particle.style.animationDelay = (Math.random() * 10) + 's';
+                    particle.style.opacity = Math.random() * 0.3 + 0.1;
+                    container.appendChild(particle);
                 }
             }
-        }
+            createParticles();
 
-        function animateParticles() {
-            ctx.clearRect(0, 0, w, h);
-            particles.forEach(p => { p.update();
-                p.draw(); });
-            drawLines();
-            requestAnimationFrame(animateParticles);
-        }
-        animateParticles();
-
-        // =====================================================================
-        // 2. SCROLL REVEAL
-        // =====================================================================
-        const reveals = document.querySelectorAll('.reveal, .reveal-left, .reveal-right');
-
-        function checkReveal() {
-            const windowHeight = window.innerHeight;
-            reveals.forEach(el => {
-                const rect = el.getBoundingClientRect();
-                if (rect.top < windowHeight - 60) {
-                    el.classList.add('visible');
+            // ----- HEADER SCROLL EFFECT -----
+            window.addEventListener('scroll', function() {
+                if (window.scrollY > 50) {
+                    header.classList.add('scrolled');
+                } else {
+                    header.classList.remove('scrolled');
                 }
             });
-        }
-        window.addEventListener('scroll', checkReveal);
-        window.addEventListener('load', checkReveal);
 
-        // =====================================================================
-        // 3. STATS ANIMATION
-        // =====================================================================
-        const statNumbers = document.querySelectorAll('.stat-number');
-        let statsAnimated = false;
+            // ----- NAVEGAÇÃO COM ANIMAÇÃO -----
+            function navigateTo(pageId) {
+                // Página ativa atual
+                var currentActive = document.querySelector('.page.active');
+                var currentId = currentActive ? currentActive.id : null;
 
-        function animateStats() {
-            if (statsAnimated) return;
-            const statsSection = document.querySelector('.stats-grid');
-            if (!statsSection) return;
-            const rect = statsSection.getBoundingClientRect();
-            if (rect.top < window.innerHeight - 100) {
-                statsAnimated = true;
-                statNumbers.forEach(stat => {
-                    const target = stat.dataset.target;
-                    if (target === 'OMEGA') {
-                        stat.textContent = 'Ω';
-                        return;
+                // Se for a mesma página, não faz nada
+                if (currentId === pageId) return;
+
+                // Adiciona animação de saída na página atual
+                if (currentActive) {
+                    currentActive.classList.add('exit');
+                    setTimeout(function() {
+                        currentActive.classList.remove('active');
+                        currentActive.classList.remove('exit');
+                    }, 600);
+                }
+
+                // Mostra a página alvo com animação
+                var target = document.getElementById(pageId);
+                if (target) {
+                    setTimeout(function() {
+                        target.classList.add('active');
+                        // Re-anima os cards após a troca
+                        animateCards(target);
+                    }, 300);
+                }
+
+                // Atualiza botões
+                navBtns.forEach(function(btn) {
+                    btn.classList.remove('active');
+                    if (btn.dataset.page === pageId) {
+                        btn.classList.add('active');
                     }
-                    const numTarget = parseInt(target);
-                    if (isNaN(numTarget)) return;
-                    let current = 0;
-                    const increment = Math.ceil(numTarget / 70);
-                    const timer = setInterval(() => {
-                        current += increment;
-                        if (current >= numTarget) {
-                            current = numTarget;
-                            clearInterval(timer);
-                        }
-                        stat.textContent = current.toLocaleString();
-                    }, 25);
                 });
+
+                // Fecha menu mobile
+                if (navMenu) {
+                    navMenu.classList.remove('open');
+                }
+                if (menuToggle) {
+                    menuToggle.classList.remove('open');
+                }
+
+                // Rola para o topo
+                window.scrollTo({ top: 0, behavior: 'smooth' });
             }
-        }
-        window.addEventListener('scroll', animateStats);
-        window.addEventListener('load', animateStats);
 
-        // =====================================================================
-        // 4. TERMINAL - COMANDOS EXTENSOS
-        // =====================================================================
-        const terminalInput = document.getElementById('terminalInput');
-        const terminalOutput = document.getElementById('terminalOutput');
-
-        const terminalCommands = {
-            help: `Comandos disponíveis:
-      help       — Exibe esta mensagem
-      status     — Status geral da instalação
-      research   — Últimos projetos de pesquisa
-      xen        — Dados sobre Xen
-      lambda     — Acesso ao Complexo Lambda
-      clear      — Limpa o terminal
-      security   — Níveis de segurança
-      personnel  — Lista de pessoal autorizado
-      energy     — Relatório de consumo energético
-      alerts     — Últimos alertas de segurança
-      map        — Mapa da instalação
-      reports    — Relatórios recentes
-      gman       — (Easter Egg)`,
-            status: `STATUS DA INSTALAÇÃO — ${new Date().toLocaleString()}
-      • Sistemas de energia: ONLINE (4.8 GW)
-      • Barreira de contenção: ATIVA
-      • Nível de segurança: OMEGA
-      • Portais: ESTÁVEIS (2 ativos)
-      • Pessoal: 12.400
-      • Saúde do sistema: 97%
-      • Última atualização: ${new Date().toLocaleString()}`,
-            research: `PROJETOS DE PESQUISA ATIVOS:
-      • Projeto Lambda — Teletransporte interestelar (78%)
-      • Projeto Xen — Análise de fauna e flora alienígena (92%)
-      • Projeto Anomalous — Materiais exóticos (45%)
-      • Projeto Cascade — Prevenção de ressonância (30%)
-      • Projeto HEV — Aprimoramento de trajes (100%)
-      • Projeto A.I. — Inteligência artificial (60%)`,
-            xen: `DADOS SOBRE XEN:
-      • Dimensão: Borderworld (Zona de fronteira)
-      • Portal ativo: SIM (2 portais estáveis)
-      • Nível de perigo: EXTREMO (Classe 5)
-      • Flora: Bioluminescente, predatória
-      • Fauna: Múltiplas espécies, algumas inteligentes
-      • Coordenadas: 47.9°N 122.3°W (referência)
-      • Artefatos: 1.024 catalogados
-      • Última expedição: 18 JUN 2026`,
-            lambda: `ACESSO AO COMPLEXO LAMBDA:
-      • Autorização: NÍVEL 5 (Omega)
-      • Localização: Setor L, subsolo 3
-      • Função: Pesquisa de teletransporte e portais
-      • Equipamento: Teleportador de matéria (modelo X-7)
-      • Status: OPERACIONAL (98% eficiência)
-      • Pessoal: 230 pesquisadores
-      • Acesso restrito a pessoal autorizado.`,
-            security: `NÍVEIS DE SEGURANÇA:
-      • Ω — Diretor e alta cúpula
-      • 5 — Cientistas seniores
-      • 4 — Pesquisadores especializados
-      • 3 — Técnicos e suporte
-      • 2 — Estagiários e administrativo
-      • 1 — Visitantes e contratados
-      Protocolos: Ativos e monitorados 24/7.`,
-            personnel: `PESSOAL AUTORIZADO (destaques):
-      • Dr. Gordon Freeman — Físico Teórico (Nível 5)
-      • Dr. Eli Vance — Diretor de Pesquisa (Nível Ω)
-      • Dr. Isaac Kleiner — Ciências Exóticas (Nível 5)
-      • Barney Calhoun — Chefe de Segurança (Nível 4)
-      • Dr. Judith Mossman — Bióloga (Nível 4)
-      • Dr. Arne Magnusson — Engenheiro (Nível 4)
-      Total: 12.400 funcionários.`,
-            energy: `CONSUMO DE ENERGIA (atual):
-      • Total: 4.8 GW
-      • Lambda Complex: 1.2 GW (60%)
-      • Sector C: 0.8 GW (40%)
-      • Xen Research: 2.1 GW (85%)
-      • Data Core: 0.7 GW (35%)
-      • Outros: 1.0 GW
-      Fonte: Reator de fusão (primário) + Painéis solares (secundário).`,
-            alerts: `ÚLTIMOS ALERTAS DE SEGURANÇA:
-      • 19 JUN 2026 — Anomalia no Setor E (contida)
-      • 17 JUN 2026 — Flutuação de portal em Xen (estabilizado)
-      • 15 JUN 2026 — Tentativa de acesso não autorizado (rejeitada)
-      • 12 JUN 2026 — Artefato desconhecido detectado (em análise)
-      Todos os protocolos de contenção estão ativos.`,
-            map: `MAPA DA INSTALAÇÃO:
-      🔴 Setor A — Administração
-      🟠 Setor B — Laboratórios
-      🟡 Setor C — Testes e Simulações
-      🟢 Setor D — Xen Research
-      🔵 Setor E — Contenção
-      🟣 Setor F — Data Core
-      📍 Sua localização: Setor C, Sala 4B
-      Para navegação detalhada, consulte o sistema interno.`,
-            reports: `RELATÓRIOS DE PESQUISA RECENTES:
-      • Análise de Ressonância Cascade (Publicado)
-      • Propriedades de Materiais Anômalos (Em Revisão)
-      • Estudo da Fauna Xen (Classificado)
-      • Eficiência do Teleportador Lambda (Publicado)
-      • Protocolos de Contenção (Em Atualização)
-      • IA Aplicada a Simulações Quânticas (Em Andamento)
-      Total de documentos: 12.404.`,
-            clear: 'CLEAR'
-        };
-
-        terminalInput.addEventListener('keydown', function(e) {
-            if (e.key === 'Enter') {
-                const cmd = this.value.trim().toLowerCase();
-                this.value = '';
-                const output = terminalOutput;
-                output.innerHTML += `<br><span class="prompt">></span> <span class="cmd">${cmd}</span>`;
-
-                if (cmd === 'clear') {
-                    output.innerHTML = `<span class="prompt">></span> Terminal limpo.`;
-                    return;
-                }
-
-                // Easter egg gman
-                if (cmd === 'gman') {
-                    output.innerHTML += `<br><span style="color:#88ff88;">"Rise and shine, Mr. Freeman. Rise and shine."</span>`;
-                    output.innerHTML +=
-                        `<br><span style="color:#88ff88;">"The right man in the wrong place can make all the difference in the world."</span>`;
-                    output.scrollTop = output.scrollHeight;
-                    return;
-                }
-
-                if (terminalCommands[cmd]) {
-                    const response = terminalCommands[cmd];
-                    const lines = response.split('\n');
-                    let i = 0;
-                    const interval = setInterval(() => {
-                        if (i < lines.length) {
-                            output.innerHTML += `<br>${lines[i]}`;
-                            i++;
-                            output.scrollTop = output.scrollHeight;
-                        } else {
-                            clearInterval(interval);
-                            output.innerHTML += `<br><span class="prompt">></span> `;
-                        }
+            // ----- RE-ANIMA CARDS -----
+            function animateCards(container) {
+                var cards = container.querySelectorAll('.card, .risk-card, .improve-card, .credit-card');
+                cards.forEach(function(card, index) {
+                    card.style.animation = 'none';
+                    card.style.opacity = '0';
+                    setTimeout(function() {
+                        card.style.animation = 'cardEntrance 0.8s cubic-bezier(0.4, 0, 0.2, 1) forwards';
+                        card.style.animationDelay = (index * 0.08) + 's';
                     }, 50);
-                } else {
-                    output.innerHTML += `<br><span class="error">Comando não reconhecido. Digite 'help'.</span>`;
-                }
-                output.scrollTop = output.scrollHeight;
-                terminalInput.focus();
-            }
-        });
-
-        // Foco no terminal ao clicar
-        document.querySelector('.terminal').addEventListener('click', () => {
-            terminalInput.focus();
-        });
-
-        // =====================================================================
-        // 5. BOTÕES DE NAVEGAÇÃO
-        // =====================================================================
-        document.getElementById('btnAccessDB').addEventListener('click', () => {
-            document.getElementById('database').scrollIntoView({ behavior: 'smooth' });
-            setTimeout(() => terminalInput.focus(), 800);
-        });
-
-        document.getElementById('scrollIndicator').addEventListener('click', () => {
-            document.getElementById('sobre').scrollIntoView({ behavior: 'smooth' });
-        });
-
-        // =====================================================================
-        // 6. ALERTA
-        // =====================================================================
-        let alertaAtivo = false;
-        const btnAlerta = document.getElementById('btnAlerta');
-        const alertaMensagem = document.getElementById('alertaMensagem');
-        const alertaFlash = document.getElementById('alertaFlash');
-        const alertaDetalhes = document.getElementById('alertaDetalhes');
-
-        btnAlerta.addEventListener('click', () => {
-            alertaAtivo = !alertaAtivo;
-            if (alertaAtivo) {
-                alertaMensagem.classList.add('ativo');
-                alertaFlash.classList.add('ativo');
-                alertaDetalhes.classList.add('ativo');
-                btnAlerta.textContent = 'DESATIVAR ALERTA';
-                btnAlerta.style.borderColor = '#ff3333';
-                btnAlerta.style.color = '#ff3333';
-                // Som
-                try {
-                    const audioCtx = new(window.AudioContext || window.webkitAudioContext)();
-                    for (let i = 0; i < 5; i++) {
-                        setTimeout(() => {
-                            const osc = audioCtx.createOscillator();
-                            const gain = audioCtx.createGain();
-                            osc.connect(gain);
-                            gain.connect(audioCtx.destination);
-                            osc.frequency.value = 700 + Math.random() * 500;
-                            osc.type = 'sawtooth';
-                            gain.gain.value = 0.06;
-                            osc.start();
-                            osc.stop(audioCtx.currentTime + 0.12);
-                        }, i * 200);
-                    }
-                } catch (e) { /* sem som */ }
-                console.log('%c🚨 ALERTA ATIVADO — Violação Dimensional Detectada', 'color: #ff3333; font-size:16px;');
-                console.log('%c🔹 G-Man observa você...', 'color: #88ff88;');
-            } else {
-                alertaMensagem.classList.remove('ativo');
-                alertaFlash.classList.remove('ativo');
-                alertaDetalhes.classList.remove('ativo');
-                btnAlerta.textContent = 'ATIVAR ALERTA';
-                btnAlerta.style.borderColor = '#ff3333';
-                btnAlerta.style.color = '#ff3333';
-            }
-        });
-
-        // =====================================================================
-        // 7. HUD - atualização de tempo e valores
-        // =====================================================================
-        function updateHUD() {
-            const health = document.getElementById('health-value');
-            const shield = document.getElementById('shield-value');
-            const location = document.getElementById('location-value');
-            const timeEl = document.getElementById('hud-time');
-
-            if (health) {
-                const val = 75 + Math.floor(Math.random() * 25);
-                health.textContent = val + '%';
-                health.className = 'value' + (val < 50 ? ' danger' : val < 80 ? ' warning' : '');
-            }
-            if (shield) {
-                const val = 85 + Math.floor(Math.random() * 15);
-                shield.textContent = val + '%';
-                shield.className = 'value' + (val < 60 ? ' danger' : val < 85 ? ' warning' : '');
-            }
-            if (location) {
-                const locs = ['SECTOR C', 'LAMBDA COMPLEX', 'SECTOR D', 'DATA CORE', 'SECTOR E'];
-                location.textContent = locs[Math.floor(Math.random() * locs.length)];
-            }
-            if (timeEl) {
-                const now = new Date();
-                timeEl.textContent = now.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
-            }
-        }
-        setInterval(updateHUD, 3000);
-        updateHUD();
-
-        // =====================================================================
-        // 8. GLITCH RANDÔMICO
-        // =====================================================================
-        setInterval(() => {
-            if (Math.random() < 0.03) {
-                const titles = document.querySelectorAll('h1, h2, .lambda-logo, .section-title');
-                titles.forEach(el => {
-                    el.classList.add('glitch-text');
-                    setTimeout(() => el.classList.remove('glitch-text'), 300);
                 });
-                console.log('%c⚡ Interferência dimensional detectada.', 'color: #ff7a00;');
+
+                // Re-anima barras de progresso
+                var bars = container.querySelectorAll('.risk-bar-fill');
+                bars.forEach(function(bar) {
+                    var width = bar.style.width;
+                    bar.style.width = '0%';
+                    setTimeout(function() {
+                        bar.style.width = width;
+                    }, 400);
+                });
             }
-        }, 4000);
 
-        // =====================================================================
-        // 9. EASTER EGGS ADICIONAIS
-        // =====================================================================
-        // Coordenadas de Xen já no footer.
-        // Lambda oculto no canto inferior direito.
-        // Comando 'gman' no terminal.
-        // Mensagem secreta no console ao carregar
-        console.log('%cλ Black Mesa Research Facility', 'color: #ff7a00; font-size:20px;');
-        console.log('%c"Prepare-se para consequências imprevistas." — G-Man', 'color: #88ff88;');
-        console.log('%cCoordenadas de Xen: 47.9°N 122.3°W', 'color: #666;');
+            // ----- EVENTOS DOS BOTÕES -----
+            navBtns.forEach(function(btn) {
+                btn.addEventListener('click', function(e) {
+                    var pageId = this.dataset.page;
+                    if (pageId) {
+                        navigateTo(pageId);
+                    }
+                });
+            });
 
-        // =====================================================================
-        // 10. PARALLAX NO HERO
-        // =====================================================================
-        window.addEventListener('scroll', () => {
-            const hero = document.querySelector('.hero');
-            const scrollY = window.scrollY;
-            if (hero && scrollY < window.innerHeight) {
-                hero.style.backgroundPositionY = scrollY * 0.2 + 'px';
+            // ----- MENU MOBILE -----
+            if (menuToggle) {
+                menuToggle.addEventListener('click', function() {
+                    this.classList.toggle('open');
+                    if (navMenu) {
+                        navMenu.classList.toggle('open');
+                    }
+                });
             }
-        });
 
-        // =====================================================================
-        // 11. FOCUS NO TERMINAL AO CARREGAR
-        // =====================================================================
-        window.addEventListener('load', () => {
-            setTimeout(() => terminalInput.focus(), 1200);
-        });
+            // Fecha menu ao clicar em um link (mobile)
+            navBtns.forEach(function(btn) {
+                btn.addEventListener('click', function() {
+                    if (navMenu) {
+                        navMenu.classList.remove('open');
+                    }
+                    if (menuToggle) {
+                        menuToggle.classList.remove('open');
+                    }
+                });
+            });
 
-        // =====================================================================
-        // 12. SIMULAÇÃO DE RELÓGIO NO FOOTER (opcional)
-        // =====================================================================
-        // Já temos no HUD.
+            // ----- INICIALIZAÇÃO: PÁGINA 1 ATIVA -----
+            var page1 = document.getElementById('page1');
+            if (page1) {
+                page1.classList.add('active');
+                // Anima cards da página inicial
+                setTimeout(function() {
+                    animateCards(page1);
+                }, 300);
+            }
 
-        // =====================================================================
-        // FIM DO JAVASCRIPT
-        // =====================================================================
+            // Atualiza o botão ativo
+            navBtns.forEach(function(btn) {
+                btn.classList.remove('active');
+                if (btn.dataset.page === 'page1') {
+                    btn.classList.add('active');
+                }
+            });
+
+            // Verifica se há uma página ativa, se não, ativa a página 1
+            var hasActive = false;
+            pages.forEach(function(p) {
+                if (p.classList.contains('active')) {
+                    hasActive = true;
+                }
+            });
+            if (!hasActive && page1) {
+                page1.classList.add('active');
+            }
+
+            // ----- INTERCEPTA CLICKS EM LINKS INTERNOS (se houver) -----
+            document.querySelectorAll('a[href^="#page"]').forEach(function(link) {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    var target = this.getAttribute('href').replace('#', '');
+                    navigateTo(target);
+                });
+            });
+
+            console.log('🏥 Site SUS + Organizado carregado com sucesso!');
+            console.log('📄 Páginas disponíveis:', pages.length);
+            console.log('🏆 Desafio Liga Jovem - Pedro Carli 2026');
+            console.log('✨ Animações avançadas ativadas!');
+
+        })();
     </script>
 
 </body>
