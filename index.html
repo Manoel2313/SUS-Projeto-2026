@@ -5,27 +5,38 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SUS + Organizado — Apresentação</title>
     <style>
-        /* ============================================================
-           RESET E CONFIGURAÇÕES GLOBAIS
-           ============================================================ */
-        * {
+        /* ======================================================================= */
+        /*  RESET E CONFIGURAÇÕES GLOBAIS                                           */
+        /* ======================================================================= */
+        *,
+        *::before,
+        *::after {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
 
+        @import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap');
+
         :root {
             --verde: #00ff41;
+            --verde-escuro: #00cc33;
             --verde-glow: rgba(0, 255, 65, 0.6);
             --verde-glow-strong: rgba(0, 255, 65, 0.9);
             --preto: #0a0a0a;
             --cinza-escuro: #1a1a1a;
             --cinza-medio: #2a2a2a;
+            --cinza-claro: #3a3a3a;
+            --metal: #6b6b6b;
             --metal-claro: #8a8a8a;
             --branco: #e8e8e8;
             --vermelho: #ff1744;
+            --vermelho-glow: rgba(255, 23, 68, 0.4);
             --amarelo: #ffea00;
-            --font-mono: 'Courier New', monospace;
+            --amarelo-glow: rgba(255, 234, 0, 0.4);
+            --font-mono: 'Share Tech Mono', 'Courier New', monospace;
+            --radius: 8px;
+            --transicao-padrao: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
         }
 
         html {
@@ -38,14 +49,12 @@
             background: var(--preto);
             color: var(--branco);
             overflow-x: hidden;
-            line-height: 1.6;
-            min-height: 100vh;
+            line-height: 1.7;
             position: relative;
+            min-height: 100vh;
         }
 
-        /* ============================================================
-           SCANLINES (efeito CRT)
-           ============================================================ */
+        /* ===== SCANLINES ===== */
         body::before {
             content: '';
             position: fixed;
@@ -60,12 +69,16 @@
                     transparent 2px,
                     transparent 6px);
             z-index: 9999;
-            animation: scanlines 10s linear infinite;
+            animation: scanlines-move 10s linear infinite;
         }
 
-        @keyframes scanlines {
-            0% { background-position: 0 0; }
-            100% { background-position: 0 30px; }
+        @keyframes scanlines-move {
+            0% {
+                background-position: 0 0;
+            }
+            100% {
+                background-position: 0 30px;
+            }
         }
 
         body::after {
@@ -76,14 +89,12 @@
             width: 100%;
             height: 100%;
             pointer-events: none;
-            background: radial-gradient(ellipse at center, transparent 60%, rgba(0,0,0,0.5) 100%);
+            background: radial-gradient(ellipse at center, transparent 60%, rgba(0, 0, 0, 0.5) 100%);
             z-index: 9998;
         }
 
-        /* ============================================================
-           PARTÍCULAS
-           ============================================================ */
-        #particles {
+        /* ===== PARTICLES ===== */
+        .particle-container {
             position: fixed;
             top: 0;
             left: 0;
@@ -99,31 +110,39 @@
             background: var(--verde);
             border-radius: 50%;
             opacity: 0;
-            animation: floatParticle linear infinite;
+            animation: particleFloat linear infinite;
         }
 
-        @keyframes floatParticle {
-            0% { opacity: 0; transform: translateY(100vh) scale(0); }
-            10% { opacity: 0.5; }
-            90% { opacity: 0.5; }
-            100% { opacity: 0; transform: translateY(-10vh) scale(1); }
+        @keyframes particleFloat {
+            0% {
+                opacity: 0;
+                transform: translateY(100vh) scale(0);
+            }
+            10% {
+                opacity: 0.5;
+            }
+            90% {
+                opacity: 0.5;
+            }
+            100% {
+                opacity: 0;
+                transform: translateY(-10vh) scale(1);
+            }
         }
 
-        /* ============================================================
-           HUD (fixo no canto inferior esquerdo)
-           ============================================================ */
-        .hud {
+        /* ===== HUD ===== */
+        .system-hud {
             position: fixed;
             bottom: 20px;
             left: 20px;
             z-index: 1000;
             font-size: 10px;
             color: var(--verde);
-            background: rgba(0,0,0,0.85);
-            padding: 10px 14px;
+            background: rgba(0, 0, 0, 0.85);
+            padding: 10px 16px;
             border: 1px solid var(--verde);
             border-radius: 4px;
-            box-shadow: 0 0 30px rgba(0,255,65,0.15);
+            box-shadow: 0 0 30px rgba(0, 255, 65, 0.15);
             backdrop-filter: blur(6px);
             display: flex;
             flex-direction: column;
@@ -131,40 +150,37 @@
             letter-spacing: 1px;
             text-transform: uppercase;
             pointer-events: none;
-            min-width: 130px;
+            min-width: 140px;
         }
-
-        .hud .linha {
+        .system-hud .line {
             display: flex;
             justify-content: space-between;
             gap: 16px;
         }
-        .hud .valor {
+        .system-hud .value {
             color: #fff;
         }
-        .hud .rotulo {
-            color: #6b6b6b;
+        .system-hud .label {
+            color: var(--metal);
         }
-        .hud .valor.aviso {
+        .system-hud .value.warning {
             color: var(--amarelo);
         }
-        .hud .valor.perigo {
+        .system-hud .value.danger {
             color: var(--vermelho);
         }
 
-        /* ============================================================
-           HEADER E NAVEGAÇÃO
-           ============================================================ */
+        /* ===== HEADER ===== */
         .header {
-            background: rgba(10,10,10,0.95);
+            background: rgba(10, 10, 10, 0.95);
             backdrop-filter: blur(10px);
             border-bottom: 2px solid var(--verde);
             box-shadow: 0 0 40px var(--verde-glow);
             padding: 0 24px;
             position: sticky;
             top: 0;
-            z-index: 100;
-            transition: box-shadow 0.5s;
+            z-index: 1000;
+            transition: all 0.5s ease;
         }
 
         .header.scrolled {
@@ -187,12 +203,13 @@
             font-weight: 700;
             font-size: 1.1rem;
             letter-spacing: 2px;
+            flex-shrink: 0;
             color: var(--branco);
             text-transform: uppercase;
         }
 
         .logo-icon {
-            display: flex;
+            display: inline-flex;
             align-items: center;
             justify-content: center;
             width: 40px;
@@ -203,13 +220,23 @@
             font-size: 1.4rem;
             font-weight: bold;
             box-shadow: 0 0 30px var(--verde-glow);
-            transition: 0.3s;
-            animation: pulseIcon 2s infinite;
+            transition: var(--transicao-padrao);
+            animation: pulseIcon 2s ease-in-out infinite;
         }
 
         @keyframes pulseIcon {
-            0%, 100% { box-shadow: 0 0 30px var(--verde-glow); }
-            50% { box-shadow: 0 0 60px var(--verde-glow-strong); }
+            0%,
+            100% {
+                box-shadow: 0 0 30px var(--verde-glow);
+            }
+            50% {
+                box-shadow: 0 0 60px var(--verde-glow-strong);
+            }
+        }
+
+        .logo-icon:hover {
+            transform: scale(1.1) rotate(-5deg);
+            box-shadow: 0 0 50px var(--verde-glow-strong);
         }
 
         .logo span {
@@ -217,6 +244,7 @@
             text-shadow: 0 0 20px var(--verde-glow);
         }
 
+        /* ===== NAV ===== */
         .nav {
             display: flex;
             gap: 4px;
@@ -233,12 +261,13 @@
             font-size: 0.7rem;
             font-weight: 500;
             cursor: pointer;
-            transition: all 0.3s;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
             font-family: var(--font-mono);
-            text-transform: uppercase;
-            letter-spacing: 1px;
             white-space: nowrap;
             position: relative;
+            overflow: hidden;
+            text-transform: uppercase;
+            letter-spacing: 1px;
         }
 
         .nav-btn::before {
@@ -251,7 +280,7 @@
             background: var(--verde-glow);
             border-radius: 50%;
             transform: translate(-50%, -50%);
-            transition: width 0.6s, height 0.6s;
+            transition: width 0.6s ease, height 0.6s ease;
             z-index: -1;
         }
 
@@ -273,22 +302,73 @@
             border-color: var(--verde);
             box-shadow: 0 0 30px var(--verde-glow-strong);
             font-weight: 600;
+            animation: btnActive 0.6s ease;
         }
 
-        /* ============================================================
-           BANNER DO DESAFIO
-           ============================================================ */
-        .banner {
-            background: linear-gradient(135deg, rgba(0,255,65,0.08) 0%, rgba(0,0,0,0.95) 100%);
+        @keyframes btnActive {
+            0% {
+                transform: scale(0.8);
+            }
+            50% {
+                transform: scale(1.1);
+            }
+            100% {
+                transform: scale(1);
+            }
+        }
+
+        .nav-btn.active:hover {
+            box-shadow: 0 0 50px var(--verde-glow-strong);
+            transform: scale(1.02);
+        }
+
+        /* ===== MOBILE MENU ===== */
+        .menu-toggle {
+            display: none;
+            flex-direction: column;
+            gap: 5px;
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            padding: 6px;
+            transition: all 0.3s ease;
+        }
+        .menu-toggle:hover span {
+            background: var(--verde);
+        }
+        .menu-toggle span {
+            display: block;
+            width: 28px;
+            height: 2.5px;
+            background: var(--branco);
+            border-radius: 4px;
+            transition: all 0.3s ease;
+        }
+        .menu-toggle.open span:nth-child(1) {
+            transform: rotate(45deg) translate(5px, 5px);
+            background: var(--verde);
+        }
+        .menu-toggle.open span:nth-child(2) {
+            opacity: 0;
+            transform: scaleX(0);
+        }
+        .menu-toggle.open span:nth-child(3) {
+            transform: rotate(-45deg) translate(5px, -5px);
+            background: var(--verde);
+        }
+
+        /* ===== BANNER ===== */
+        .challenge-banner {
+            background: linear-gradient(135deg, rgba(0, 255, 65, 0.08) 0%, rgba(0, 0, 0, 0.9) 100%);
             border-bottom: 1px solid var(--verde);
-            padding: 10px 20px;
+            padding: 10px 24px;
             text-align: center;
             position: relative;
             overflow: hidden;
             box-shadow: inset 0 0 60px var(--verde-glow);
         }
 
-        .banner::before {
+        .challenge-banner::before {
             content: '';
             position: absolute;
             top: -50%;
@@ -296,15 +376,22 @@
             width: 200%;
             height: 200%;
             background: radial-gradient(circle, var(--verde-glow), transparent 70%);
-            animation: pulseBanner 3s infinite;
+            animation: pulseGlow 3s ease-in-out infinite;
         }
 
-        @keyframes pulseBanner {
-            0%, 100% { opacity: 0.2; transform: scale(1); }
-            50% { opacity: 0.6; transform: scale(1.1); }
+        @keyframes pulseGlow {
+            0%,
+            100% {
+                opacity: 0.2;
+                transform: scale(1);
+            }
+            50% {
+                opacity: 0.6;
+                transform: scale(1.1);
+            }
         }
 
-        .banner-content {
+        .challenge-banner-content {
             position: relative;
             z-index: 1;
             display: flex;
@@ -314,11 +401,11 @@
             flex-wrap: wrap;
         }
 
-        .badge-desafio {
+        .challenge-banner .badge-challenge {
             display: inline-flex;
             align-items: center;
             gap: 10px;
-            background: rgba(0,255,65,0.1);
+            background: rgba(0, 255, 65, 0.1);
             border: 1px solid var(--verde);
             padding: 5px 18px;
             border-radius: 4px;
@@ -327,69 +414,111 @@
             color: var(--verde);
             text-shadow: 0 0 20px var(--verde-glow);
             box-shadow: 0 0 30px var(--verde-glow);
-            animation: badgePulse 2s infinite;
+            animation: badgePulse 2s ease-in-out infinite;
         }
 
         @keyframes badgePulse {
-            0%, 100% { box-shadow: 0 0 30px var(--verde-glow); }
-            50% { box-shadow: 0 0 60px var(--verde-glow-strong); }
+            0%,
+            100% {
+                box-shadow: 0 0 30px var(--verde-glow);
+            }
+            50% {
+                box-shadow: 0 0 60px var(--verde-glow-strong);
+            }
         }
 
-        .badge-desafio .icone {
+        .challenge-banner .badge-challenge .icon {
             font-size: 1.2rem;
-            animation: spin 4s linear infinite;
+            animation: spinIcon 4s linear infinite;
         }
 
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
+        @keyframes spinIcon {
+            0% {
+                transform: rotate(0deg);
+            }
+            100% {
+                transform: rotate(360deg);
+            }
         }
 
-        .badge-ano {
+        .challenge-banner .badge-year {
             display: inline-flex;
             align-items: center;
             gap: 8px;
-            background: rgba(255,255,255,0.03);
+            background: rgba(255, 255, 255, 0.03);
             border: 1px solid var(--cinza-medio);
             padding: 4px 14px;
             border-radius: 4px;
             font-size: 0.7rem;
             color: var(--metal-claro);
+            transition: all 0.3s ease;
         }
 
-        .badge-ano strong {
+        .challenge-banner .badge-year:hover {
+            border-color: var(--verde);
+            box-shadow: 0 0 20px var(--verde-glow);
+        }
+
+        .challenge-banner .badge-year strong {
             color: var(--branco);
         }
 
-        /* ============================================================
-           CONTEÚDO PRINCIPAL
-           ============================================================ */
+        /* ===== MAIN ===== */
         .main {
+            flex: 1;
             max-width: 1280px;
             margin: 0 auto;
             padding: 30px 24px 50px;
-            position: relative;
-            z-index: 1;
+            width: 100%;
         }
 
-        /* ============================================================
-           PÁGINAS (cada aba)
-           ============================================================ */
+        /* ===== PAGES ===== */
         .page {
             display: none;
-            animation: fadeIn 0.6s ease;
+            position: relative;
         }
 
         .page.active {
             display: block;
+            animation: pageEnter 0.8s cubic-bezier(0.4, 0, 0.2, 1) forwards;
         }
 
-        @keyframes fadeIn {
-            0% { opacity: 0; transform: translateY(20px); }
-            100% { opacity: 1; transform: translateY(0); }
+        .page.exit {
+            animation: pageExit 0.6s cubic-bezier(0.4, 0, 0.2, 1) forwards;
         }
 
-        .page-titulo {
+        @keyframes pageEnter {
+            0% {
+                opacity: 0;
+                transform: translateY(40px) scale(0.95);
+                filter: blur(10px);
+            }
+            50% {
+                opacity: 0.5;
+                transform: translateY(10px) scale(0.98);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+                filter: blur(0);
+            }
+        }
+
+        @keyframes pageExit {
+            0% {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+                filter: blur(0);
+            }
+            100% {
+                opacity: 0;
+                transform: translateY(-30px) scale(0.95);
+                filter: blur(5px);
+            }
+        }
+
+        /* ===== TYPOGRAPHY ===== */
+        .page-title {
             font-size: 2.2rem;
             font-weight: 700;
             color: var(--branco);
@@ -397,15 +526,21 @@
             letter-spacing: 3px;
             text-transform: uppercase;
             text-shadow: 0 0 40px var(--verde-glow);
-            animation: tituloGlow 3s infinite;
+            animation: titleGlow 3s ease-in-out infinite;
+            font-family: var(--font-mono);
         }
 
-        @keyframes tituloGlow {
-            0%, 100% { text-shadow: 0 0 40px var(--verde-glow); }
-            50% { text-shadow: 0 0 80px var(--verde-glow-strong); }
+        @keyframes titleGlow {
+            0%,
+            100% {
+                text-shadow: 0 0 40px var(--verde-glow);
+            }
+            50% {
+                text-shadow: 0 0 80px var(--verde-glow-strong);
+            }
         }
 
-        .page-titulo::after {
+        .page-title::after {
             content: '';
             display: block;
             width: 50px;
@@ -413,48 +548,73 @@
             background: var(--verde);
             margin-top: 6px;
             box-shadow: 0 0 30px var(--verde-glow);
+            animation: lineExpand 1s ease forwards;
         }
 
-        .page-subtitulo {
-            color: var(--metal-claro);
+        @keyframes lineExpand {
+            0% {
+                width: 0;
+            }
+            100% {
+                width: 50px;
+            }
+        }
+
+        .page-subtitle {
             font-size: 1rem;
+            color: var(--metal-claro);
             margin-bottom: 20px;
+            font-weight: 300;
+            animation: subtitleFade 0.8s ease 0.3s both;
             letter-spacing: 1px;
         }
 
-        /* ============================================================
-           CARDS
-           ============================================================ */
-        .grid-cards {
+        @keyframes subtitleFade {
+            0% {
+                opacity: 0;
+                transform: translateX(-20px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        /* ===== CARDS ===== */
+        .card-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
             gap: 18px;
             margin: 18px 0;
         }
 
         .card {
             background: var(--cinza-escuro);
+            border-radius: var(--radius);
+            padding: 20px;
             border: 1px solid var(--cinza-medio);
-            border-radius: 8px;
-            padding: 18px;
-            transition: all 0.4s;
+            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
             position: relative;
             overflow: hidden;
+            cursor: default;
         }
 
         .card::before {
             content: '';
             position: absolute;
-            inset: -2px;
+            top: -2px;
+            left: -2px;
+            right: -2px;
+            bottom: -2px;
             background: linear-gradient(45deg, var(--verde), transparent, var(--verde));
             opacity: 0;
-            transition: 0.5s;
-            border-radius: 8px;
+            transition: all 0.5s ease;
+            border-radius: var(--radius);
             z-index: -1;
         }
 
         .card:hover {
-            transform: translateY(-4px);
+            transform: translateY(-4px) scale(1.02);
             border-color: var(--verde);
             box-shadow: 0 0 40px var(--verde-glow);
         }
@@ -463,16 +623,16 @@
             opacity: 0.15;
         }
 
-        .card .icone {
+        .card-icon {
             font-size: 1.8rem;
-            margin-bottom: 8px;
+            margin-bottom: 10px;
             display: block;
         }
 
         .card h3 {
             font-size: 1rem;
             color: var(--branco);
-            margin-bottom: 4px;
+            margin-bottom: 6px;
             letter-spacing: 1px;
         }
 
@@ -487,143 +647,210 @@
             padding: 0;
             margin-top: 6px;
         }
+
         .card ul li::before {
-            content: "▸ ";
+            content: '▸ ';
             color: var(--verde);
         }
 
-        /* ============================================================
-           CARDS DE RISCO (cores)
-           ============================================================ */
-        .grid-risco {
+        /* ===== HIGHLIGHT ===== */
+        .highlight-box {
+            background: var(--cinza-escuro);
+            border-left: 4px solid var(--verde);
+            padding: 16px 20px;
+            border-radius: var(--radius);
+            box-shadow: 0 0 30px var(--verde-glow);
+            margin: 18px 0;
+            font-weight: 500;
+            font-size: 1rem;
+            color: var(--branco);
+            position: relative;
+            overflow: hidden;
+            animation: highlightPulse 3s ease-in-out infinite;
+        }
+
+        @keyframes highlightPulse {
+            0%,
+            100% {
+                box-shadow: 0 0 30px var(--verde-glow);
+            }
+            50% {
+                box-shadow: 0 0 60px var(--verde-glow-strong);
+            }
+        }
+
+        .highlight-box strong {
+            color: var(--verde);
+            text-shadow: 0 0 20px var(--verde-glow);
+        }
+
+        /* ===== RISK CARDS (simplificados) ===== */
+        .risk-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 16px;
+            grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+            gap: 18px;
             margin: 20px 0;
         }
 
-        .card-risco {
+        .risk-card {
             background: var(--cinza-escuro);
-            border-top: 4px solid #666;
-            border-radius: 4px;
-            padding: 14px;
-            transition: 0.4s;
+            border-radius: var(--radius);
+            padding: 18px;
+            border: 1px solid var(--cinza-medio);
+            border-top: 4px solid var(--metal);
+            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            display: flex;
+            flex-direction: column;
         }
 
-        .card-risco:hover {
-            transform: translateY(-4px);
+        .risk-card:hover {
+            transform: translateY(-4px) scale(1.02);
             border-color: var(--verde);
-            box-shadow: 0 0 30px var(--verde-glow);
+            box-shadow: 0 0 40px var(--verde-glow);
         }
 
-        .card-risco.preto { border-top-color: #1a1a1a; }
-        .card-risco.vermelho { border-top-color: var(--vermelho); }
-        .card-risco.amarelo { border-top-color: var(--amarelo); }
-        .card-risco.verde { border-top-color: var(--verde); }
+        .risk-card.black {
+            border-top-color: #1a1a1a;
+        }
+        .risk-card.red {
+            border-top-color: var(--vermelho);
+        }
+        .risk-card.yellow {
+            border-top-color: var(--amarelo);
+        }
+        .risk-card.green {
+            border-top-color: var(--verde);
+        }
 
-        .risco-header {
+        .risk-header {
             display: flex;
             align-items: center;
             gap: 10px;
-            margin-bottom: 6px;
+            margin-bottom: 8px;
         }
 
-        .risco-dot {
-            width: 16px;
-            height: 16px;
+        .risk-dot {
+            width: 18px;
+            height: 18px;
             border-radius: 50%;
-            border: 1px solid rgba(255,255,255,0.1);
             flex-shrink: 0;
+            border: 2px solid rgba(255, 255, 255, 0.1);
         }
-        .risco-dot.preto { background: #1a1a1a; }
-        .risco-dot.vermelho { background: var(--vermelho); }
-        .risco-dot.amarelo { background: var(--amarelo); }
-        .risco-dot.verde { background: var(--verde); }
+        .risk-dot.black {
+            background: #1a1a1a;
+            border-color: #333;
+        }
+        .risk-dot.red {
+            background: var(--vermelho);
+            box-shadow: 0 0 20px var(--vermelho-glow);
+        }
+        .risk-dot.yellow {
+            background: var(--amarelo);
+            box-shadow: 0 0 20px var(--amarelo-glow);
+        }
+        .risk-dot.green {
+            background: var(--verde);
+            box-shadow: 0 0 30px var(--verde-glow-strong);
+        }
 
-        .risco-nome {
+        .risk-name {
+            font-size: 1rem;
             font-weight: 700;
             color: var(--branco);
-            font-size: 1rem;
+            letter-spacing: 1px;
         }
 
-        .risco-prioridade {
+        .risk-priority {
             margin-left: auto;
-            color: var(--metal-claro);
+            font-weight: 700;
             font-size: 0.8rem;
+            color: var(--metal-claro);
+            background: rgba(255, 255, 255, 0.05);
+            padding: 2px 10px;
+            border-radius: 4px;
+            border: 1px solid var(--cinza-medio);
         }
 
-        .risco-exemplos {
+        .risk-desc {
+            color: var(--metal-claro);
+            font-size: 0.85rem;
+            margin-bottom: 10px;
+        }
+
+        .risk-bar-wrap {
+            width: 100%;
+            height: 4px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 40px;
+            overflow: hidden;
+            margin: 6px 0 10px;
+        }
+
+        .risk-bar-fill {
+            height: 100%;
+            border-radius: 40px;
+            width: 0%;
+            transition: width 1.5s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .risk-bar-fill.black {
+            background: #333;
+        }
+        .risk-bar-fill.red {
+            background: var(--vermelho);
+        }
+        .risk-bar-fill.yellow {
+            background: var(--amarelo);
+        }
+        .risk-bar-fill.green {
+            background: var(--verde);
+        }
+
+        .risk-examples {
             list-style: none;
             padding: 0;
+            margin: 6px 0 0;
             display: flex;
             flex-wrap: wrap;
             gap: 4px;
-            margin-top: 6px;
         }
 
-        .risco-exemplos li {
-            background: rgba(255,255,255,0.03);
-            padding: 2px 10px;
+        .risk-examples li {
+            background: rgba(255, 255, 255, 0.03);
+            padding: 3px 12px;
             border-radius: 4px;
             font-size: 0.7rem;
             color: var(--metal-claro);
             border: 1px solid var(--cinza-medio);
         }
 
-        /* ============================================================
-           DESTAQUE (caixa de destaque)
-           ============================================================ */
-        .destaque {
-            background: var(--cinza-escuro);
-            border-left: 4px solid var(--verde);
-            padding: 14px 18px;
-            border-radius: 4px;
-            box-shadow: 0 0 30px var(--verde-glow);
-            margin: 18px 0;
-            color: var(--branco);
-            font-weight: 500;
-            font-size: 1rem;
-            animation: destaquePulse 3s infinite;
-        }
-
-        @keyframes destaquePulse {
-            0%, 100% { box-shadow: 0 0 30px var(--verde-glow); }
-            50% { box-shadow: 0 0 60px var(--verde-glow-strong); }
-        }
-
-        .destaque strong {
-            color: var(--verde);
-            text-shadow: 0 0 20px var(--verde-glow);
-        }
-
-        /* ============================================================
-           RODAPÉ
-           ============================================================ */
-        .footer {
+        /* ===== FOOTER ===== */
+        .footer-note {
             text-align: center;
             margin-top: 40px;
             padding-top: 20px;
             border-top: 1px solid var(--cinza-medio);
             color: var(--metal-claro);
             font-size: 0.75rem;
+            position: relative;
         }
 
-        .footer::before {
+        .footer-note::before {
             content: '';
-            display: block;
+            position: absolute;
+            top: -1px;
+            left: 50%;
+            transform: translateX(-50%);
             width: 100px;
             height: 1px;
             background: linear-gradient(90deg, transparent, var(--verde), transparent);
-            margin: 0 auto 12px;
         }
 
-        .footer strong {
+        .footer-note strong {
             color: var(--verde);
         }
 
-        /* ============================================================
-           RESPONSIVIDADE
-           ============================================================ */
+        /* ===== RESPONSIVE ===== */
         @media (max-width: 900px) {
             .header-inner {
                 flex-wrap: wrap;
@@ -635,31 +862,6 @@
             }
             .menu-toggle {
                 display: flex;
-                flex-direction: column;
-                gap: 4px;
-                background: transparent;
-                border: none;
-                cursor: pointer;
-                padding: 4px;
-            }
-            .menu-toggle span {
-                display: block;
-                width: 26px;
-                height: 2px;
-                background: var(--branco);
-                border-radius: 2px;
-                transition: 0.3s;
-            }
-            .menu-toggle.open span:nth-child(1) {
-                transform: rotate(45deg) translate(5px, 5px);
-                background: var(--verde);
-            }
-            .menu-toggle.open span:nth-child(2) {
-                opacity: 0;
-            }
-            .menu-toggle.open span:nth-child(3) {
-                transform: rotate(-45deg) translate(5px, -5px);
-                background: var(--verde);
             }
             .nav {
                 display: none;
@@ -672,5 +874,525 @@
             }
             .nav.open {
                 display: flex;
+                animation: navSlideDown 0.4s ease forwards;
             }
-            .nav-
+            @keyframes navSlideDown {
+                0% {
+                    opacity: 0;
+                    transform: translateY(-10px);
+                }
+                100% {
+                    opacity: 1;
+                    transform: translateY(0);
+                }
+            }
+            .nav-btn {
+                padding: 8px 14px;
+                width: 100%;
+                text-align: left;
+                border-radius: var(--radius);
+                font-size: 0.75rem;
+            }
+            .nav-btn.active {
+                background: var(--verde);
+                color: var(--preto);
+            }
+            .page-title {
+                font-size: 1.8rem;
+            }
+            .risk-grid {
+                grid-template-columns: 1fr;
+            }
+            .card-grid {
+                grid-template-columns: 1fr;
+            }
+            .challenge-banner-content {
+                flex-direction: column;
+                gap: 6px;
+            }
+            .challenge-banner .badge-challenge {
+                font-size: 0.7rem;
+                padding: 4px 14px;
+            }
+        }
+
+        @media (max-width: 500px) {
+            .main {
+                padding: 18px 14px 30px;
+            }
+            .page-title {
+                font-size: 1.4rem;
+            }
+            .card {
+                padding: 16px;
+            }
+            .risk-card {
+                padding: 14px;
+            }
+            .highlight-box {
+                padding: 12px 16px;
+                font-size: 0.9rem;
+            }
+        }
+
+        /* ===== ANIMAÇÕES DE ENTRADA ===== */
+        .risk-card,
+        .card,
+        .highlight-box {
+            opacity: 0;
+            animation: cardEntrance 0.7s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+        }
+
+        @keyframes cardEntrance {
+            0% {
+                opacity: 0;
+                transform: translateY(20px) scale(0.95);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        .risk-card:nth-child(1) {
+            animation-delay: 0.05s;
+        }
+        .risk-card:nth-child(2) {
+            animation-delay: 0.10s;
+        }
+        .risk-card:nth-child(3) {
+            animation-delay: 0.15s;
+        }
+        .risk-card:nth-child(4) {
+            animation-delay: 0.20s;
+        }
+
+        .card:nth-child(1) {
+            animation-delay: 0.05s;
+        }
+        .card:nth-child(2) {
+            animation-delay: 0.10s;
+        }
+        .card:nth-child(3) {
+            animation-delay: 0.15s;
+        }
+        .card:nth-child(4) {
+            animation-delay: 0.20s;
+        }
+        .card:nth-child(5) {
+            animation-delay: 0.25s;
+        }
+        .card:nth-child(6) {
+            animation-delay: 0.30s;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ===== PARTICLES ===== -->
+    <div class="particle-container" id="particles"></div>
+
+    <!-- ===== HUD ===== -->
+    <div class="system-hud">
+        <div class="line"><span class="label">Sistema</span><span class="value">ONLINE</span></div>
+        <div class="line"><span class="label">Fila</span><span class="value" id="hud-fila">0</span></div>
+        <div class="line"><span class="label">Status</span><span class="value" id="hud-status">NORMAL</span></div>
+        <div class="line"><span class="label">Local</span><span class="value">TRIAGEM</span></div>
+        <div class="line"><span class="label">Hora</span><span class="value" id="hud-time">--:--</span></div>
+    </div>
+
+    <!-- ===== HEADER ===== -->
+    <header class="header" id="header">
+        <div class="header-inner">
+            <div class="logo">
+                <span class="logo-icon">🏥</span>
+                SUS<span>+</span>Organizado
+            </div>
+
+            <button class="menu-toggle" id="menuToggle" aria-label="Abrir menu">
+                <span></span><span></span><span></span>
+            </button>
+
+            <nav class="nav" id="navMenu">
+                <button class="nav-btn active" data-page="page1">1. Problema</button>
+                <button class="nav-btn" data-page="page2">2. Quem?</button>
+                <button class="nav-btn" data-page="page3">3. Solução</button>
+                <button class="nav-btn" data-page="page4">4. Diferente</button>
+                <button class="nav-btn" data-page="page5">5. Impacto</button>
+                <button class="nav-btn" data-page="page6">6. Extra</button>
+            </nav>
+        </div>
+    </header>
+
+    <!-- ===== BANNER ===== -->
+    <div class="challenge-banner">
+        <div class="challenge-banner-content">
+            <div class="badge-challenge">
+                <span class="icon">🏆</span>
+                <span>DESAFIO <strong style="color:var(--branco);">LIGA JOVEM</strong></span>
+                <span class="highlight">|</span>
+                <span>PEDRO CARLI</span>
+            </div>
+            <div class="badge-year">
+                <span>📅</span>
+                <span><strong>2026</strong></span>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===== MAIN ===== -->
+    <main class="main">
+
+        <!-- ===================== PAGE 1 ===================== -->
+        <section class="page active" id="page1">
+            <h1 class="page-title">❓ Qual problema escolhemos?</h1>
+            <p class="page-subtitle">O gargalo das filas no SUS</p>
+
+            <div class="card-grid">
+                <div class="card">
+                    <span class="card-icon">⏳</span>
+                    <h3>Tempo de espera</h3>
+                    <p>Milhões de brasileiros aguardam por consultas, exames e procedimentos. O tempo de espera é um dos maiores desafios do SUS.</p>
+                </div>
+                <div class="card">
+                    <span class="card-icon">📊</span>
+                    <h3>Alta demanda</h3>
+                    <p>O volume de atendimentos é gigantesco. A estrutura, mesmo com investimentos, não consegue atender a todos no mesmo ritmo.</p>
+                </div>
+                <div class="card">
+                    <span class="card-icon">🧩</span>
+                    <h3>Gestão complexa</h3>
+                    <p>As filas envolvem fatores como regionalização, especialidades, gravidade dos casos e capacidade instalada dos hospitais.</p>
+                </div>
+            </div>
+
+            <div class="highlight-box">
+                <strong>“Investir mais é importante, mas não resolve sozinho. É preciso organizar a prioridade.”</strong>
+            </div>
+        </section>
+
+        <!-- ===================== PAGE 2 ===================== -->
+        <section class="page" id="page2">
+            <h1 class="page-title">👥 Quem passa por esse problema?</h1>
+            <p class="page-subtitle">Todos os brasileiros que dependem do SUS</p>
+
+            <div class="card-grid">
+                <div class="card">
+                    <span class="card-icon">🧑‍⚕️</span>
+                    <h3>Pacientes</h3>
+                    <p>Quem aguarda na fila, muitas vezes sem saber quando será atendido. A incerteza gera ansiedade e agravamento de quadros.</p>
+                </div>
+                <div class="card">
+                    <span class="card-icon">🏥</span>
+                    <h3>Profissionais de saúde</h3>
+                    <p>Médicos, enfermeiros e técnicos precisam decidir quem atender primeiro, muitas vezes sem critérios objetivos.</p>
+                </div>
+                <div class="card">
+                    <span class="card-icon">📋</span>
+                    <h3>Gestores</h3>
+                    <p>Administradores hospitalares e secretários de saúde enfrentam o desafio de alocar recursos e reduzir filas.</p>
+                </div>
+            </div>
+
+            <div class="highlight-box">
+                <strong>“O problema não é de um grupo específico. Ele afeta toda a cadeia do SUS.”</strong>
+            </div>
+        </section>
+
+        <!-- ===================== PAGE 3 ===================== -->
+        <section class="page" id="page3">
+            <h1 class="page-title">💡 Qual solução criamos?</h1>
+            <p class="page-subtitle">Classificação de risco por cores</p>
+
+            <div class="risk-grid">
+                <div class="risk-card black">
+                    <div class="risk-header">
+                        <span class="risk-dot black"></span>
+                        <span class="risk-name">Prioridade Máxima</span>
+                        <span class="risk-priority">⚫ 100%</span>
+                    </div>
+                    <p class="risk-desc">Risco imediato de morte.</p>
+                    <div class="risk-bar-wrap"><div class="risk-bar-fill black" style="width:100%;"></div></div>
+                    <ul class="risk-examples"><li>Parada cardíaca</li><li>Hemorragia intensa</li></ul>
+                </div>
+
+                <div class="risk-card red">
+                    <div class="risk-header">
+                        <span class="risk-dot red"></span>
+                        <span class="risk-name">Alta Prioridade</span>
+                        <span class="risk-priority">🔴 80%</span>
+                    </div>
+                    <p class="risk-desc">Grave, precisa de atendimento rápido.</p>
+                    <div class="risk-bar-wrap"><div class="risk-bar-fill red" style="width:80%;"></div></div>
+                    <ul class="risk-examples"><li>Suspeita de infarto</li><li>Fratura exposta</li></ul>
+                </div>
+
+                <div class="risk-card yellow">
+                    <div class="risk-header">
+                        <span class="risk-dot yellow"></span>
+                        <span class="risk-name">Situação de Atenção</span>
+                        <span class="risk-priority">🟡 50%</span>
+                    </div>
+                    <p class="risk-desc">Precisa de avaliação, sem urgência imediata.</p>
+                    <div class="risk-bar-wrap"><div class="risk-bar-fill yellow" style="width:50%;"></div></div>
+                    <ul class="risk-examples"><li>Febre alta persistente</li><li>Dor abdominal moderada</li></ul>
+                </div>
+
+                <div class="risk-card green">
+                    <div class="risk-header">
+                        <span class="risk-dot green"></span>
+                        <span class="risk-name">Condição Estável</span>
+                        <span class="risk-priority">🟢 20%</span>
+                    </div>
+                    <p class="risk-desc">Leve, pode aguardar atendimento.</p>
+                    <div class="risk-bar-wrap"><div class="risk-bar-fill green" style="width:20%;"></div></div>
+                    <ul class="risk-examples"><li>Resfriado comum</li><li>Dor muscular leve</li></ul>
+                </div>
+            </div>
+
+            <div class="highlight-box">
+                <strong>“A cor define a prioridade — não a ordem de chegada.”</strong>
+            </div>
+        </section>
+
+        <!-- ===================== PAGE 4 ===================== -->
+        <section class="page" id="page4">
+            <h1 class="page-title">🔄 O que ele tem de diferente?</h1>
+            <p class="page-subtitle">Inovação na gestão de filas</p>
+
+            <div class="card-grid">
+                <div class="card">
+                    <span class="card-icon">🎯</span>
+                    <h3>Critério objetivo</h3>
+                    <p>Substitui a subjetividade por um protocolo claro baseado em sintomas e gravidade.</p>
+                </div>
+                <div class="card">
+                    <span class="card-icon">📱</span>
+                    <h3>Ferramenta digital</h3>
+                    <p>Pode ser integrada a prontuários eletrônicos e sistemas hospitalares existentes.</p>
+                </div>
+                <div class="card">
+                    <span class="card-icon">🧠</span>
+                    <h3>Educação contínua</h3>
+                    <p>Inclui jogo e simulador para treinar profissionais e conscientizar a população.</p>
+                </div>
+                <div class="card">
+                    <span class="card-icon">📊</span>
+                    <h3>Transparência</h3>
+                    <p>Pacientes e gestores visualizam a prioridade, reduzindo a sensação de injustiça.</p>
+                </div>
+            </div>
+
+            <div class="highlight-box">
+                <strong>“Não é só uma lista de espera — é um sistema que comunica prioridade de forma visual.”</strong>
+            </div>
+        </section>
+
+        <!-- ===================== PAGE 5 ===================== -->
+        <section class="page" id="page5">
+            <h1 class="page-title">📈 Que impacto ele pode gerar?</h1>
+            <p class="page-subtitle">Resultados esperados com a implantação</p>
+
+            <div class="card-grid">
+                <div class="card">
+                    <span class="card-icon">⚡</span>
+                    <h3>Atendimento mais rápido para quem precisa</h3>
+                    <p>Pacientes graves são priorizados, reduzindo riscos de morte e complicações.</p>
+                </div>
+                <div class="card">
+                    <span class="card-icon">😌</span>
+                    <h3>Menos ansiedade</h3>
+                    <p>Pacientes leves sabem que podem aguardar com segurança, enquanto os graves são atendidos primeiro.</p>
+                </div>
+                <div class="card">
+                    <span class="card-icon">🧑‍⚕️</span>
+                    <h3>Mais eficiência para a equipe</h3>
+                    <p>Profissionais têm um guia claro para tomar decisões rápidas e consistentes.</p>
+                </div>
+                <div class="card">
+                    <span class="card-icon">📋</span>
+                    <h3>Gestão baseada em dados</h3>
+                    <p>Permite identificar gargalos, ajustar recursos e melhorar continuamente o sistema.</p>
+                </div>
+            </div>
+
+            <div class="highlight-box">
+                <strong>“O impacto não é só numérico — é humano. Organizar para salvar vidas.”</strong>
+            </div>
+        </section>
+
+        <!-- ===================== PAGE 6 ===================== -->
+        <section class="page" id="page6">
+            <h1 class="page-title">⚠️ Extra! Considerações e avisos</h1>
+            <p class="page-subtitle">O que precisamos levar em conta</p>
+
+            <div class="card-grid">
+                <div class="card">
+                    <span class="card-icon">⚠️</span>
+                    <h3>Não resolve tudo</h3>
+                    <p>Não substitui investimentos em infraestrutura, contratações ou ampliação do acesso.</p>
+                </div>
+                <div class="card">
+                    <span class="card-icon">🧠</span>
+                    <h3>Treinamento é essencial</h3>
+                    <p>Profissionais precisam ser capacitados para aplicar a classificação de forma correta.</p>
+                </div>
+                <div class="card">
+                    <span class="card-icon">🔀</span>
+                    <h3>Risco de erros</h3>
+                    <p>Avaliação humana pode falhar; é importante ter revisão e protocolos claros.</p>
+                </div>
+                <div class="card">
+                    <span class="card-icon">🏥</span>
+                    <h3>Adaptação local</h3>
+                    <p>Cada hospital tem realidades diferentes; o sistema precisa ser flexível.</p>
+                </div>
+                <div class="card">
+                    <span class="card-icon">📢</span>
+                    <h3>Comunicação com o paciente</h3>
+                    <p>É fundamental explicar ao paciente como a classificação funciona para evitar frustrações.</p>
+                </div>
+                <div class="card">
+                    <span class="card-icon">🔮</span>
+                    <h3>Evolução contínua</h3>
+                    <p>A ferramenta deve ser atualizada com base em feedback e novas tecnologias.</p>
+                </div>
+            </div>
+
+            <div class="highlight-box" style="border-left-color: var(--amarelo);">
+                <strong style="color:var(--amarelo);">Conclusão:</strong> A classificação por cores é uma <strong>ferramenta de gestão</strong> poderosa, mas não é uma bala de prata. Combinada com políticas públicas e investimentos, pode transformar a experiência no SUS.
+            </div>
+        </section>
+
+        <div class="footer-note">
+            Desenvolvido com <strong>💚</strong> para o Desafio Liga Jovem · Classificação de Risco no SUS
+        </div>
+
+    </main>
+
+    <!-- ===== JAVASCRIPT ===== -->
+    <script>
+        (function() {
+            'use strict';
+
+            // ===== PARTICLES =====
+            function createParticles() {
+                var container = document.getElementById('particles');
+                if (!container) return;
+                for (var i = 0; i < 30; i++) {
+                    var particle = document.createElement('div');
+                    particle.className = 'particle';
+                    var size = Math.random() * 3 + 1;
+                    particle.style.width = size + 'px';
+                    particle.style.height = size + 'px';
+                    particle.style.left = Math.random() * 100 + '%';
+                    particle.style.animationDuration = (Math.random() * 18 + 12) + 's';
+                    particle.style.animationDelay = (Math.random() * 12) + 's';
+                    particle.style.opacity = Math.random() * 0.25 + 0.05;
+                    container.appendChild(particle);
+                }
+            }
+            createParticles();
+
+            // ===== HUD =====
+            function updateHUD() {
+                var filaEl = document.getElementById('hud-fila');
+                var statusEl = document.getElementById('hud-status');
+                var timeEl = document.getElementById('hud-time');
+                if (filaEl) {
+                    filaEl.textContent = Math.floor(Math.random() * 30) + 5;
+                }
+                if (statusEl) {
+                    var statuses = ['NORMAL', 'ATENÇÃO', 'ALERTA'];
+                    var idx = Math.floor(Math.random() * 3);
+                    statusEl.textContent = statuses[idx];
+                    statusEl.className = 'value' + (idx === 2 ? ' danger' : idx === 1 ? ' warning' : '');
+                }
+                if (timeEl) {
+                    var now = new Date();
+                    timeEl.textContent = now.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
+                }
+            }
+            setInterval(updateHUD, 3000);
+            updateHUD();
+
+            // ===== NAVEGAÇÃO =====
+            var navBtns = document.querySelectorAll('.nav-btn');
+            var pages = document.querySelectorAll('.page');
+            var menuToggle = document.getElementById('menuToggle');
+            var navMenu = document.getElementById('navMenu');
+            var header = document.getElementById('header');
+
+            window.addEventListener('scroll', function() {
+                header.classList.toggle('scrolled', window.scrollY > 50);
+            });
+
+            function navigateTo(pageId) {
+                var currentActive = document.querySelector('.page.active');
+                if (currentActive && currentActive.id === pageId) return;
+
+                if (currentActive) {
+                    currentActive.classList.add('exit');
+                    setTimeout(function() {
+                        currentActive.classList.remove('active');
+                        currentActive.classList.remove('exit');
+                    }, 600);
+                }
+
+                var target = document.getElementById(pageId);
+                if (target) {
+                    setTimeout(function() {
+                        target.classList.add('active');
+                        animateCards(target);
+                    }, 300);
+                }
+
+                navBtns.forEach(function(btn) {
+                    btn.classList.remove('active');
+                    if (btn.dataset.page === pageId) btn.classList.add('active');
+                });
+
+                if (navMenu) navMenu.classList.remove('open');
+                if (menuToggle) menuToggle.classList.remove('open');
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            }
+
+            function animateCards(container) {
+                var cards = container.querySelectorAll('.card, .risk-card, .highlight-box');
+                cards.forEach(function(card, index) {
+                    card.style.animation = 'none';
+                    card.style.opacity = '0';
+                    setTimeout(function() {
+                        card.style.animation = 'cardEntrance 0.7s cubic-bezier(0.4, 0, 0.2, 1) forwards';
+                        card.style.animationDelay = (index * 0.06) + 's';
+                    }, 50);
+                });
+            }
+
+            navBtns.forEach(function(btn) {
+                btn.addEventListener('click', function(e) {
+                    var pageId = this.dataset.page;
+                    if (pageId) navigateTo(pageId);
+                });
+            });
+
+            if (menuToggle) {
+                menuToggle.addEventListener('click', function() {
+                    this.classList.toggle('open');
+                    if (navMenu) navMenu.classList.toggle('open');
+                });
+            }
+
+            // Inicializa página 1
+            var page1 = document.getElementById('page1');
+            if (page1) {
+                page1.classList.add('active');
+                setTimeout(function() { animateCards(page1); }, 300);
+            }
+
+            console.log('🏥 SUS + Organizado — Apresentação carregada!');
+        })();
+    </script>
+
+</body>
+</html>
