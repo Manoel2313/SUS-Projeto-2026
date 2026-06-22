@@ -1383,6 +1383,7 @@
             margin: 20px 0;
             position: relative;
             overflow: hidden;
+            transition: border-color 0.3s, background-color 0.3s, box-shadow 0.3s;
         }
 
         .game-container::before {
@@ -1396,6 +1397,24 @@
             opacity: 0.1;
             z-index: 0;
             border-radius: var(--radius);
+        }
+
+        /* ===== ALERTA DE TEMPO CRÍTICO — PISCADA VERMELHA ===== */
+        .game-container.blink-red {
+            animation: blinkRed 0.4s infinite alternate;
+            border-color: #ff1744 !important;
+            box-shadow: 0 0 80px rgba(255, 23, 68, 0.6) !important;
+        }
+
+        @keyframes blinkRed {
+            0% {
+                background-color: var(--cinza-escuro);
+                border-color: var(--verde);
+            }
+            100% {
+                background-color: rgba(255, 23, 68, 0.25);
+                border-color: #ff1744;
+            }
         }
 
         .game-header {
@@ -2576,8 +2595,8 @@
                 <div class="game-header">
                     <div class="game-stats">
                         <span>🏆 <span class="value score" id="scoreDisplay">0</span></span>
-                        <span>⏱️ <span class="value timer" id="timerDisplay">30</span>s</span>
-                        <span>📊 <span class="value" id="streakDisplay">0</span> streak</span>
+                        <span>⏱️ <span class="value timer" id="timerDisplay">60</span>s</span>
+                        <span>🔥 <span class="value" id="streakDisplay">0</span></span>
                     </div>
                     <div style="font-size:0.8rem; color:var(--metal-claro);">
                         Acertos: <span id="correctCount" style="color:var(--verde);">0</span> ·
@@ -2628,8 +2647,9 @@
             <div style="margin-top:20px; background:var(--cinza-escuro); border-radius:var(--radius); padding:16px 20px; border:1px solid var(--cinza-medio);">
                 <p style="font-size:0.9rem; color:var(--metal-claro);">
                     🎯 <strong style="color:var(--branco);">Como jogar:</strong> Leia os sintomas do paciente e clique na cor
-                    que corresponde à gravidade do caso. Acertos aumentam sua pontuação e seu streak. Erros resetam o streak.
-                    Você tem <strong style="color:var(--verde);">30 segundos</strong> para classificar o maior número de pacientes.
+                    que corresponde à gravidade do caso. Acertos aumentam sua pontuação (5–10 pontos) e seu streak.
+                    A cada <strong style="color:var(--verde);">3 acertos consecutivos</strong> você ganha <strong style="color:var(--verde);">+15 segundos</strong> extras!
+                    Erros resetam o streak. Você tem <strong style="color:var(--verde);">60 segundos</strong> para classificar o maior número de pacientes.
                 </p>
             </div>
         </section>
@@ -2784,15 +2804,15 @@
             }
 
             // ============================================================
-            // 4. JOGO — CLASSIFICAÇÃO DE RISCO
+            // 4. JOGO — CLASSIFICAÇÃO DE RISCO (VERSÃO ATUALIZADA)
             // ============================================================
             var gameData = {
                 score: 0,
                 streak: 0,
                 correct: 0,
                 wrong: 0,
-                timer: 30,
-                maxTimer: 30,
+                timer: 60,
+                maxTimer: 60,
                 isRunning: false,
                 timerInterval: null,
                 currentPatient: null,
@@ -2863,21 +2883,75 @@
                 gameData.currentPatient = patient;
             }
 
+            // Atualiza a exibição do streak com foguinhos 🔥
             function updateUI() {
                 gameElements.scoreDisplay.textContent = gameData.score;
                 gameElements.timerDisplay.textContent = gameData.timer;
-                gameElements.streakDisplay.textContent = gameData.streak;
+                // Exibe o streak com emojis de fogo (1🔥 por acerto, até 5🔥)
+                var fireEmoji = '🔥'.repeat(Math.min(gameData.streak, 5));
+                gameElements.streakDisplay.textContent = gameData.streak + (fireEmoji ? ' ' + fireEmoji : '');
                 gameElements.correctCount.textContent = gameData.correct;
                 gameElements.wrongCount.textContent = gameData.wrong;
 
+                // Timer color
                 var timerEl = gameElements.timerDisplay;
                 timerEl.className = 'value timer';
                 if (gameData.timer <= 5) timerEl.classList.add('danger');
                 else if (gameData.timer <= 10) timerEl.classList.add('warning');
 
+                // Pisca o container se timer <= 5
+                var container = gameElements.gameContainer;
+                if (gameData.timer <= 5 && gameData.isRunning) {
+                    container.classList.add('blink-red');
+                } else {
+                    container.classList.remove('blink-red');
+                }
+
                 if (gameData.highScore > 0) {
                     gameElements.highScoreDisplay.textContent = gameData.highScore;
                 }
+            }
+
+            // Feedback de bônus
+            function showBonusNotification(text) {
+                var fb = gameElements.gameFeedback;
+                fb.textContent = '⏱️ ' + text;
+                fb.className = 'game-feedback show correct';
+                setTimeout(function() {
+                    fb.classList.remove('show');
+                }, 800);
+            }
+
+            // Lógica de acerto/erro com pontuação variável e bônus de tempo
+            function handleRiskSelection(risk) {
+                if (!gameData.isRunning) return;
+                var patient = gameData.currentPatient;
+                if (!patient) return;
+
+                var correct = (risk === patient.risk);
+                if (correct) {
+                    // Pontuação aleatória entre 5 e 10
+                    var pontos = Math.floor(Math.random() * 6) + 5;
+                    gameData.score += pontos;
+                    gameData.streak += 1;
+                    gameData.correct += 1;
+                    showFeedback(true);
+
+                    // Bônus de tempo a cada 3 acertos consecutivos
+                    if (gameData.streak % 3 === 0 && gameData.streak > 0) {
+                        var bonus = 15;
+                        gameData.timer = Math.min(gameData.timer + bonus, gameData.maxTimer);
+                        showBonusNotification('+15s 🔥');
+                    }
+                } else {
+                    gameData.streak = 0;
+                    gameData.wrong += 1;
+                    showFeedback(false);
+                }
+                updateUI();
+
+                var next = getRandomPatient();
+                displayPatient(next);
             }
 
             function showFeedback(correct) {
@@ -2903,6 +2977,7 @@
                 gameElements.highScoreDisplay.textContent = gameData.highScore;
                 gameElements.gameOverlay.classList.add('show');
                 riskButtons.forEach(function(btn) { btn.disabled = true; });
+                gameElements.gameContainer.classList.remove('blink-red');
             }
 
             function resetGame() {
@@ -2919,6 +2994,7 @@
                 gameData.currentPatient = null;
                 gameElements.gameOverlay.classList.remove('show');
                 riskButtons.forEach(function(btn) { btn.disabled = false; });
+                gameElements.gameContainer.classList.remove('blink-red');
                 updateUI();
                 var first = getRandomPatient();
                 displayPatient(first);
@@ -2937,28 +3013,6 @@
                         endGame();
                     }
                 }, 1000);
-            }
-
-            function handleRiskSelection(risk) {
-                if (!gameData.isRunning) return;
-                var patient = gameData.currentPatient;
-                if (!patient) return;
-
-                var correct = (risk === patient.risk);
-                if (correct) {
-                    gameData.score += 10 + Math.floor(gameData.streak / 3) * 5;
-                    gameData.streak += 1;
-                    gameData.correct += 1;
-                    showFeedback(true);
-                } else {
-                    gameData.streak = 0;
-                    gameData.wrong += 1;
-                    showFeedback(false);
-                }
-                updateUI();
-
-                var next = getRandomPatient();
-                displayPatient(next);
             }
 
             function initGame() {
@@ -3009,6 +3063,7 @@
             console.log('%c🎮 Jogo de Classificação carregado!', 'color: #00ff41;');
 
         })();
+
     </script>
 
 </body>
