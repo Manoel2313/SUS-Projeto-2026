@@ -19,10 +19,10 @@
         @import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap');
 
         :root {
-            --laranja: #ff7a00;
-            --laranja-escuro: #cc6200;
-            --laranja-glow: rgba(255, 122, 0, 0.6);
-            --laranja-glow-strong: rgba(255, 122, 0, 0.9);
+            --verde: #00ff41;
+            --verde-escuro: #00cc33;
+            --verde-glow: rgba(0, 255, 65, 0.6);
+            --verde-glow-strong: rgba(0, 255, 65, 0.9);
             --preto: #0a0a0a;
             --cinza-escuro: #1a1a1a;
             --cinza-medio: #2a2a2a;
@@ -34,8 +34,7 @@
             --vermelho-glow: rgba(255, 23, 68, 0.4);
             --amarelo: #ffea00;
             --amarelo-glow: rgba(255, 234, 0, 0.4);
-            --verde: #00ff41;
-            --verde-glow: rgba(0, 255, 65, 0.3);
+            --verde-claro: #00ff41;
             --verde-glow-strong: rgba(0, 255, 65, 0.6);
             --font-mono: 'Share Tech Mono', 'Courier New', monospace;
             --scanline: rgba(0, 0, 0, 0.03);
@@ -114,7 +113,7 @@
         }
 
         /* ======================================================================= */
-        /*  HUD (sem referência a Black Mesa)                                       */
+        /*  HUD — SISTEMA DE MONITORAMENTO                                         */
         /* ======================================================================= */
         .system-hud {
             position: fixed;
@@ -122,12 +121,12 @@
             left: 20px;
             z-index: 1000;
             font-size: 10px;
-            color: var(--laranja);
+            color: var(--verde);
             background: rgba(0, 0, 0, 0.85);
             padding: 10px 16px;
-            border: 1px solid var(--laranja);
+            border: 1px solid var(--verde);
             border-radius: 4px;
-            box-shadow: 0 0 30px rgba(255, 122, 0, 0.15);
+            box-shadow: 0 0 30px rgba(0, 255, 65, 0.15);
             backdrop-filter: blur(6px);
             display: flex;
             flex-direction: column;
@@ -170,8 +169,8 @@
         .header {
             background: rgba(10, 10, 10, 0.95);
             backdrop-filter: blur(10px);
-            border-bottom: 2px solid var(--laranja);
-            box-shadow: 0 0 40px var(--laranja-glow);
+            border-bottom: 2px solid var(--verde);
+            box-shadow: 0 0 40px var(--verde-glow);
             padding: 0 24px;
             position: sticky;
             top: 0;
@@ -180,7 +179,7 @@
         }
 
         .header.scrolled {
-            box-shadow: 0 0 60px var(--laranja-glow-strong);
+            box-shadow: 0 0 60px var(--verde-glow-strong);
         }
 
         .header-inner {
@@ -210,12 +209,12 @@
             justify-content: center;
             width: 40px;
             height: 40px;
-            background: var(--laranja);
+            background: var(--verde);
             color: var(--preto);
             border-radius: 4px;
             font-size: 1.4rem;
             font-weight: bold;
-            box-shadow: 0 0 30px var(--laranja-glow);
+            box-shadow: 0 0 30px var(--verde-glow);
             transition: var(--transicao-padrao);
             animation: pulseIcon 2s ease-in-out infinite;
         }
@@ -223,21 +222,21 @@
         @keyframes pulseIcon {
             0%,
             100% {
-                box-shadow: 0 0 30px var(--laranja-glow);
+                box-shadow: 0 0 30px var(--verde-glow);
             }
             50% {
-                box-shadow: 0 0 60px var(--laranja-glow-strong);
+                box-shadow: 0 0 60px var(--verde-glow-strong);
             }
         }
 
         .logo-icon:hover {
             transform: scale(1.1) rotate(-5deg);
-            box-shadow: 0 0 50px var(--laranja-glow-strong);
+            box-shadow: 0 0 50px var(--verde-glow-strong);
         }
 
         .logo span {
-            color: var(--laranja);
-            text-shadow: 0 0 20px var(--laranja-glow);
+            color: var(--verde);
+            text-shadow: 0 0 20px var(--verde-glow);
         }
 
         /* ===== NAV ===== */
@@ -273,7 +272,7 @@
             left: 50%;
             width: 0;
             height: 0;
-            background: var(--laranja-glow);
+            background: var(--verde-glow);
             border-radius: 50%;
             transform: translate(-50%, -50%);
             transition: width 0.6s ease, height 0.6s ease;
@@ -287,16 +286,16 @@
 
         .nav-btn:hover {
             color: var(--branco);
-            border-color: var(--laranja);
-            box-shadow: 0 0 20px var(--laranja-glow);
+            border-color: var(--verde);
+            box-shadow: 0 0 20px var(--verde-glow);
             transform: translateY(-2px);
         }
 
         .nav-btn.active {
             color: var(--preto);
-            background: var(--laranja);
-            border-color: var(--laranja);
-            box-shadow: 0 0 30px var(--laranja-glow-strong);
+            background: var(--verde);
+            border-color: var(--verde);
+            box-shadow: 0 0 30px var(--verde-glow-strong);
             font-weight: 600;
             animation: btnActive 0.6s ease;
         }
@@ -314,7 +313,7 @@
         }
 
         .nav-btn.active:hover {
-            box-shadow: 0 0 50px var(--laranja-glow-strong);
+            box-shadow: 0 0 50px var(--verde-glow-strong);
             transform: scale(1.02);
         }
 
@@ -330,7 +329,7 @@
             transition: all 0.3s ease;
         }
         .menu-toggle:hover span {
-            background: var(--laranja);
+            background: var(--verde);
         }
         .menu-toggle span {
             display: block;
@@ -342,7 +341,7 @@
         }
         .menu-toggle.open span:nth-child(1) {
             transform: rotate(45deg) translate(5px, 5px);
-            background: var(--laranja);
+            background: var(--verde);
         }
         .menu-toggle.open span:nth-child(2) {
             opacity: 0;
@@ -350,20 +349,20 @@
         }
         .menu-toggle.open span:nth-child(3) {
             transform: rotate(-45deg) translate(5px, -5px);
-            background: var(--laranja);
+            background: var(--verde);
         }
 
         /* ======================================================================= */
         /*  BANNER — DESAFIO LIGA JOVEM                                            */
         /* ======================================================================= */
         .challenge-banner {
-            background: linear-gradient(135deg, rgba(255, 122, 0, 0.08) 0%, rgba(0, 0, 0, 0.9) 100%);
-            border-bottom: 1px solid var(--laranja);
+            background: linear-gradient(135deg, rgba(0, 255, 65, 0.08) 0%, rgba(0, 0, 0, 0.9) 100%);
+            border-bottom: 1px solid var(--verde);
             padding: 12px 24px;
             text-align: center;
             position: relative;
             overflow: hidden;
-            box-shadow: inset 0 0 60px var(--laranja-glow);
+            box-shadow: inset 0 0 60px var(--verde-glow);
         }
 
         .challenge-banner::before {
@@ -373,7 +372,7 @@
             left: -50%;
             width: 200%;
             height: 200%;
-            background: radial-gradient(circle, var(--laranja-glow), transparent 70%);
+            background: radial-gradient(circle, var(--verde-glow), transparent 70%);
             animation: pulseGlow 3s ease-in-out infinite;
         }
 
@@ -403,25 +402,25 @@
             display: inline-flex;
             align-items: center;
             gap: 10px;
-            background: rgba(255, 122, 0, 0.1);
-            border: 1px solid var(--laranja);
+            background: rgba(0, 255, 65, 0.1);
+            border: 1px solid var(--verde);
             padding: 6px 20px;
             border-radius: 4px;
             font-weight: 700;
             font-size: 0.85rem;
-            color: var(--laranja);
-            text-shadow: 0 0 20px var(--laranja-glow);
-            box-shadow: 0 0 30px var(--laranja-glow);
+            color: var(--verde);
+            text-shadow: 0 0 20px var(--verde-glow);
+            box-shadow: 0 0 30px var(--verde-glow);
             animation: badgePulse 2s ease-in-out infinite;
         }
 
         @keyframes badgePulse {
             0%,
             100% {
-                box-shadow: 0 0 30px var(--laranja-glow);
+                box-shadow: 0 0 30px var(--verde-glow);
             }
             50% {
-                box-shadow: 0 0 60px var(--laranja-glow-strong);
+                box-shadow: 0 0 60px var(--verde-glow-strong);
             }
         }
 
@@ -458,8 +457,8 @@
         }
 
         .challenge-banner .badge-year:hover {
-            border-color: var(--laranja);
-            box-shadow: 0 0 20px var(--laranja-glow);
+            border-color: var(--verde);
+            box-shadow: 0 0 20px var(--verde-glow);
         }
 
         .challenge-banner .badge-year strong {
@@ -534,7 +533,7 @@
             margin-bottom: 8px;
             letter-spacing: 4px;
             text-transform: uppercase;
-            text-shadow: 0 0 40px var(--laranja-glow);
+            text-shadow: 0 0 40px var(--verde-glow);
             animation: titleGlow 3s ease-in-out infinite;
             font-family: var(--font-mono);
         }
@@ -542,10 +541,10 @@
         @keyframes titleGlow {
             0%,
             100% {
-                text-shadow: 0 0 40px var(--laranja-glow);
+                text-shadow: 0 0 40px var(--verde-glow);
             }
             50% {
-                text-shadow: 0 0 80px var(--laranja-glow-strong);
+                text-shadow: 0 0 80px var(--verde-glow-strong);
             }
         }
 
@@ -554,9 +553,9 @@
             display: block;
             width: 60px;
             height: 3px;
-            background: var(--laranja);
+            background: var(--verde);
             margin-top: 8px;
-            box-shadow: 0 0 30px var(--laranja-glow);
+            box-shadow: 0 0 30px var(--verde-glow);
             animation: lineExpand 1s ease forwards;
         }
 
@@ -594,7 +593,7 @@
             font-weight: 600;
             color: var(--branco);
             margin: 40px 0 18px;
-            text-shadow: 0 0 20px var(--laranja-glow);
+            text-shadow: 0 0 20px var(--verde-glow);
             position: relative;
             letter-spacing: 2px;
             text-transform: uppercase;
@@ -605,9 +604,9 @@
             display: block;
             width: 40px;
             height: 2px;
-            background: var(--laranja);
+            background: var(--verde);
             margin-top: 6px;
-            box-shadow: 0 0 20px var(--laranja-glow);
+            box-shadow: 0 0 20px var(--verde-glow);
         }
 
         .section-title:first-of-type {
@@ -619,10 +618,10 @@
         /* ======================================================================= */
         .highlight-box {
             background: var(--cinza-escuro);
-            border-left: 4px solid var(--laranja);
+            border-left: 4px solid var(--verde);
             padding: 20px 24px;
             border-radius: var(--radius);
-            box-shadow: 0 0 30px var(--laranja-glow);
+            box-shadow: 0 0 30px var(--verde-glow);
             margin: 24px 0;
             font-weight: 500;
             font-size: 1.05rem;
@@ -635,10 +634,10 @@
         @keyframes highlightPulse {
             0%,
             100% {
-                box-shadow: 0 0 30px var(--laranja-glow);
+                box-shadow: 0 0 30px var(--verde-glow);
             }
             50% {
-                box-shadow: 0 0 60px var(--laranja-glow-strong);
+                box-shadow: 0 0 60px var(--verde-glow-strong);
             }
         }
 
@@ -649,7 +648,7 @@
             left: 0;
             right: 0;
             bottom: 0;
-            background: linear-gradient(90deg, var(--laranja-glow), transparent);
+            background: linear-gradient(90deg, var(--verde-glow), transparent);
             opacity: 0.05;
             pointer-events: none;
             animation: shineMove 4s linear infinite;
@@ -665,8 +664,8 @@
         }
 
         .highlight-box strong {
-            color: var(--laranja);
-            text-shadow: 0 0 20px var(--laranja-glow);
+            color: var(--verde);
+            text-shadow: 0 0 20px var(--verde-glow);
         }
 
         /* ======================================================================= */
@@ -697,7 +696,7 @@
             left: -2px;
             right: -2px;
             bottom: -2px;
-            background: linear-gradient(45deg, var(--laranja), transparent, var(--laranja));
+            background: linear-gradient(45deg, var(--verde), transparent, var(--verde));
             opacity: 0;
             transition: all 0.5s ease;
             border-radius: var(--radius);
@@ -706,8 +705,8 @@
 
         .card:hover {
             transform: translateY(-6px) scale(1.02);
-            border-color: var(--laranja);
-            box-shadow: 0 0 50px var(--laranja-glow);
+            border-color: var(--verde);
+            box-shadow: 0 0 50px var(--verde-glow);
         }
 
         .card:hover::before {
@@ -781,15 +780,15 @@
             left: 0;
             right: 0;
             bottom: 0;
-            background: radial-gradient(circle at 50% 0%, var(--laranja-glow), transparent 70%);
+            background: radial-gradient(circle at 50% 0%, var(--verde-glow), transparent 70%);
             opacity: 0;
             transition: all 0.5s ease;
         }
 
         .risk-card:hover {
             transform: translateY(-6px) scale(1.02);
-            border-color: var(--laranja);
-            box-shadow: 0 0 50px var(--laranja-glow);
+            border-color: var(--verde);
+            box-shadow: 0 0 50px var(--verde-glow);
         }
 
         .risk-card:hover::before {
@@ -878,9 +877,9 @@
         }
 
         .risk-card:hover .risk-priority {
-            border-color: var(--laranja);
-            color: var(--laranja);
-            box-shadow: 0 0 20px var(--laranja-glow);
+            border-color: var(--verde);
+            color: var(--verde);
+            box-shadow: 0 0 20px var(--verde-glow);
         }
 
         .risk-desc {
@@ -907,7 +906,7 @@
             border-radius: 40px;
             width: 0%;
             transition: width 1.5s cubic-bezier(0.4, 0, 0.2, 1);
-            box-shadow: 0 0 20px var(--laranja-glow);
+            box-shadow: 0 0 20px var(--verde-glow);
             position: relative;
         }
 
@@ -969,10 +968,10 @@
         }
 
         .risk-examples li:hover {
-            border-color: var(--laranja);
+            border-color: var(--verde);
             color: var(--branco);
             transform: scale(1.05);
-            box-shadow: 0 0 20px var(--laranja-glow);
+            box-shadow: 0 0 20px var(--verde-glow);
         }
 
         /* ======================================================================= */
@@ -1002,15 +1001,15 @@
             left: 0;
             right: 0;
             bottom: 0;
-            background: linear-gradient(45deg, var(--laranja-glow), transparent);
+            background: linear-gradient(45deg, var(--verde-glow), transparent);
             opacity: 0;
             transition: all 0.5s ease;
         }
 
         .improve-card:hover {
-            border-color: var(--laranja);
+            border-color: var(--verde);
             transform: translateY(-5px) scale(1.02);
-            box-shadow: 0 0 40px var(--laranja-glow);
+            box-shadow: 0 0 40px var(--verde-glow);
         }
 
         .improve-card:hover::before {
@@ -1028,8 +1027,8 @@
         }
 
         .improve-card:hover h4 {
-            color: var(--laranja);
-            text-shadow: 0 0 20px var(--laranja-glow);
+            color: var(--verde);
+            text-shadow: 0 0 20px var(--verde-glow);
         }
 
         .improve-card p {
@@ -1043,20 +1042,20 @@
             display: inline-block;
             margin-top: 10px;
             font-size: 0.7rem;
-            background: var(--laranja-glow);
-            color: var(--laranja);
+            background: var(--verde-glow);
+            color: var(--verde);
             padding: 3px 14px;
             border-radius: 4px;
             font-weight: 500;
-            border: 1px solid var(--laranja);
+            border: 1px solid var(--verde);
             position: relative;
             z-index: 1;
-            box-shadow: 0 0 20px var(--laranja-glow);
+            box-shadow: 0 0 20px var(--verde-glow);
             transition: all 0.3s ease;
         }
 
         .improve-card:hover .benefit {
-            box-shadow: 0 0 40px var(--laranja-glow-strong);
+            box-shadow: 0 0 40px var(--verde-glow-strong);
             transform: scale(1.05);
         }
 
@@ -1072,13 +1071,13 @@
             border-radius: var(--radius);
             padding: 28px;
             border: 1px solid var(--cinza-medio);
-            box-shadow: 0 0 30px var(--laranja-glow);
+            box-shadow: 0 0 30px var(--verde-glow);
             transition: all 0.5s ease;
         }
 
         .compare-wrap:hover {
-            border-color: var(--laranja);
-            box-shadow: 0 0 50px var(--laranja-glow-strong);
+            border-color: var(--verde);
+            box-shadow: 0 0 50px var(--verde-glow-strong);
         }
 
         .compare-col h4 {
@@ -1093,7 +1092,7 @@
         }
 
         .compare-wrap:hover .compare-col h4 {
-            border-color: var(--laranja);
+            border-color: var(--verde);
         }
 
         .compare-item {
@@ -1111,8 +1110,8 @@
         }
 
         .compare-item:hover {
-            border-left-color: var(--laranja);
-            background: rgba(255, 122, 0, 0.05);
+            border-left-color: var(--verde);
+            background: rgba(0, 255, 65, 0.05);
             transform: translateX(5px);
         }
 
@@ -1145,14 +1144,14 @@
             border-radius: var(--radius);
             padding: 28px;
             border: 1px solid var(--cinza-medio);
-            box-shadow: 0 0 30px var(--laranja-glow);
+            box-shadow: 0 0 30px var(--verde-glow);
             margin: 28px 0;
             transition: all 0.5s ease;
         }
 
         .reflection-box:hover {
-            border-color: var(--laranja);
-            box-shadow: 0 0 50px var(--laranja-glow-strong);
+            border-color: var(--verde);
+            box-shadow: 0 0 50px var(--verde-glow-strong);
         }
 
         .reflection-box h3 {
@@ -1168,14 +1167,14 @@
             color: var(--branco);
             margin: 16px 0 10px;
             padding: 18px 22px;
-            background: rgba(255, 122, 0, 0.05);
+            background: rgba(0, 255, 65, 0.05);
             border-radius: var(--radius);
-            border-left: 4px solid var(--laranja);
+            border-left: 4px solid var(--verde);
             transition: all 0.3s ease;
         }
 
         .reflection-box:hover .question {
-            box-shadow: 0 0 30px var(--laranja-glow);
+            box-shadow: 0 0 30px var(--verde-glow);
         }
 
         .reflection-box .final-text {
@@ -1190,7 +1189,7 @@
         }
 
         .reflection-box:hover .final-text {
-            border-color: var(--laranja);
+            border-color: var(--verde);
         }
 
         /* ======================================================================= */
@@ -1221,15 +1220,15 @@
             left: -50%;
             width: 200%;
             height: 200%;
-            background: radial-gradient(circle, var(--laranja-glow), transparent 70%);
+            background: radial-gradient(circle, var(--verde-glow), transparent 70%);
             opacity: 0;
             transition: all 0.6s ease;
         }
 
         .credit-card:hover {
             transform: translateY(-8px) scale(1.03);
-            border-color: var(--laranja);
-            box-shadow: 0 0 60px var(--laranja-glow);
+            border-color: var(--verde);
+            box-shadow: 0 0 60px var(--verde-glow);
         }
 
         .credit-card:hover::before {
@@ -1271,13 +1270,13 @@
         }
 
         .credit-card:hover .name {
-            color: var(--laranja);
-            text-shadow: 0 0 20px var(--laranja-glow);
+            color: var(--verde);
+            text-shadow: 0 0 20px var(--verde-glow);
         }
 
         .credit-card .role {
             font-size: 0.9rem;
-            color: var(--laranja);
+            color: var(--verde);
             font-weight: 500;
             position: relative;
             z-index: 1;
@@ -1285,15 +1284,15 @@
 
         .credit-card .role::before {
             content: '▸ ';
-            color: var(--laranja);
+            color: var(--verde);
         }
 
         .credit-card .divider {
             width: 40px;
             height: 2px;
-            background: var(--laranja);
+            background: var(--verde);
             margin: 10px auto;
-            box-shadow: 0 0 20px var(--laranja-glow);
+            box-shadow: 0 0 20px var(--verde-glow);
             position: relative;
             z-index: 1;
             transition: all 0.3s ease;
@@ -1301,7 +1300,7 @@
 
         .credit-card:hover .divider {
             width: 60px;
-            box-shadow: 0 0 40px var(--laranja-glow-strong);
+            box-shadow: 0 0 40px var(--verde-glow-strong);
         }
 
         .credit-card .description {
@@ -1315,11 +1314,11 @@
             display: inline-block;
             margin-top: 10px;
             font-size: 0.65rem;
-            background: var(--laranja-glow);
-            color: var(--laranja);
+            background: var(--verde-glow);
+            color: var(--verde);
             padding: 3px 14px;
             border-radius: 4px;
-            border: 1px solid var(--laranja);
+            border: 1px solid var(--verde);
             text-transform: uppercase;
             letter-spacing: 1px;
             font-weight: 600;
@@ -1329,7 +1328,7 @@
         }
 
         .credit-card:hover .badge-credit {
-            box-shadow: 0 0 30px var(--laranja-glow-strong);
+            box-shadow: 0 0 30px var(--verde-glow-strong);
             transform: scale(1.05);
         }
 
@@ -1344,15 +1343,15 @@
         }
 
         .credits-footer:hover {
-            border-color: var(--laranja);
-            box-shadow: 0 0 40px var(--laranja-glow);
+            border-color: var(--verde);
+            box-shadow: 0 0 40px var(--verde-glow);
         }
 
         .credits-footer h3 {
-            color: var(--laranja);
+            color: var(--verde);
             font-size: 1.1rem;
             margin-bottom: 8px;
-            text-shadow: 0 0 20px var(--laranja-glow);
+            text-shadow: 0 0 20px var(--verde-glow);
             letter-spacing: 1px;
         }
 
@@ -1368,8 +1367,8 @@
         }
 
         .credits-footer .highlight-name:hover {
-            color: var(--laranja);
-            text-shadow: 0 0 20px var(--laranja-glow);
+            color: var(--verde);
+            text-shadow: 0 0 20px var(--verde-glow);
         }
 
         /* ======================================================================= */
@@ -1379,8 +1378,8 @@
             background: var(--cinza-escuro);
             border-radius: var(--radius);
             padding: 28px;
-            border: 2px solid var(--laranja);
-            box-shadow: 0 0 50px var(--laranja-glow);
+            border: 2px solid var(--verde);
+            box-shadow: 0 0 50px var(--verde-glow);
             margin: 20px 0;
             position: relative;
             overflow: hidden;
@@ -1393,7 +1392,7 @@
             left: -2px;
             right: -2px;
             bottom: -2px;
-            background: linear-gradient(45deg, var(--laranja), transparent, var(--laranja));
+            background: linear-gradient(45deg, var(--verde), transparent, var(--verde));
             opacity: 0.1;
             z-index: 0;
             border-radius: var(--radius);
@@ -1430,8 +1429,8 @@
         }
 
         .game-stats .value.score {
-            color: var(--laranja);
-            text-shadow: 0 0 20px var(--laranja-glow);
+            color: var(--verde);
+            text-shadow: 0 0 20px var(--verde-glow);
         }
 
         .game-stats .value.timer {
@@ -1477,8 +1476,8 @@
         }
 
         .game-patient:hover {
-            border-color: var(--laranja);
-            box-shadow: 0 0 30px var(--laranja-glow);
+            border-color: var(--verde);
+            box-shadow: 0 0 30px var(--verde-glow);
         }
 
         .game-patient .patient-name {
@@ -1499,9 +1498,9 @@
             font-size: 1.05rem;
             margin-top: 8px;
             padding: 10px 16px;
-            background: rgba(255, 122, 0, 0.05);
+            background: rgba(0, 255, 65, 0.05);
             border-radius: var(--radius);
-            border-left: 3px solid var(--laranja);
+            border-left: 3px solid var(--verde);
         }
 
         .game-actions {
@@ -1552,8 +1551,8 @@
 
         .game-btn:hover {
             transform: scale(1.05);
-            box-shadow: 0 0 30px var(--laranja-glow);
-            border-color: var(--laranja);
+            box-shadow: 0 0 30px var(--verde-glow);
+            border-color: var(--verde);
         }
 
         .game-btn:active {
@@ -1676,8 +1675,8 @@
 
         .game-overlay h2 {
             font-size: 2rem;
-            color: var(--laranja);
-            text-shadow: 0 0 40px var(--laranja-glow);
+            color: var(--verde);
+            text-shadow: 0 0 40px var(--verde-glow);
             margin-bottom: 8px;
             letter-spacing: 2px;
         }
@@ -1692,19 +1691,19 @@
             font-size: 2.5rem;
             color: var(--branco);
             font-weight: 700;
-            text-shadow: 0 0 40px var(--laranja-glow);
+            text-shadow: 0 0 40px var(--verde-glow);
         }
 
         .game-overlay .final-score span {
-            color: var(--laranja);
+            color: var(--verde);
         }
 
         .game-overlay .btn-restart {
             margin-top: 16px;
             padding: 12px 40px;
-            border: 2px solid var(--laranja);
+            border: 2px solid var(--verde);
             background: transparent;
-            color: var(--laranja);
+            color: var(--verde);
             font-family: var(--font-mono);
             font-size: 1rem;
             font-weight: 700;
@@ -1716,9 +1715,9 @@
         }
 
         .game-overlay .btn-restart:hover {
-            background: var(--laranja);
+            background: var(--verde);
             color: var(--preto);
-            box-shadow: 0 0 40px var(--laranja-glow-strong);
+            box-shadow: 0 0 40px var(--verde-glow-strong);
             transform: scale(1.05);
         }
 
@@ -1732,7 +1731,7 @@
         }
 
         .game-message strong {
-            color: var(--laranja);
+            color: var(--verde);
         }
 
         /* ======================================================================= */
@@ -1788,7 +1787,7 @@
             }
 
             .nav-btn.active {
-                background: var(--laranja);
+                background: var(--verde);
                 color: var(--preto);
             }
 
@@ -2046,7 +2045,7 @@
 
         .particle {
             position: absolute;
-            background: var(--laranja);
+            background: var(--verde);
             border-radius: 50%;
             opacity: 0;
             animation: particleFloat linear infinite;
@@ -2090,16 +2089,16 @@
             transform: translateX(-50%);
             width: 100px;
             height: 1px;
-            background: linear-gradient(90deg, transparent, var(--laranja), transparent);
+            background: linear-gradient(90deg, transparent, var(--verde), transparent);
         }
 
         .footer-note strong {
-            color: var(--laranja);
+            color: var(--verde);
             transition: all 0.3s ease;
         }
 
         .footer-note strong:hover {
-            text-shadow: 0 0 20px var(--laranja-glow);
+            text-shadow: 0 0 20px var(--verde-glow);
         }
     </style>
 </head>
@@ -2136,7 +2135,7 @@
                 <button class="nav-btn" data-page="page4">4. Melhorias</button>
                 <button class="nav-btn" data-page="page5">5. Extra</button>
                 <button class="nav-btn" data-page="page6">6. Créditos</button>
-                <button class="nav-btn" data-page="page7" style="color:var(--laranja); border-color:var(--laranja);">🎮 JOGO</button>
+                <button class="nav-btn" data-page="page7" style="color:var(--verde); border-color:var(--verde);">🎮 JOGO</button>
             </nav>
         </div>
     </header>
@@ -2167,7 +2166,7 @@
 
             <p style="font-size:1.05rem; color:var(--metal-claro); max-width:800px;">
                 O SUS atende milhões de brasileiros diariamente. Um dos desafios mais conhecidos do sistema é o
-                <strong style="color:var(--laranja);">tempo de espera</strong> para consultas, exames, procedimentos e atendimentos hospitalares.
+                <strong style="color:var(--verde);">tempo de espera</strong> para consultas, exames, procedimentos e atendimentos hospitalares.
             </p>
 
             <div class="card-grid">
@@ -2187,7 +2186,7 @@
                 <div class="card">
                     <span class="card-icon">🎯</span>
                     <h3>Nossa proposta</h3>
-                    <p>Apresentamos um sistema de <strong style="color:var(--laranja);">classificação de risco por cores</strong> para organizar
+                    <p>Apresentamos um sistema de <strong style="color:var(--verde);">classificação de risco por cores</strong> para organizar
                         melhor os pacientes de acordo com a gravidade dos casos, tornando o atendimento mais justo e
                         eficiente.</p>
                 </div>
@@ -2209,10 +2208,10 @@
             <div style="margin-top:28px; background:var(--cinza-escuro); border-radius:var(--radius); padding:20px; border:1px solid var(--cinza-medio);">
                 <p style="font-weight:600; color:var(--branco);">🔍 Em resumo:</p>
                 <ul style="list-style:none; padding:0; margin-top:8px; display:flex; flex-wrap:wrap; gap:10px;">
-                    <li style="background:rgba(255,122,0,0.05); padding:6px 18px; border-radius:40px; font-size:0.9rem; color:var(--metal-claro); border:1px solid var(--cinza-medio);">✅ Organização</li>
-                    <li style="background:rgba(255,122,0,0.05); padding:6px 18px; border-radius:40px; font-size:0.9rem; color:var(--metal-claro); border:1px solid var(--cinza-medio);">✅ Priorização justa</li>
-                    <li style="background:rgba(255,122,0,0.05); padding:6px 18px; border-radius:40px; font-size:0.9rem; color:var(--metal-claro); border:1px solid var(--cinza-medio);">✅ Redução de desperdício</li>
-                    <li style="background:rgba(255,122,0,0.05); padding:6px 18px; border-radius:40px; font-size:0.9rem; color:var(--metal-claro); border:1px solid var(--cinza-medio);">✅ Melhor experiência</li>
+                    <li style="background:rgba(0,255,65,0.05); padding:6px 18px; border-radius:40px; font-size:0.9rem; color:var(--metal-claro); border:1px solid var(--cinza-medio);">✅ Organização</li>
+                    <li style="background:rgba(0,255,65,0.05); padding:6px 18px; border-radius:40px; font-size:0.9rem; color:var(--metal-claro); border:1px solid var(--cinza-medio);">✅ Priorização justa</li>
+                    <li style="background:rgba(0,255,65,0.05); padding:6px 18px; border-radius:40px; font-size:0.9rem; color:var(--metal-claro); border:1px solid var(--cinza-medio);">✅ Redução de desperdício</li>
+                    <li style="background:rgba(0,255,65,0.05); padding:6px 18px; border-radius:40px; font-size:0.9rem; color:var(--metal-claro); border:1px solid var(--cinza-medio);">✅ Melhor experiência</li>
                 </ul>
             </div>
         </section>
@@ -2315,7 +2314,7 @@
             <p class="page-subtitle">Limitações, riscos e a verdade sobre a proposta</p>
 
             <p style="color:var(--metal-claro); max-width:800px;">
-                A classificação por cores <strong style="color:var(--laranja);">ajuda na organização</strong>, mas não resolve os problemas
+                A classificação por cores <strong style="color:var(--verde);">ajuda na organização</strong>, mas não resolve os problemas
                 estruturais do SUS. O sistema não cria médicos, não cria hospitais e não reduz automaticamente a
                 quantidade de pacientes.
             </p>
@@ -2451,12 +2450,12 @@
             </div>
 
             <!-- CONCLUSÃO FINAL -->
-            <div class="reflection-box" style="border-left: 5px solid var(--laranja);">
+            <div class="reflection-box" style="border-left: 5px solid var(--verde);">
                 <h3>📌 Conclusão Final</h3>
                 <div class="final-text">
                     <p style="font-weight:500; color:var(--branco);">
                         A proposta não pretende substituir profissionais da saúde nem resolver completamente as filas,
-                        mas sim <strong style="color:var(--laranja);">contribuir para uma organização mais eficiente dos atendimentos</strong>.
+                        mas sim <strong style="color:var(--verde);">contribuir para uma organização mais eficiente dos atendimentos</strong>.
                     </p>
                     <p style="margin-top:10px;">
                         O SUS é um patrimônio nacional e merece soluções inovadoras, realistas e centradas no paciente.
@@ -2523,7 +2522,7 @@
                     <span class="badge-credit" style="color:var(--amarelo); border-color:var(--amarelo); background:rgba(255,234,0,0.1);">⭐ Orientação</span>
                 </div>
 
-                <div class="credit-card" style="border-top-color: var(--laranja);">
+                <div class="credit-card" style="border-top-color: var(--verde);">
                     <span class="avatar">💻</span>
                     <div class="name">Manoel Eduardo</div>
                     <div class="role">Desenvolvedor Front-End</div>
@@ -2538,7 +2537,7 @@
             <div class="credits-footer">
                 <h3>🏥 SUS + Organizado</h3>
                 <p>
-                    Um projeto desenvolvido com <strong style="color:var(--laranja);">💚</strong> para apresentação escolar
+                    Um projeto desenvolvido com <strong style="color:var(--verde);">💚</strong> para apresentação escolar
                 </p>
                 <p style="margin-top:6px; font-size:0.9rem;">
                     <span class="highlight-name">Rafael</span> ·
@@ -2548,8 +2547,8 @@
                 <p style="margin-top:4px; font-size:0.85rem; color:var(--metal-claro);">
                     Com orientação da <span class="highlight-name">Professora Charlaine</span>
                 </p>
-                <p style="margin-top:10px; font-size:0.85rem; color:var(--laranja);">
-                    🌟 Site desenvolvido por <span class="highlight-name" style="color:var(--laranja);">Manoel Eduardo</span>
+                <p style="margin-top:10px; font-size:0.85rem; color:var(--verde);">
+                    🌟 Site desenvolvido por <span class="highlight-name" style="color:var(--verde);">Manoel Eduardo</span>
                 </p>
             </div>
         </section>
@@ -2568,7 +2567,7 @@
                         Pontuação: <span id="finalScore">0</span>
                     </div>
                     <p style="font-size:0.9rem; color:var(--metal-claro); margin-top:4px;">
-                        Maior pontuação: <span id="highScoreDisplay" style="color:var(--laranja);">0</span>
+                        Maior pontuação: <span id="highScoreDisplay" style="color:var(--verde);">0</span>
                     </p>
                     <button class="btn-restart" id="btnRestart">▶ REINICIAR</button>
                 </div>
@@ -2630,7 +2629,7 @@
                 <p style="font-size:0.9rem; color:var(--metal-claro);">
                     🎯 <strong style="color:var(--branco);">Como jogar:</strong> Leia os sintomas do paciente e clique na cor
                     que corresponde à gravidade do caso. Acertos aumentam sua pontuação e seu streak. Erros resetam o streak.
-                    Você tem <strong style="color:var(--laranja);">30 segundos</strong> para classificar o maior número de pacientes.
+                    Você tem <strong style="color:var(--verde);">30 segundos</strong> para classificar o maior número de pacientes.
                 </p>
             </div>
         </section>
@@ -3005,9 +3004,9 @@
             // ============================================================
             // 5. CONSOLE EASTER EGG
             // ============================================================
-            console.log('%c🏥 SUS + Organizado — Sistema de Classificação de Risco', 'color: #ff7a00; font-size:18px; font-weight:bold;');
+            console.log('%c🏥 SUS + Organizado — Sistema de Classificação de Risco', 'color: #00ff41; font-size:18px; font-weight:bold;');
             console.log('%c"Organizar para salvar vidas."', 'color: #88ff88;');
-            console.log('%c🎮 Jogo de Classificação carregado!', 'color: #ff7a00;');
+            console.log('%c🎮 Jogo de Classificação carregado!', 'color: #00ff41;');
 
         })();
     </script>
