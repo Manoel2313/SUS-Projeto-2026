@@ -41,7 +41,7 @@
 
         html {
             scroll-behavior: smooth;
-            font-size: 16px;
+            font-size: 17px; /* AUMENTADO de 16px para 17px */
         }
 
         body {
@@ -136,7 +136,7 @@
             bottom: 20px;
             left: 20px;
             z-index: 1000;
-            font-size: 10px;
+            font-size: 11px; /* AUMENTADO de 10px para 11px */
             color: var(--verde);
             background: rgba(0, 0, 0, 0.85);
             padding: 10px 16px;
@@ -201,7 +201,7 @@
             align-items: center;
             gap: 12px;
             font-weight: 700;
-            font-size: 1.1rem;
+            font-size: 1.2rem; /* AUMENTADO de 1.1rem para 1.2rem */
             letter-spacing: 2px;
             flex-shrink: 0;
             color: var(--branco);
@@ -258,7 +258,7 @@
             color: var(--metal-claro);
             padding: 6px 16px;
             border-radius: 4px;
-            font-size: 0.7rem;
+            font-size: 0.75rem; /* AUMENTADO de 0.7rem para 0.75rem */
             font-weight: 500;
             cursor: pointer;
             transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
@@ -410,7 +410,7 @@
             padding: 5px 18px;
             border-radius: 4px;
             font-weight: 700;
-            font-size: 0.8rem;
+            font-size: 0.85rem; /* AUMENTADO de 0.8rem para 0.85rem */
             color: var(--verde);
             text-shadow: 0 0 20px var(--verde-glow);
             box-shadow: 0 0 30px var(--verde-glow);
@@ -449,7 +449,7 @@
             border: 1px solid var(--cinza-medio);
             padding: 4px 14px;
             border-radius: 4px;
-            font-size: 0.7rem;
+            font-size: 0.75rem; /* AUMENTADO de 0.7rem para 0.75rem */
             color: var(--metal-claro);
             transition: all 0.3s ease;
         }
@@ -519,7 +519,7 @@
 
         /* ===== TYPOGRAPHY ===== */
         .page-title {
-            font-size: 2.2rem;
+            font-size: 2.4rem; /* AUMENTADO de 2.2rem para 2.4rem */
             font-weight: 700;
             color: var(--branco);
             margin-bottom: 6px;
@@ -561,7 +561,7 @@
         }
 
         .page-subtitle {
-            font-size: 1rem;
+            font-size: 1.1rem; /* AUMENTADO de 1rem para 1.1rem */
             color: var(--metal-claro);
             margin-bottom: 20px;
             font-weight: 300;
@@ -624,13 +624,13 @@
         }
 
         .card-icon {
-            font-size: 1.8rem;
+            font-size: 2rem; /* AUMENTADO de 1.8rem para 2rem */
             margin-bottom: 10px;
             display: block;
         }
 
         .card h3 {
-            font-size: 1rem;
+            font-size: 1.1rem; /* AUMENTADO de 1rem para 1.1rem */
             color: var(--branco);
             margin-bottom: 6px;
             letter-spacing: 1px;
@@ -639,7 +639,7 @@
         .card p,
         .card li {
             color: var(--metal-claro);
-            font-size: 0.85rem;
+            font-size: 0.92rem; /* AUMENTADO de 0.85rem para 0.92rem */
         }
 
         .card ul {
@@ -662,7 +662,7 @@
             box-shadow: 0 0 30px var(--verde-glow);
             margin: 18px 0;
             font-weight: 500;
-            font-size: 1rem;
+            font-size: 1.1rem; /* AUMENTADO de 1rem para 1.1rem */
             color: var(--branco);
             position: relative;
             overflow: hidden;
@@ -684,7 +684,7 @@
             text-shadow: 0 0 20px var(--verde-glow);
         }
 
-        /* ===== RISK CARDS (simplificados) ===== */
+        /* ===== RISK CARDS ===== */
         .risk-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
@@ -754,7 +754,7 @@
         }
 
         .risk-name {
-            font-size: 1rem;
+            font-size: 1.1rem; /* AUMENTADO de 1rem para 1.1rem */
             font-weight: 700;
             color: var(--branco);
             letter-spacing: 1px;
@@ -763,7 +763,7 @@
         .risk-priority {
             margin-left: auto;
             font-weight: 700;
-            font-size: 0.8rem;
+            font-size: 0.85rem; /* AUMENTADO de 0.8rem para 0.85rem */
             color: var(--metal-claro);
             background: rgba(255, 255, 255, 0.05);
             padding: 2px 10px;
@@ -773,7 +773,7 @@
 
         .risk-desc {
             color: var(--metal-claro);
-            font-size: 0.85rem;
+            font-size: 0.92rem; /* AUMENTADO de 0.85rem para 0.92rem */
             margin-bottom: 10px;
         }
 
@@ -819,9 +819,702 @@
             background: rgba(255, 255, 255, 0.03);
             padding: 3px 12px;
             border-radius: 4px;
-            font-size: 0.7rem;
+            font-size: 0.75rem; /* AUMENTADO de 0.7rem para 0.75rem */
             color: var(--metal-claro);
             border: 1px solid var(--cinza-medio);
+        }
+
+        /* ============================================================
+           JOGO — CLASSIFICAÇÃO DE RISCO
+           ============================================================ */
+        .game-container {
+            background: var(--cinza-escuro);
+            border-radius: var(--radius);
+            padding: 24px;
+            border: 2px solid var(--verde);
+            box-shadow: 0 0 50px var(--verde-glow);
+            margin: 20px 0;
+            position: relative;
+            overflow: hidden;
+            transition: border-color 0.3s, background-color 0.3s, box-shadow 0.3s;
+        }
+
+        .game-container::before {
+            content: '';
+            position: absolute;
+            top: -2px;
+            left: -2px;
+            right: -2px;
+            bottom: -2px;
+            background: linear-gradient(45deg, var(--verde), transparent, var(--verde));
+            opacity: 0.1;
+            z-index: 0;
+            border-radius: var(--radius);
+        }
+
+        .game-container.blink-red {
+            animation: blinkRed 0.4s infinite alternate;
+            border-color: #ff1744 !important;
+            box-shadow: 0 0 80px rgba(255, 23, 68, 0.6) !important;
+        }
+
+        @keyframes blinkRed {
+            0% {
+                background-color: var(--cinza-escuro);
+                border-color: var(--verde);
+            }
+            100% {
+                background-color: rgba(255, 23, 68, 0.25);
+                border-color: #ff1744;
+            }
+        }
+
+        .game-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-bottom: 20px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .game-stats {
+            display: flex;
+            gap: 20px;
+            font-size: 0.95rem;
+            color: var(--metal-claro);
+        }
+
+        .game-stats span {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .game-stats .value {
+            color: var(--branco);
+            font-weight: 700;
+            font-size: 1.1rem;
+        }
+
+        .game-stats .value.score {
+            color: var(--verde);
+            text-shadow: 0 0 20px var(--verde-glow);
+        }
+
+        .game-stats .value.timer {
+            color: var(--verde);
+            text-shadow: 0 0 20px var(--verde-glow);
+        }
+
+        .game-stats .value.timer.warning {
+            color: var(--amarelo);
+            text-shadow: 0 0 20px var(--amarelo-glow);
+        }
+
+        .game-stats .value.timer.danger {
+            color: var(--vermelho);
+            text-shadow: 0 0 20px var(--vermelho-glow);
+            animation: timerPulse 0.5s infinite alternate;
+        }
+
+        @keyframes timerPulse {
+            0% {
+                opacity: 0.6;
+                transform: scale(1);
+            }
+            100% {
+                opacity: 1;
+                transform: scale(1.1);
+            }
+        }
+
+        .game-patient {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid var(--cinza-medio);
+            border-radius: var(--radius);
+            padding: 20px 24px;
+            margin-bottom: 20px;
+            position: relative;
+            z-index: 1;
+            transition: all 0.3s ease;
+            min-height: 140px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .game-patient:hover {
+            border-color: var(--verde);
+            box-shadow: 0 0 30px var(--verde-glow);
+        }
+
+        .game-patient .patient-name {
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: var(--branco);
+            letter-spacing: 1px;
+        }
+
+        .game-patient .patient-details {
+            color: var(--metal-claro);
+            font-size: 0.95rem;
+            margin-top: 4px;
+        }
+
+        .game-patient .patient-symptoms {
+            color: var(--branco);
+            font-size: 1.05rem;
+            margin-top: 8px;
+            padding: 10px 16px;
+            background: rgba(0, 255, 65, 0.05);
+            border-radius: var(--radius);
+            border-left: 3px solid var(--verde);
+        }
+
+        .game-actions {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 12px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .game-btn {
+            padding: 14px 8px;
+            border: 2px solid var(--cinza-medio);
+            border-radius: var(--radius);
+            background: var(--preto);
+            color: var(--branco);
+            font-family: var(--font-mono);
+            font-size: 0.85rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .game-btn .sub {
+            font-size: 0.65rem;
+            font-weight: 400;
+            color: var(--metal-claro);
+        }
+
+        .game-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            opacity: 0;
+            transition: all 0.3s ease;
+        }
+
+        .game-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 30px var(--verde-glow);
+            border-color: var(--verde);
+        }
+
+        .game-btn:active {
+            transform: scale(0.95);
+        }
+
+        .game-btn.black {
+            border-color: #333;
+        }
+        .game-btn.black:hover {
+            border-color: #666;
+            box-shadow: 0 0 30px rgba(255, 255, 255, 0.1);
+        }
+        .game-btn.black .dot {
+            background: #1a1a1a;
+            border-color: #333;
+        }
+
+        .game-btn.red {
+            border-color: var(--vermelho);
+        }
+        .game-btn.red:hover {
+            background: var(--vermelho);
+            color: var(--preto);
+            box-shadow: 0 0 40px var(--vermelho-glow);
+        }
+        .game-btn.red .dot {
+            background: var(--vermelho);
+            box-shadow: 0 0 20px var(--vermelho-glow);
+        }
+
+        .game-btn.yellow {
+            border-color: var(--amarelo);
+        }
+        .game-btn.yellow:hover {
+            background: var(--amarelo);
+            color: var(--preto);
+            box-shadow: 0 0 40px var(--amarelo-glow);
+        }
+        .game-btn.yellow .dot {
+            background: var(--amarelo);
+            box-shadow: 0 0 20px var(--amarelo-glow);
+        }
+
+        .game-btn.green {
+            border-color: var(--verde);
+        }
+        .game-btn.green:hover {
+            background: var(--verde);
+            color: var(--preto);
+            box-shadow: 0 0 40px var(--verde-glow-strong);
+        }
+        .game-btn.green .dot {
+            background: var(--verde);
+            box-shadow: 0 0 30px var(--verde-glow-strong);
+        }
+
+        .game-btn .dot {
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            display: inline-block;
+            transition: all 0.3s ease;
+        }
+
+        .game-btn .label {
+            font-size: 0.8rem;
+        }
+
+        .game-feedback {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(0);
+            font-size: 4rem;
+            font-weight: 700;
+            z-index: 9999;
+            pointer-events: none;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            text-shadow: 0 0 60px currentColor;
+            opacity: 0;
+        }
+
+        .game-feedback.show {
+            transform: translate(-50%, -50%) scale(1.2);
+            opacity: 1;
+        }
+
+        .game-feedback.correct {
+            color: var(--verde);
+        }
+        .game-feedback.wrong {
+            color: var(--vermelho);
+        }
+
+        .game-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            border-radius: var(--radius);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 10;
+            opacity: 0;
+            pointer-events: none;
+            transition: all 0.5s ease;
+            padding: 20px;
+        }
+
+        .game-overlay.show {
+            opacity: 1;
+            pointer-events: all;
+        }
+
+        .game-overlay h2 {
+            font-size: 2rem;
+            color: var(--verde);
+            text-shadow: 0 0 40px var(--verde-glow);
+            margin-bottom: 8px;
+            letter-spacing: 2px;
+        }
+
+        .game-overlay p {
+            color: var(--metal-claro);
+            font-size: 1.1rem;
+            margin-bottom: 16px;
+        }
+
+        .game-overlay .final-score {
+            font-size: 2.5rem;
+            color: var(--branco);
+            font-weight: 700;
+            text-shadow: 0 0 40px var(--verde-glow);
+        }
+
+        .game-overlay .final-score span {
+            color: var(--verde);
+        }
+
+        .game-overlay .btn-restart {
+            margin-top: 16px;
+            padding: 12px 40px;
+            border: 2px solid var(--verde);
+            background: transparent;
+            color: var(--verde);
+            font-family: var(--font-mono);
+            font-size: 1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            border-radius: var(--radius);
+        }
+
+        .game-overlay .btn-restart:hover {
+            background: var(--verde);
+            color: var(--preto);
+            box-shadow: 0 0 40px var(--verde-glow-strong);
+            transform: scale(1.05);
+        }
+
+        .game-message {
+            text-align: center;
+            color: var(--metal-claro);
+            font-size: 0.95rem;
+            margin-top: 12px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .game-message strong {
+            color: var(--verde);
+        }
+
+        /* ============================================================
+           CONSULTA ONLINE
+           ============================================================ */
+        .consulta-form {
+            background: var(--cinza-escuro);
+            border-radius: var(--radius);
+            padding: 28px;
+            border: 1px solid var(--cinza-medio);
+            box-shadow: 0 0 30px var(--verde-glow);
+            margin: 20px 0;
+            transition: all 0.5s ease;
+        }
+
+        .consulta-form:hover {
+            border-color: var(--verde);
+            box-shadow: 0 0 50px var(--verde-glow-strong);
+        }
+
+        .consulta-form .form-group {
+            margin-bottom: 18px;
+        }
+
+        .consulta-form label {
+            display: block;
+            color: var(--metal-claro);
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 6px;
+        }
+
+        .consulta-form input,
+        .consulta-form select,
+        .consulta-form textarea {
+            width: 100%;
+            padding: 12px 16px;
+            background: var(--preto);
+            border: 1px solid var(--cinza-medio);
+            border-radius: var(--radius);
+            color: var(--branco);
+            font-family: var(--font-mono);
+            font-size: 0.95rem;
+            transition: all 0.3s ease;
+        }
+
+        .consulta-form input:focus,
+        .consulta-form select:focus,
+        .consulta-form textarea:focus {
+            outline: none;
+            border-color: var(--verde);
+            box-shadow: 0 0 30px var(--verde-glow);
+        }
+
+        .consulta-form input::placeholder,
+        .consulta-form textarea::placeholder {
+            color: var(--metal);
+        }
+
+        .consulta-form textarea {
+            resize: vertical;
+            min-height: 80px;
+        }
+
+        .consulta-form .btn-enviar {
+            width: 100%;
+            padding: 14px;
+            background: transparent;
+            border: 2px solid var(--verde);
+            border-radius: var(--radius);
+            color: var(--verde);
+            font-family: var(--font-mono);
+            font-size: 1rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .consulta-form .btn-enviar:hover {
+            background: var(--verde);
+            color: var(--preto);
+            box-shadow: 0 0 40px var(--verde-glow-strong);
+            transform: scale(1.02);
+        }
+
+        .consulta-form .btn-enviar:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .consulta-resultado {
+            display: none;
+            background: var(--cinza-escuro);
+            border-radius: var(--radius);
+            padding: 24px;
+            border: 2px solid var(--verde);
+            box-shadow: 0 0 40px var(--verde-glow);
+            margin: 20px 0;
+            animation: fadeIn 0.6s ease forwards;
+        }
+
+        .consulta-resultado.show {
+            display: block;
+        }
+
+        .consulta-resultado .resultado-header {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            margin-bottom: 14px;
+        }
+
+        .consulta-resultado .resultado-dot {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            flex-shrink: 0;
+        }
+
+        .consulta-resultado .resultado-dot.black {
+            background: #1a1a1a;
+            border-color: #333;
+        }
+        .consulta-resultado .resultado-dot.red {
+            background: var(--vermelho);
+            box-shadow: 0 0 30px var(--vermelho-glow);
+        }
+        .consulta-resultado .resultado-dot.yellow {
+            background: var(--amarelo);
+            box-shadow: 0 0 30px var(--amarelo-glow);
+        }
+        .consulta-resultado .resultado-dot.green {
+            background: var(--verde);
+            box-shadow: 0 0 30px var(--verde-glow-strong);
+        }
+
+        .consulta-resultado .resultado-titulo {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: var(--branco);
+            letter-spacing: 1px;
+        }
+
+        .consulta-resultado .resultado-prioridade {
+            margin-left: auto;
+            font-size: 0.9rem;
+            color: var(--metal-claro);
+            background: rgba(255, 255, 255, 0.05);
+            padding: 4px 14px;
+            border-radius: 4px;
+            border: 1px solid var(--cinza-medio);
+        }
+
+        .consulta-resultado .resultado-mensagem {
+            color: var(--metal-claro);
+            font-size: 1rem;
+            margin: 10px 0;
+            padding: 14px 18px;
+            background: rgba(255, 255, 255, 0.02);
+            border-radius: var(--radius);
+            border-left: 4px solid var(--verde);
+        }
+
+        .consulta-resultado .resultado-recomendacao {
+            color: var(--branco);
+            font-size: 0.95rem;
+            padding: 12px 16px;
+            background: rgba(0, 255, 65, 0.05);
+            border-radius: var(--radius);
+            border: 1px solid var(--cinza-medio);
+        }
+
+        .consulta-resultado .resultado-detalhes {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin: 14px 0;
+            padding: 14px;
+            background: rgba(255, 255, 255, 0.02);
+            border-radius: var(--radius);
+            border: 1px solid var(--cinza-medio);
+        }
+
+        .consulta-resultado .resultado-detalhes .item {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .consulta-resultado .resultado-detalhes .item .label {
+            font-size: 0.75rem;
+            color: var(--metal);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .consulta-resultado .resultado-detalhes .item .value {
+            color: var(--branco);
+            font-size: 0.95rem;
+            font-weight: 500;
+        }
+
+        .consulta-resultado .resultado-detalhes .item .value.destaque {
+            color: var(--verde);
+        }
+
+        .historico-container {
+            margin-top: 28px;
+        }
+
+        .historico-container h3 {
+            color: var(--branco);
+            font-size: 1.2rem;
+            letter-spacing: 1px;
+            margin-bottom: 12px;
+            text-shadow: 0 0 20px var(--verde-glow);
+        }
+
+        .historico-lista {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            max-height: 200px;
+            overflow-y: auto;
+            padding-right: 8px;
+        }
+
+        .historico-lista::-webkit-scrollbar {
+            width: 4px;
+        }
+        .historico-lista::-webkit-scrollbar-track {
+            background: var(--cinza-escuro);
+        }
+        .historico-lista::-webkit-scrollbar-thumb {
+            background: var(--verde);
+            border-radius: 4px;
+        }
+
+        .historico-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: var(--preto);
+            padding: 8px 14px;
+            border-radius: var(--radius);
+            border: 1px solid var(--cinza-medio);
+            transition: all 0.3s ease;
+            font-size: 0.85rem;
+        }
+
+        .historico-item:hover {
+            border-color: var(--verde);
+            box-shadow: 0 0 20px var(--verde-glow);
+        }
+
+        .historico-item .h-nome {
+            color: var(--branco);
+            font-weight: 500;
+        }
+        .historico-item .h-cor {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            font-weight: 700;
+        }
+        .historico-item .h-cor .dot-mini {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            display: inline-block;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .historico-item .h-cor .dot-mini.black {
+            background: #1a1a1a;
+        }
+        .historico-item .h-cor .dot-mini.red {
+            background: var(--vermelho);
+        }
+        .historico-item .h-cor .dot-mini.yellow {
+            background: var(--amarelo);
+        }
+        .historico-item .h-cor .dot-mini.green {
+            background: var(--verde);
+        }
+        .historico-item .h-data {
+            color: var(--metal);
+            font-size: 0.75rem;
+        }
+
+        .btn-limpar-historico {
+            margin-top: 12px;
+            padding: 8px 20px;
+            background: transparent;
+            border: 1px solid var(--vermelho);
+            border-radius: var(--radius);
+            color: var(--vermelho);
+            font-family: var(--font-mono);
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn-limpar-historico:hover {
+            background: var(--vermelho);
+            color: var(--preto);
+            box-shadow: 0 0 30px var(--vermelho-glow);
         }
 
         /* ===== FOOTER ===== */
@@ -831,7 +1524,7 @@
             padding-top: 20px;
             border-top: 1px solid var(--cinza-medio);
             color: var(--metal-claro);
-            font-size: 0.75rem;
+            font-size: 0.85rem; /* AUMENTADO de 0.75rem para 0.85rem */
             position: relative;
         }
 
@@ -858,7 +1551,7 @@
                 padding: 12px 0;
             }
             .logo {
-                font-size: 0.95rem;
+                font-size: 1rem;
             }
             .menu-toggle {
                 display: flex;
@@ -891,7 +1584,7 @@
                 width: 100%;
                 text-align: left;
                 border-radius: var(--radius);
-                font-size: 0.75rem;
+                font-size: 0.8rem;
             }
             .nav-btn.active {
                 background: var(--verde);
@@ -911,8 +1604,21 @@
                 gap: 6px;
             }
             .challenge-banner .badge-challenge {
-                font-size: 0.7rem;
+                font-size: 0.75rem;
                 padding: 4px 14px;
+            }
+            .game-actions {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            .game-stats {
+                flex-wrap: wrap;
+                gap: 10px;
+            }
+            .consulta-resultado .resultado-detalhes {
+                grid-template-columns: 1fr;
+            }
+            .system-hud {
+                display: none;
             }
         }
 
@@ -921,7 +1627,7 @@
                 padding: 18px 14px 30px;
             }
             .page-title {
-                font-size: 1.4rem;
+                font-size: 1.5rem;
             }
             .card {
                 padding: 16px;
@@ -931,14 +1637,52 @@
             }
             .highlight-box {
                 padding: 12px 16px;
+                font-size: 0.95rem;
+            }
+            .game-container {
+                padding: 16px;
+            }
+            .game-patient {
+                padding: 14px;
+                min-height: 100px;
+            }
+            .game-patient .patient-name {
+                font-size: 1.1rem;
+            }
+            .game-patient .patient-symptoms {
                 font-size: 0.9rem;
+                padding: 8px 12px;
+            }
+            .game-actions {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 8px;
+            }
+            .game-btn {
+                padding: 10px 6px;
+                font-size: 0.7rem;
+            }
+            .game-btn .dot {
+                width: 14px;
+                height: 14px;
+            }
+            .game-overlay h2 {
+                font-size: 1.5rem;
+            }
+            .game-overlay .final-score {
+                font-size: 2rem;
+            }
+            .consulta-form {
+                padding: 18px;
             }
         }
 
         /* ===== ANIMAÇÕES DE ENTRADA ===== */
         .risk-card,
         .card,
-        .highlight-box {
+        .highlight-box,
+        .game-container,
+        .consulta-form,
+        .consulta-resultado {
             opacity: 0;
             animation: cardEntrance 0.7s cubic-bezier(0.4, 0, 0.2, 1) forwards;
         }
@@ -985,6 +1729,16 @@
         .card:nth-child(6) {
             animation-delay: 0.30s;
         }
+
+        .game-container {
+            animation-delay: 0.1s;
+        }
+        .consulta-form {
+            animation-delay: 0.1s;
+        }
+        .consulta-resultado {
+            animation-delay: 0.1s;
+        }
     </style>
 </head>
 <body>
@@ -1020,6 +1774,8 @@
                 <button class="nav-btn" data-page="page4">4. Diferente</button>
                 <button class="nav-btn" data-page="page5">5. Impacto</button>
                 <button class="nav-btn" data-page="page6">6. Extra</button>
+                <button class="nav-btn" data-page="page7" style="color:var(--verde); border-color:var(--verde);">🎮 Jogo</button>
+                <button class="nav-btn" data-page="page8" style="color:var(--verde); border-color:var(--verde);">🩺 Consulta</button>
             </nav>
         </div>
     </header>
@@ -1264,6 +2020,163 @@
             </div>
         </section>
 
+        <!-- ===================== PAGE 7 — JOGO ===================== -->
+        <section class="page" id="page7">
+            <h1 class="page-title">🎮 Jogo — Classificação de Risco</h1>
+            <p class="page-subtitle">Treine suas habilidades como técnico de triagem do SUS</p>
+
+            <div class="game-container" id="gameContainer">
+                <!-- OVERLAY -->
+                <div class="game-overlay" id="gameOverlay">
+                    <h2>⏱️ TEMPO ESGOTADO</h2>
+                    <p>Sua missão na triagem foi concluída.</p>
+                    <div class="final-score">
+                        Pontuação: <span id="finalScore">0</span>
+                    </div>
+                    <p style="font-size:0.9rem; color:var(--metal-claro); margin-top:4px;">
+                        Maior pontuação: <span id="highScoreDisplay" style="color:var(--verde);">0</span>
+                    </p>
+                    <button class="btn-restart" id="btnRestart">▶ REINICIAR</button>
+                </div>
+
+                <div class="game-header">
+                    <div class="game-stats">
+                        <span>🏆 <span class="value score" id="scoreDisplay">0</span></span>
+                        <span>⏱️ <span class="value timer" id="timerDisplay">60</span>s</span>
+                        <span>🔥 <span class="value" id="streakDisplay">0</span></span>
+                    </div>
+                    <div style="font-size:0.8rem; color:var(--metal-claro);">
+                        Acertos: <span id="correctCount" style="color:var(--verde);">0</span> ·
+                        Erros: <span id="wrongCount" style="color:var(--vermelho);">0</span>
+                    </div>
+                </div>
+
+                <div class="game-patient" id="patientDisplay">
+                    <div class="patient-name" id="patientName">Carregando...</div>
+                    <div class="patient-details" id="patientDetails">Idade: -- anos</div>
+                    <div class="patient-symptoms" id="patientSymptoms">Sintomas: ---</div>
+                </div>
+
+                <div class="game-actions">
+                    <button class="game-btn black" data-risk="black">
+                        <span class="dot"></span>
+                        <span class="label">PRETO</span>
+                        <span class="sub">Crítico</span>
+                    </button>
+                    <button class="game-btn red" data-risk="red">
+                        <span class="dot"></span>
+                        <span class="label">VERMELHO</span>
+                        <span class="sub">Grave</span>
+                    </button>
+                    <button class="game-btn yellow" data-risk="yellow">
+                        <span class="dot"></span>
+                        <span class="label">AMARELO</span>
+                        <span class="sub">Atenção</span>
+                    </button>
+                    <button class="game-btn green" data-risk="green">
+                        <span class="dot"></span>
+                        <span class="label">VERDE</span>
+                        <span class="sub">Estável</span>
+                    </button>
+                </div>
+
+                <div class="game-message">
+                    💡 Classifique o paciente pela <strong>gravidade dos sintomas</strong>.
+                    Quanto mais rápido e correto, maior sua pontuação!
+                </div>
+            </div>
+
+            <div class="game-feedback" id="gameFeedback"></div>
+
+            <div style="margin-top:20px; background:var(--cinza-escuro); border-radius:var(--radius); padding:16px 20px; border:1px solid var(--cinza-medio);">
+                <p style="font-size:0.9rem; color:var(--metal-claro);">
+                    🎯 <strong style="color:var(--branco);">Como jogar:</strong> Leia os sintomas do paciente e clique na cor
+                    que corresponde à gravidade do caso. Acertos aumentam sua pontuação (5–10 pontos) e seu streak.
+                    A cada <strong style="color:var(--verde);">3 acertos consecutivos</strong> você ganha <strong style="color:var(--verde);">+15 segundos</strong> extras!
+                    Erros resetam o streak. Você tem <strong style="color:var(--verde);">60 segundos</strong> para classificar o maior número de pacientes.
+                </p>
+            </div>
+        </section>
+
+        <!-- ===================== PAGE 8 — CONSULTA ===================== -->
+        <section class="page" id="page8">
+            <h1 class="page-title">🩺 Consulta Online</h1>
+            <p class="page-subtitle">Simule uma triagem e veja a classificação de risco sugerida</p>
+
+            <div class="consulta-form" id="consultaForm">
+                <div class="form-group">
+                    <label for="nome">Nome completo</label>
+                    <input type="text" id="nome" placeholder="Digite seu nome completo" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="cpf">CPF (simulado)</label>
+                    <input type="text" id="cpf" placeholder="000.000.000-00" maxlength="14">
+                </div>
+
+                <div class="form-group">
+                    <label for="sintomas">Descreva os sintomas</label>
+                    <textarea id="sintomas" placeholder="Ex: Dor no peito, falta de ar, febre alta..." rows="3"></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label for="sintomas-rapidos">Ou selecione um sintoma rápido</label>
+                    <select id="sintomas-rapidos">
+                        <option value="">— Selecione —</option>
+                        <option value="parada cardíaca hemorragia trauma grave">🚨 Parada cardíaca / Hemorragia / Trauma</option>
+                        <option value="infarto fratura exposta asma grave">⚠️ Infarto / Fratura exposta / Asma grave</option>
+                        <option value="febre alta dor abdominal pressão alta">🌡️ Febre alta / Dor abdominal / Pressão alta</option>
+                        <option value="resfriado dor muscular alergia">😷 Resfriado / Dor muscular / Alergia</option>
+                        <option value="personalizado">✏️ Personalizado (digite acima)</option>
+                    </select>
+                </div>
+
+                <button class="btn-enviar" id="btnEnviarConsulta">🔍 Realizar Triagem</button>
+            </div>
+
+            <div class="consulta-resultado" id="consultaResultado">
+                <div class="resultado-header">
+                    <span class="resultado-dot" id="resultadoDot"></span>
+                    <span class="resultado-titulo" id="resultadoTitulo">Classificação</span>
+                    <span class="resultado-prioridade" id="resultadoPrioridade">Prioridade</span>
+                </div>
+                <div class="resultado-mensagem" id="resultadoMensagem">
+                    Mensagem sobre a classificação
+                </div>
+                <div class="resultado-detalhes" id="resultadoDetalhes">
+                    <div class="item">
+                        <span class="label">Paciente</span>
+                        <span class="value" id="detalheNome">—</span>
+                    </div>
+                    <div class="item">
+                        <span class="label">CPF</span>
+                        <span class="value" id="detalheCpf">—</span>
+                    </div>
+                    <div class="item">
+                        <span class="label">Sintomas</span>
+                        <span class="value" id="detalheSintomas">—</span>
+                    </div>
+                    <div class="item">
+                        <span class="label">Classificação</span>
+                        <span class="value destaque" id="detalheClassificacao">—</span>
+                    </div>
+                </div>
+                <div class="resultado-recomendacao" id="resultadoRecomendacao">
+                    Recomendação baseada na classificação.
+                </div>
+            </div>
+
+            <div class="historico-container">
+                <h3>📋 Histórico de consultas</h3>
+                <div class="historico-lista" id="historicoLista"></div>
+                <button class="btn-limpar-historico" id="btnLimparHistorico">🗑️ Limpar histórico</button>
+            </div>
+
+            <p style="color:var(--metal-claro); font-size:0.85rem; margin-top:16px; text-align:center;">
+                ⚠️ Simulação educacional — não substitui uma consulta médica real.
+            </p>
+        </section>
+
         <div class="footer-note">
             Desenvolvido com <strong>💚</strong> para o Desafio Liga Jovem · Classificação de Risco no SUS
         </div>
@@ -1344,6 +2257,9 @@
                     setTimeout(function() {
                         target.classList.add('active');
                         animateCards(target);
+                        if (pageId === 'page7') {
+                            initGame();
+                        }
                     }, 300);
                 }
 
@@ -1358,7 +2274,7 @@
             }
 
             function animateCards(container) {
-                var cards = container.querySelectorAll('.card, .risk-card, .highlight-box');
+                var cards = container.querySelectorAll('.card, .risk-card, .highlight-box, .game-container, .consulta-form, .consulta-resultado');
                 cards.forEach(function(card, index) {
                     card.style.animation = 'none';
                     card.style.opacity = '0';
@@ -1390,7 +2306,429 @@
                 setTimeout(function() { animateCards(page1); }, 300);
             }
 
-            console.log('🏥 SUS + Organizado — Apresentação carregada!');
+            // ============================================================
+            // JOGO
+            // ============================================================
+            var gameData = {
+                score: 0,
+                streak: 0,
+                correct: 0,
+                wrong: 0,
+                timer: 60,
+                maxTimer: 60,
+                isRunning: false,
+                timerInterval: null,
+                currentPatient: null,
+                highScore: parseInt(localStorage.getItem('susHighScore')) || 0,
+                patients: [
+                    { name: 'João Silva', age: 68, symptoms: 'Dor forte no peito, falta de ar, sudorese fria.',
+                        risk: 'black' },
+                    { name: 'Maria Santos', age: 72, symptoms: 'Desmaio súbito, pulso fraco, inconsciência.',
+                        risk: 'black' },
+                    { name: 'Carlos Lima', age: 55, symptoms: 'Hemorragia intensa após acidente, pressão caindo.',
+                        risk: 'black' },
+                    { name: 'Ana Paula', age: 45, symptoms: 'Trauma craniano com perda de consciência.', risk: 'black' },
+                    { name: 'José Ferreira', age: 80, symptoms: 'Parada cardíaca em andamento.', risk: 'black' },
+                    { name: 'Lucia Alves', age: 62, symptoms: 'Falta de ar progressiva, chiado no peito.', risk: 'red' },
+                    { name: 'Pedro Rocha', age: 50, symptoms: 'Suspeita de infarto, dor no braço esquerdo.',
+                        risk: 'red' },
+                    { name: 'Fernanda Costa', age: 38, symptoms: 'Sangramento vaginal intenso.', risk: 'red' },
+                    { name: 'Ricardo Dias', age: 60, symptoms: 'Fratura exposta na perna, dor intensa.', risk: 'red' },
+                    { name: 'Camila Souza', age: 42, symptoms: 'Crise de asma grave, saturação baixa.', risk: 'red' },
+                    { name: 'Roberto Nunes', age: 35, symptoms: 'Febre alta (39,5°C) há 3 dias, tosse seca.',
+                        risk: 'yellow' },
+                    { name: 'Tatiana Oliveira', age: 28, symptoms: 'Dor abdominal moderada, náuseas.', risk: 'yellow' },
+                    { name: 'Felipe Martins', age: 40, symptoms: 'Pressão arterial elevada (160/100).', risk: 'yellow' },
+                    { name: 'Juliana Lima', age: 33, symptoms: 'Infecção urinária com dor ao urinar.', risk: 'yellow' },
+                    { name: 'Marcelo Santos', age: 25, symptoms: 'Cefaleia intensa, fotofobia.', risk: 'yellow' },
+                    { name: 'Patrícia Gomes', age: 22, symptoms: 'Resfriado comum, coriza e tosse leve.', risk: 'green' },
+                    { name: 'Bruno Almeida', age: 30, symptoms: 'Dor muscular pós-exercício.', risk: 'green' },
+                    { name: 'Carolina Mendes', age: 19, symptoms: 'Pequeno corte no dedo, sem sangramento ativo.',
+                        risk: 'green' },
+                    { name: 'Diego Pereira', age: 27, symptoms: 'Alergia sazonal, espirros e coceira.', risk: 'green' },
+                    { name: 'Vanessa Silva', age: 24, symptoms: 'Dor de cabeça leve, sem outros sintomas.',
+                        risk: 'green' },
+                ]
+            };
+
+            var gameElements = {
+                scoreDisplay: document.getElementById('scoreDisplay'),
+                timerDisplay: document.getElementById('timerDisplay'),
+                streakDisplay: document.getElementById('streakDisplay'),
+                correctCount: document.getElementById('correctCount'),
+                wrongCount: document.getElementById('wrongCount'),
+                patientName: document.getElementById('patientName'),
+                patientDetails: document.getElementById('patientDetails'),
+                patientSymptoms: document.getElementById('patientSymptoms'),
+                gameOverlay: document.getElementById('gameOverlay'),
+                finalScore: document.getElementById('finalScore'),
+                highScoreDisplay: document.getElementById('highScoreDisplay'),
+                btnRestart: document.getElementById('btnRestart'),
+                gameFeedback: document.getElementById('gameFeedback'),
+                gameContainer: document.getElementById('gameContainer'),
+            };
+
+            var riskButtons = document.querySelectorAll('.game-btn');
+
+            function getRandomPatient() {
+                var pool = gameData.patients;
+                return pool[Math.floor(Math.random() * pool.length)];
+            }
+
+            function displayPatient(patient) {
+                gameElements.patientName.textContent = patient.name;
+                gameElements.patientDetails.textContent = 'Idade: ' + patient.age + ' anos';
+                gameElements.patientSymptoms.textContent = 'Sintomas: ' + patient.symptoms;
+                gameData.currentPatient = patient;
+            }
+
+            function updateUI() {
+                gameElements.scoreDisplay.textContent = gameData.score;
+                gameElements.timerDisplay.textContent = gameData.timer;
+                var fireEmoji = '🔥'.repeat(Math.min(gameData.streak, 5));
+                gameElements.streakDisplay.textContent = gameData.streak + (fireEmoji ? ' ' + fireEmoji : '');
+                gameElements.correctCount.textContent = gameData.correct;
+                gameElements.wrongCount.textContent = gameData.wrong;
+
+                var timerEl = gameElements.timerDisplay;
+                timerEl.className = 'value timer';
+                if (gameData.timer <= 5) timerEl.classList.add('danger');
+                else if (gameData.timer <= 10) timerEl.classList.add('warning');
+
+                var container = gameElements.gameContainer;
+                if (gameData.timer <= 5 && gameData.isRunning) {
+                    container.classList.add('blink-red');
+                } else {
+                    container.classList.remove('blink-red');
+                }
+
+                if (gameData.highScore > 0) {
+                    gameElements.highScoreDisplay.textContent = gameData.highScore;
+                }
+            }
+
+            function showBonusNotification(text) {
+                var fb = gameElements.gameFeedback;
+                fb.textContent = '⏱️ ' + text;
+                fb.className = 'game-feedback show correct';
+                setTimeout(function() {
+                    fb.classList.remove('show');
+                }, 800);
+            }
+
+            function handleRiskSelection(risk) {
+                if (!gameData.isRunning) return;
+                var patient = gameData.currentPatient;
+                if (!patient) return;
+
+                var correct = (risk === patient.risk);
+                if (correct) {
+                    var pontos = Math.floor(Math.random() * 6) + 5;
+                    gameData.score += pontos;
+                    gameData.streak += 1;
+                    gameData.correct += 1;
+                    showFeedback(true);
+
+                    if (gameData.streak % 3 === 0 && gameData.streak > 0) {
+                        var bonus = 15;
+                        gameData.timer = Math.min(gameData.timer + bonus, gameData.maxTimer);
+                        showBonusNotification('+15s 🔥');
+                    }
+                } else {
+                    gameData.streak = 0;
+                    gameData.wrong += 1;
+                    showFeedback(false);
+                }
+                updateUI();
+
+                var next = getRandomPatient();
+                displayPatient(next);
+            }
+
+            function showFeedback(correct) {
+                var fb = gameElements.gameFeedback;
+                fb.textContent = correct ? '✅ CORRETO!' : '❌ ERRADO!';
+                fb.className = 'game-feedback show ' + (correct ? 'correct' : 'wrong');
+                setTimeout(function() {
+                    fb.classList.remove('show');
+                }, 500);
+            }
+
+            function endGame() {
+                gameData.isRunning = false;
+                if (gameData.timerInterval) {
+                    clearInterval(gameData.timerInterval);
+                    gameData.timerInterval = null;
+                }
+                if (gameData.score > gameData.highScore) {
+                    gameData.highScore = gameData.score;
+                    localStorage.setItem('susHighScore', String(gameData.highScore));
+                }
+                gameElements.finalScore.textContent = gameData.score;
+                gameElements.highScoreDisplay.textContent = gameData.highScore;
+                gameElements.gameOverlay.classList.add('show');
+                riskButtons.forEach(function(btn) { btn.disabled = true; });
+                gameElements.gameContainer.classList.remove('blink-red');
+            }
+
+            function resetGame() {
+                if (gameData.timerInterval) {
+                    clearInterval(gameData.timerInterval);
+                    gameData.timerInterval = null;
+                }
+                gameData.score = 0;
+                gameData.streak = 0;
+                gameData.correct = 0;
+                gameData.wrong = 0;
+                gameData.timer = gameData.maxTimer;
+                gameData.isRunning = false;
+                gameData.currentPatient = null;
+                gameElements.gameOverlay.classList.remove('show');
+                riskButtons.forEach(function(btn) { btn.disabled = false; });
+                gameElements.gameContainer.classList.remove('blink-red');
+                updateUI();
+                var first = getRandomPatient();
+                displayPatient(first);
+                startTimer();
+            }
+
+            function startTimer() {
+                if (gameData.timerInterval) {
+                    clearInterval(gameData.timerInterval);
+                }
+                gameData.isRunning = true;
+                gameData.timerInterval = setInterval(function() {
+                    gameData.timer -= 1;
+                    updateUI();
+                    if (gameData.timer <= 0) {
+                        endGame();
+                    }
+                }, 1000);
+            }
+
+            function initGame() {
+                if (gameData.isRunning) return;
+                if (gameElements.gameOverlay.classList.contains('show')) {
+                    resetGame();
+                } else {
+                    resetGame();
+                }
+            }
+
+            riskButtons.forEach(function(btn) {
+                btn.addEventListener('click', function() {
+                    if (this.disabled) return;
+                    var risk = this.dataset.risk;
+                    if (risk) handleRiskSelection(risk);
+                });
+            });
+
+            gameElements.btnRestart.addEventListener('click', function() {
+                resetGame();
+            });
+
+            var page7 = document.getElementById('page7');
+            if (page7 && page7.classList.contains('active')) {
+                setTimeout(initGame, 500);
+            }
+
+            var observer = new MutationObserver(function(mutations) {
+                mutations.forEach(function(mutation) {
+                    if (mutation.type === 'attributes' && mutation.attributeName === 'class') {
+                        var target = mutation.target;
+                        if (target.id === 'page7' && target.classList.contains('active')) {
+                            setTimeout(initGame, 400);
+                        }
+                    }
+                });
+            });
+            if (page7) {
+                observer.observe(page7, { attributes: true });
+            }
+
+            // ============================================================
+            // CONSULTA ONLINE
+            // ============================================================
+            var consultaForm = document.getElementById('consultaForm');
+            var btnEnviar = document.getElementById('btnEnviarConsulta');
+            var resultadoDiv = document.getElementById('consultaResultado');
+            var nomeInput = document.getElementById('nome');
+            var cpfInput = document.getElementById('cpf');
+            var sintomasInput = document.getElementById('sintomas');
+            var sintomasRapidos = document.getElementById('sintomas-rapidos');
+            var historicoLista = document.getElementById('historicoLista');
+            var btnLimparHistorico = document.getElementById('btnLimparHistorico');
+
+            var historico = JSON.parse(localStorage.getItem('consultaHistorico')) || [];
+
+            function renderHistorico() {
+                historicoLista.innerHTML = '';
+                if (historico.length === 0) {
+                    historicoLista.innerHTML =
+                        '<div style="color:var(--metal); text-align:center; padding:20px;">Nenhuma consulta registrada.</div>';
+                    return;
+                }
+                var reversed = historico.slice().reverse();
+                reversed.forEach(function(item) {
+                    var div = document.createElement('div');
+                    div.className = 'historico-item';
+                    div.innerHTML = `
+                        <span class="h-nome">${item.nome || 'Anônimo'}</span>
+                        <span class="h-cor">
+                            <span class="dot-mini ${item.cor}"></span>
+                            ${item.classificacao}
+                        </span>
+                        <span class="h-data">${item.data}</span>
+                    `;
+                    historicoLista.appendChild(div);
+                });
+            }
+
+            function salvarHistorico() {
+                localStorage.setItem('consultaHistorico', JSON.stringify(historico));
+                renderHistorico();
+            }
+
+            btnLimparHistorico.addEventListener('click', function() {
+                if (confirm('Tem certeza que deseja limpar todo o histórico?')) {
+                    historico = [];
+                    salvarHistorico();
+                }
+            });
+
+            sintomasRapidos.addEventListener('change', function() {
+                if (this.value !== 'personalizado' && this.value !== '') {
+                    sintomasInput.value = this.value;
+                }
+            });
+
+            cpfInput.addEventListener('input', function() {
+                var val = this.value.replace(/\D/g, '');
+                if (val.length > 11) val = val.slice(0, 11);
+                var formatted = '';
+                for (var i = 0; i < val.length; i++) {
+                    if (i === 3 || i === 6) formatted += '.';
+                    else if (i === 9) formatted += '-';
+                    formatted += val[i];
+                }
+                this.value = formatted;
+            });
+
+            function classificarSintomas(texto) {
+                var lower = texto.toLowerCase();
+                var palavras = lower.split(/\s+/);
+                var criticas = ['parada', 'cardíaca', 'hemorragia', 'trauma', 'grave', 'choque', 'inconsciência', 'convulsão',
+                    'sangramento intenso'
+                ];
+                var graves = ['infarto', 'fratura exposta', 'asma grave', 'falta de ar', 'sangramento', 'dor intensa',
+                    'suspeita de infarto'
+                ];
+                var atencao = ['febre alta', 'dor abdominal', 'pressão alta', 'infecção', 'náuseas', 'vômito', 'tosse seca',
+                    'cefaleia'
+                ];
+                var estaveis = ['resfriado', 'dor muscular', 'alergia', 'corte pequeno', 'dor de cabeça leve', 'tosse leve'];
+
+                var scoreCritico = 0,
+                    scoreGrave = 0,
+                    scoreAtencao = 0,
+                    scoreEstavel = 0;
+
+                palavras.forEach(function(p) {
+                    if (criticas.some(function(c) { return p.includes(c) || c.includes(p); })) scoreCritico++;
+                    if (graves.some(function(c) { return p.includes(c) || c.includes(p); })) scoreGrave++;
+                    if (atencao.some(function(c) { return p.includes(c) || c.includes(p); })) scoreAtencao++;
+                    if (estaveis.some(function(c) { return p.includes(c) || c.includes(p); })) scoreEstavel++;
+                });
+
+                if (scoreCritico === 0 && scoreGrave === 0 && scoreAtencao === 0 && scoreEstavel === 0) {
+                    return { cor: 'green', nome: 'Verde', prioridade: '20%', mensagem: 'Sintomas não identificados no sistema. Classificação padrão como estável.' };
+                }
+
+                if (scoreCritico >= 1) {
+                    return { cor: 'black', nome: 'Preto', prioridade: '100%', mensagem: 'Classificação de risco MÁXIMO. Paciente necessita de atendimento imediato!' };
+                }
+                if (scoreGrave >= 1) {
+                    return { cor: 'red', nome: 'Vermelho', prioridade: '80%', mensagem: 'Classificação de risco ALTA. Paciente necessita de atendimento rápido!' };
+                }
+                if (scoreAtencao >= 1) {
+                    return { cor: 'yellow', nome: 'Amarelo', prioridade: '50%', mensagem: 'Classificação de risco MODERADA. Paciente requer avaliação, mas sem urgência imediata.' };
+                }
+                return { cor: 'green', nome: 'Verde', prioridade: '20%', mensagem: 'Classificação de risco BAIXA. Paciente estável, pode aguardar atendimento.' };
+            }
+
+            btnEnviar.addEventListener('click', function(e) {
+                e.preventDefault();
+
+                var nome = nomeInput.value.trim() || 'Paciente Anônimo';
+                var cpf = cpfInput.value.trim() || 'Não informado';
+                var sintomas = sintomasInput.value.trim();
+
+                if (!sintomas) {
+                    alert('Por favor, descreva os sintomas ou selecione uma opção rápida.');
+                    return;
+                }
+
+                btnEnviar.disabled = true;
+                btnEnviar.textContent = '⏳ Processando...';
+
+                setTimeout(function() {
+                    var resultado = classificarSintomas(sintomas);
+
+                    var dot = document.getElementById('resultadoDot');
+                    dot.className = 'resultado-dot ' + resultado.cor;
+
+                    document.getElementById('resultadoTitulo').textContent = '🟤 ' + resultado.nome;
+                    document.getElementById('resultadoPrioridade').textContent = 'Prioridade: ' + resultado.prioridade;
+                    document.getElementById('resultadoMensagem').textContent = resultado.mensagem;
+
+                    document.getElementById('detalheNome').textContent = nome;
+                    document.getElementById('detalheCpf').textContent = cpf;
+                    document.getElementById('detalheSintomas').textContent = sintomas;
+
+                    var classifMap = {
+                        'black': '⚫ Preto — Crítico',
+                        'red': '🔴 Vermelho — Grave',
+                        'yellow': '🟡 Amarelo — Atenção',
+                        'green': '🟢 Verde — Estável'
+                    };
+                    document.getElementById('detalheClassificacao').textContent = classifMap[resultado.cor] || resultado.nome;
+
+                    var recomendacoes = {
+                        'black': '🚨 Procure atendimento de emergência IMEDIATAMENTE! Ligue 192 ou vá ao hospital mais próximo.',
+                        'red': '⚠️ Procure atendimento o mais rápido possível. Não aguarde a consulta agendada.',
+                        'yellow': '📅 Agende uma consulta com seu médico. Monitore os sintomas e procure ajuda se piorar.',
+                        'green': '😊 Mantenha-se em observação. Caso os sintomas persistam, procure orientação médica.'
+                    };
+                    document.getElementById('resultadoRecomendacao').textContent = recomendacoes[resultado.cor] ||
+                        'Mantenha-se em observação.';
+
+                    resultadoDiv.classList.add('show');
+
+                    var now = new Date();
+                    var dataStr = now.toLocaleDateString('pt-BR') + ' ' + now.toLocaleTimeString('pt-BR', { hour: '2-digit',
+                        minute: '2-digit' });
+                    historico.push({
+                        nome: nome,
+                        cpf: cpf,
+                        sintomas: sintomas,
+                        classificacao: classifMap[resultado.cor] || resultado.nome,
+                        cor: resultado.cor,
+                        data: dataStr
+                    });
+                    if (historico.length > 50) historico.shift();
+                    salvarHistorico();
+
+                    btnEnviar.disabled = false;
+                    btnEnviar.textContent = '🔍 Realizar Triagem';
+
+                    resultadoDiv.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                }, 1200);
+            });
+
+            renderHistorico();
+
+            console.log('🏥 SUS + Organizado — Apresentação carregada com sucesso!');
+            console.log('🎮 Jogo e 🩺 Consulta Online disponíveis!');
         })();
     </script>
 
